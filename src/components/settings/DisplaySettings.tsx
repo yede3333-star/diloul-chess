@@ -7,6 +7,7 @@ import { StaticBoard } from "@/components/board/StaticBoard";
 import { usePathname, useRouter } from "@/i18n/navigation";
 import { routing } from "@/i18n/routing";
 import { applyBoard, applyTheme, BOARD_THEMES, readBoard, readTheme, type BoardTheme, type Theme } from "@/lib/prefs/prefs";
+import { useStorage } from "@/lib/storage/StorageProvider";
 
 // Small board preview for the board-theme picker (start position).
 const START_FEN = "rnbqkbnr/pppppppp/8/8/8/8/PPPPPPPP/RNBQKBNR w KQkq - 0 1";
@@ -43,15 +44,19 @@ export function DisplaySettings() {
   const pathname = usePathname();
   const router = useRouter();
   const [pending, startTransition] = useTransition();
+  const { update, data } = useStorage();
   // Server renders the defaults; the real values (set before paint by the inline script) are read after mount.
   const [theme, setTheme] = useState<Theme>("dark");
   const [board, setBoard] = useState<BoardTheme>("sand");
 
+  // Read what the inline script (or the account settings) applied to <html>.
+  const accountTheme = data.profile?.settings.theme;
+  const accountBoard = data.profile?.settings.board;
   useEffect(() => {
     // eslint-disable-next-line react-hooks/set-state-in-effect -- syncing with values only the browser knows
     setTheme(readTheme());
     setBoard(readBoard());
-  }, []);
+  }, [accountTheme, accountBoard]);
 
   return (
     <div className="card flex flex-col gap-6 p-4" aria-busy={pending}>
@@ -59,7 +64,10 @@ export function DisplaySettings() {
         label={t("settings.language")}
         value={locale}
         options={routing.locales.map((l) => ({ value: l, label: t(`languageNames.${l}`), lang: l }))}
-        onChange={(l) => startTransition(() => router.replace(pathname, { locale: l }))}
+        onChange={(l) => {
+          void update({ profile: { locale: l } });
+          startTransition(() => router.replace(pathname, { locale: l }));
+        }}
       />
       <Segmented
         label={t("settings.theme")}
@@ -71,6 +79,7 @@ export function DisplaySettings() {
         onChange={(v) => {
           setTheme(v);
           applyTheme(v);
+          void update({ profile: { settings: { theme: v } } });
         }}
       />
       <div className="flex flex-col gap-2">
@@ -87,6 +96,7 @@ export function DisplaySettings() {
               onClick={() => {
                 setBoard(b);
                 applyBoard(b);
+                void update({ profile: { settings: { board: b } } });
               }}
               className="flex flex-col items-center gap-1.5 rounded-md p-1 text-xs font-semibold"
             >

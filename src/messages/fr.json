@@ -59,7 +59,11 @@
   "profile": {
     "title": "Profil",
     "guest": "Invité",
-    "guestNote": "Ta progression est enregistrée sur cet appareil uniquement. Bientôt : inscris-toi pour la sauvegarder et analyser tes parties."
+    "guestNote": "Ta progression est enregistrée sur cet appareil uniquement.",
+    "account": "Compte",
+    "level": "Ton niveau de départ :",
+    "linked": "Comptes liés :",
+    "admin": "Tableau de bord"
   },
   "settings": {
     "title": "Réglages",
@@ -209,5 +213,92 @@
       "caro": "Défense Caro-Kann après 1. e4 c6 2. d4 d5",
       "mate": "Mat du couloir après Te8#"
     }
+  },
+  "onboarding": {
+    "title": "Bienvenue sur Diloul",
+    "stepOf": "Étape {step} sur 3",
+    "language": {
+      "title": "Choisis ta langue",
+      "coach": "Salut ! Je t’accompagne pour apprendre les échecs. Dans quelle langue commençons-nous ?"
+    },
+    "level": {
+      "title": "Quel est ton niveau aux échecs ?",
+      "coach": "Choisis le plus proche. On t’ouvre ce qui te convient, et tu pourras toujours passer ce que tu connais.",
+      "none": "Je ne connais pas les règles",
+      "noneHint": "On commence ensemble par le déplacement des pièces.",
+      "rules": "Je connais les règles",
+      "rulesHint": "Je sais déplacer les pièces et je veux progresser.",
+      "r800": "Environ 800",
+      "r800Hint": "Je joue des parties, je perds parfois des pièces.",
+      "r1200": "Environ 1200",
+      "r1200Hint": "Je connais les tactiques de base.",
+      "r1600": "1600 et plus",
+      "r1600Hint": "Joueur confirmé, je veux des ouvertures et des finales plus poussées."
+    },
+    "link": {
+      "title": "Relie tes comptes (facultatif)",
+      "coach": "Si tu joues sur Chess.com ou Lichess, on analysera tes parties plus tard pour te proposer quoi travailler.",
+      "chesscom": "Nom d’utilisateur Chess.com",
+      "lichess": "Nom d’utilisateur Lichess",
+      "placeholder": "ex. : yede_22",
+      "invalid": "Lettres latines, chiffres, _ et - uniquement (2 à 30 caractères)."
+    },
+    "next": "Suivant",
+    "back": "Retour",
+    "skip": "Passer",
+    "finish": "Commencer à apprendre",
+    "saving": "Enregistrement…"
+  },
+  "auth": {
+    "title": "Connexion",
+    "intro": "Inscris-toi pour retrouver ta progression sur tous tes appareils et analyser tes parties. Ta progression actuelle sur cet appareil est transférée automatiquement.",
+    "email": "Adresse e-mail",
+    "emailPlaceholder": "toi@exemple.com",
+    "sendLink": "Recevoir le lien de connexion",
+    "sending": "Envoi…",
+    "sent": "Lien envoyé à {email}. Ouvre-le sur cet appareil, dans ce navigateur.",
+    "codeLabel": "Ou saisis le code à 6 chiffres reçu par e-mail",
+    "verify": "Valider le code",
+    "verifying": "Vérification…",
+    "google": "Continuer avec Google",
+    "invalidEmail": "Saisis une adresse e-mail valide.",
+    "error": "Envoi impossible : {message}",
+    "notConfigured": "La connexion n’est pas encore activée sur ce site. Tu peux tout utiliser en invité : ta progression est enregistrée sur cet appareil.",
+    "callbackTitle": "Connexion en cours…",
+    "callbackError": "Connexion impossible. Ouvre le lien dans le navigateur où tu l’as demandé, ou demande un nouveau lien.",
+    "tryAgain": "Demander un nouveau lien",
+    "signedInAs": "Connecté en tant que {email}",
+    "signOut": "Se déconnecter",
+    "signIn": "Se connecter",
+    "guestCta": "Inscris-toi pour sauvegarder ta progression et analyser tes parties"
+  },
+  "guestReminder": {
+    "text": "Ta progression est enregistrée sur cet appareil uniquement. Inscris-toi pour la sauvegarder.",
+    "action": "S’inscrire",
+    "dismiss": "Plus tard"
+  },
+  "storage": {
+    "error": "La dernière modification n’a pas pu être enregistrée sur le serveur. Nouvel essai à la prochaine modification."
+  },
+  "admin": {
+    "title": "Tableau de bord",
+    "signInFirst": "Connecte-toi avec le compte administrateur.",
+    "forbidden": "Cette page est réservée à l’administrateur.",
+    "loading": "Vérification…",
+    "sections": {
+      "overview": "Vue d’ensemble",
+      "reports": "Signalements",
+      "daily": "Problème du jour",
+      "users": "Utilisateurs",
+      "health": "État du système"
+    },
+    "sectionHints": {
+      "overview": "Utilisateurs et joueurs actifs, problèmes résolus, ouvertures les plus étudiées.",
+      "reports": "Signalements « Signaler une erreur » avec l’échiquier et leur statut.",
+      "daily": "Problèmes programmés pour les prochains jours, et remplacement manuel.",
+      "users": "Liste des utilisateurs et dernière activité, désactivation si nécessaire.",
+      "health": "Taille de la base, dernière exécution des tâches planifiées, erreurs d’import."
+    },
+    "soonPhase": "Arrive à la phase {phase}"
   }
 }

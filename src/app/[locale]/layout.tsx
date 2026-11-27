@@ -6,6 +6,7 @@ import { locale as rootLocale } from "next/root-params";
 import { LOCALE_DIR, routing } from "@/i18n/routing";
 import { PREFS_INLINE_SCRIPT } from "@/lib/prefs/prefs";
 import { PrefsSync } from "@/lib/prefs/PrefsSync";
+import { StorageProvider } from "@/lib/storage/StorageProvider";
 import { fontVariables } from "../fonts";
 import "../globals.css";
 
@@ -37,7 +38,7 @@ export default async function LocaleLayout({ children }: LayoutProps<"/[locale]"
       <body>
         <NextIntlClientProvider>
           <PrefsSync />
-          {children}
+          <StorageProvider>{children}</StorageProvider>
         </NextIntlClientProvider>
       </body>
     </html>
