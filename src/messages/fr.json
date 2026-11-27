@@ -1,0 +1,87 @@
+{
+  "meta": {
+    "title": "Diloul Chess",
+    "description": "Apprends les échecs gratuitement : bases, ouvertures, finales, problèmes et analyse de tes parties."
+  },
+  "brand": {
+    "name": "Diloul"
+  },
+  "nav": {
+    "main": "Navigation principale",
+    "home": "Diloul : retour à « Apprendre »",
+    "learn": "Apprendre",
+    "games": "Mes parties",
+    "puzzles": "Problèmes",
+    "profile": "Profil"
+  },
+  "streak": {
+    "label": "{count, plural, =0 {Ta série quotidienne n’a pas encore commencé} one {Série de # jour} other {Série de # jours}}"
+  },
+  "common": {
+    "soon": "Bientôt"
+  },
+  "learn": {
+    "tabs": {
+      "label": "Rubriques d’apprentissage",
+      "basics": "Bases",
+      "openings": "Ouvertures",
+      "endgames": "Finales"
+    },
+    "cta": "Commencer",
+    "basics": {
+      "title": "Bases",
+      "intro": "Du déplacement des pièces aux motifs tactiques, chapitre après chapitre.",
+      "coach": "On commence par les règles : le déplacement de chaque pièce, puis le mat, puis la tactique."
+    },
+    "openings": {
+      "title": "Ouvertures",
+      "intro": "Construis un répertoire avec les Blancs et les Noirs, et révise-le pour ne pas l’oublier.",
+      "coach": "Premières ouvertures : Système de Londres, Gambit dame, Partie italienne, Caro-Kann, Défense slave et Sicilienne Najdorf."
+    },
+    "endgames": {
+      "title": "Finales",
+      "intro": "Du mat avec la dame jusqu’à la position de Lucena, contre la meilleure défense.",
+      "coach": "En finale, connaître l’idée ne suffit pas : tu la joueras contre une défense parfaite."
+    }
+  },
+  "games": {
+    "title": "Mes parties",
+    "intro": "Importe tes parties depuis Chess.com et Lichess, puis analyse-les avec Stockfish.",
+    "coach": "Tu verras ici où tu gagnes, où tu perds, et quelles ouvertures travailler.",
+    "cta": "Synchroniser les parties"
+  },
+  "puzzles": {
+    "title": "Problèmes",
+    "intro": "Des problèmes tirés de la base ouverte de Lichess, à ta difficulté.",
+    "coach": "Chaque jour, un problème commun à tous les joueurs, et un rang propre aux problèmes.",
+    "cta": "Résoudre des problèmes"
+  },
+  "profile": {
+    "title": "Profil",
+    "guest": "Invité",
+    "guestNote": "Ta progression est enregistrée sur cet appareil uniquement. Bientôt : inscris-toi pour la sauvegarder et analyser tes parties."
+  },
+  "settings": {
+    "title": "Réglages",
+    "language": "Langue",
+    "theme": "Apparence",
+    "themeDark": "Sombre",
+    "themeLight": "Clair",
+    "board": "Thème de l’échiquier",
+    "boards": {
+      "sand": "Sable",
+      "wood": "Bois classique",
+      "night": "Nuit",
+      "green": "Vert doux"
+    }
+  },
+  "languageNames": {
+    "ar": "العربية",
+    "fr": "Français"
+  },
+  "notFound": {
+    "title": "Page introuvable",
+    "body": "Le lien a peut-être changé. Retourne à « Apprendre » pour continuer.",
+    "back": "Retour à « Apprendre »"
+  }
+}
