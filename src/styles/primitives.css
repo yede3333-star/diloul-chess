@@ -117,15 +117,15 @@
 
   /* ---------- path node (used by <PathMap>) ---------- */
   .path-node {
-    --node: var(--section-1);
-    --node-edge: color-mix(in srgb, var(--node) 55%, #000);
+    /* --node is inherited from the section (set on a parent); section 1 if none */
+    --node-edge: color-mix(in srgb, var(--node, var(--section-1)) 55%, #000);
     position: relative;
     display: grid;
     place-items: center;
     width: 70px;
     height: 64px;
     border-radius: 50%;
-    background: var(--node);
+    background: var(--node, var(--section-1));
     color: var(--on-section);
     box-shadow: 0 var(--node-depth) 0 var(--node-edge);
     cursor: pointer;

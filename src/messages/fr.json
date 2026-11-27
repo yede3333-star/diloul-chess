@@ -83,5 +83,130 @@
     "title": "Page introuvable",
     "body": "Le lien a peut-être changé. Retourne à « Apprendre » pour continuer.",
     "back": "Retour à « Apprendre »"
+  },
+  "ranks": {
+    "start": "Débutant",
+    "novice": "Novice",
+    "amateur": "Amateur",
+    "trainee": "Apprenti",
+    "skilled": "Confirmé",
+    "expert": "Expert",
+    "master": "Maître"
+  },
+  "components": {
+    "board": {
+      "label": "Échiquier",
+      "promoteTitle": "Choisis la pièce de promotion",
+      "cancel": "Annuler",
+      "pieces": {
+        "queen": "Dame",
+        "rook": "Tour",
+        "bishop": "Fou",
+        "knight": "Cavalier"
+      }
+    },
+    "path": {
+      "start": "Commencer",
+      "types": {
+        "lesson": "Leçon",
+        "drill": "Exercice",
+        "spar": "Affrontement",
+        "play": "Jouer",
+        "test": "Test",
+        "review": "Révision"
+      },
+      "states": {
+        "done": "terminée",
+        "current": "en cours",
+        "open": "disponible",
+        "locked": "verrouillée"
+      }
+    },
+    "rankTrack": {
+      "prev": "Rang précédent",
+      "next": "Rang suivant",
+      "current": "Ton rang",
+      "completed": "Terminé",
+      "locked": "Verrouillé",
+      "maxRank": "Rang le plus haut",
+      "goals": "Objectifs : {done}/{total}",
+      "progressLabel": "Progression vers le rang suivant"
+    }
+  },
+  "devComponents": {
+    "title": "Page des composants",
+    "intro": "Tous les composants de base avec le système « Nuit du désert ». Page interne de test.",
+    "board": {
+      "title": "L’échiquier interactif",
+      "hint": "Déplace les pièces en glissant ou en touchant. Coups légaux uniquement.",
+      "flip": "Retourner l’échiquier",
+      "reset": "Recommencer",
+      "quick": "Coups rapides",
+      "sounds": "Sons",
+      "arrows": "Flèches",
+      "lastMove": "Dernier coup : {san}"
+    },
+    "task": {
+      "title": "Un coup précis",
+      "hint": "Objectif : joue e4. Tout autre coup revient en place avec une secousse.",
+      "good": "Bravo !",
+      "goodMessage": "e4 occupe le centre et ouvre la route à la dame et au fou.",
+      "wrong": "Essaie encore",
+      "wrongMessage": "Cherche un coup de pion qui occupe le centre en avançant de deux cases.",
+      "next": "Suivant",
+      "retry": "Réessayer"
+    },
+    "promo": {
+      "title": "Promotion",
+      "hint": "Pousse le pion sur la dernière rangée et choisis la pièce.",
+      "reset": "Rétablir la position"
+    },
+    "squares": {
+      "title": "Touche les cases",
+      "hint": "Touche toutes les cases attaquées par le cavalier en d4.",
+      "found": "{found} trouvées sur {total}",
+      "reset": "Recommencer"
+    },
+    "mini": {
+      "title": "Mini-échiquiers"
+    },
+    "path": {
+      "title": "Le parcours",
+      "hint": "Fais défiler : la carte de section en haut change à chaque section."
+    },
+    "rank": {
+      "title": "Barre de rang",
+      "badges": "Insignes de rang"
+    },
+    "feedback": {
+      "title": "Bandeaux de retour"
+    },
+    "coach": {
+      "title": "Bulle d’explication",
+      "text": "On sort le fou en f4 avant e3, pour qu’il ne reste pas enfermé derrière ses pions. C’est l’idée de base du Système de Londres.",
+      "replay": "Rejouer"
+    },
+    "sections": {
+      "london1": {
+        "eyebrow": "Système de Londres · avec les Blancs",
+        "title": "Amateur · Section 1",
+        "subtitle": "Apprendre les 50 positions clés"
+      },
+      "london2": {
+        "eyebrow": "Système de Londres · avec les Blancs",
+        "title": "Amateur · Section 2",
+        "subtitle": "Les variantes secondaires"
+      },
+      "london3": {
+        "eyebrow": "Système de Londres · avec les Blancs",
+        "title": "Apprenti · Section 1",
+        "subtitle": "Plans de milieu de partie"
+      }
+    },
+    "miniLabels": {
+      "london": "Système de Londres après 1. d4 d5 2. Ff4",
+      "caro": "Défense Caro-Kann après 1. e4 c6 2. d4 d5",
+      "mate": "Mat du couloir après Te8#"
+    }
   }
 }

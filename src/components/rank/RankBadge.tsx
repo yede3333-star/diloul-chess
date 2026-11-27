@@ -13,11 +13,11 @@ const ICONS: Record<RankKey, LucideIcon> = {
 };
 
 /** Shield in the rank's color (SPEC §4.4). `label` is the translated rank name, for screen readers. */
-export function RankBadge({ rank, size = 44, label }: { rank: RankKey; size?: number; label?: string }) {
+export function RankBadge({ rank, size = 44, label, muted = false }: { rank: RankKey; size?: number; label?: string; muted?: boolean }) {
   const Icon = ICONS[rank];
   return (
     <span
-      className="relative inline-grid shrink-0 place-items-center"
+      className={`relative inline-grid shrink-0 place-items-center ${muted ? "opacity-45 grayscale" : ""}`}
       style={{ width: size, height: size * 1.1 }}
       role={label ? "img" : undefined}
       aria-label={label}
