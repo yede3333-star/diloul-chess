@@ -1,10 +1,25 @@
 -- RLS checks (SPEC §13): run after auth_stub.sql + migrations. Any failed check raises an error.
 \set ON_ERROR_STOP 1
 
+-- Every table in public must have RLS enabled (catches future tables too).
+do $$
+declare t text;
+begin
+  for t in select c.relname from pg_class c join pg_namespace n on n.oid = c.relnamespace
+           where n.nspname = 'public' and c.relkind = 'r' and not c.relrowsecurity
+  loop
+    raise exception 'FAIL: RLS is disabled on public.%', t;
+  end loop;
+end $$;
+
+-- Sign-ups arrive as Supabase Auth's role; the trigger must still create profiles
+-- even though EXECUTE on the trigger function is revoked from API roles.
+set role supabase_auth_admin;
 insert into auth.users values
   ('11111111-1111-1111-1111-111111111111', 'a@x'),
   ('22222222-2222-2222-2222-222222222222', 'b@x'),
   ('33333333-3333-3333-3333-333333333333', 'admin@x');
+reset role;
 update public.profiles set role = 'admin' where id = '33333333-3333-3333-3333-333333333333';
 
 do $$ begin
@@ -59,12 +74,30 @@ do $$ begin
 end $$;
 reset role;
 
--- Anonymous visitors: no access at all.
+-- Anonymous visitors: no access at all, not even to is_admin().
 set role anon;
 do $$ begin
-  perform 1 from public.profiles;
-  raise exception 'FAIL: anon can read profiles';
-exception when insufficient_privilege then null; end $$;
+  begin
+    perform 1 from public.profiles;
+    raise exception 'FAIL: anon can read profiles';
+  exception when insufficient_privilege then null; end;
+  begin
+    perform 1 from public.srs_cards;
+    raise exception 'FAIL: anon can read cards';
+  exception when insufficient_privilege then null; end;
+  begin
+    perform public.is_admin();
+    raise exception 'FAIL: anon can execute is_admin()';
+  exception when insufficient_privilege then null; end;
+end $$;
+reset role;
+
+-- service_role (admin scripts) has table privileges and bypasses RLS.
+set role service_role;
+do $$ begin
+  assert (select count(*) from public.profiles) = 3, 'service_role must read every profile';
+  assert (select count(*) from public.area_ranks) = 1, 'service_role must read every rank';
+end $$;
 reset role;
 
 -- Deleting the account deletes all its data (SPEC §19.6).

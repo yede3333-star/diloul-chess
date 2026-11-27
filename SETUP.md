@@ -33,7 +33,8 @@
 2. اضغط **New project**:
    - **Name:** `diloul-dev`
    - **Database Password:** اضغط **Generate**، ثم **انسخها واحفظها** في مكان آمن (مدير كلمات المرور). ستحتاجها في الخطوة 4.
-   - **Region:** اختر الأقرب لموريتانيا، مثل **West EU (Paris)** أو **West EU (Ireland)**.
+   - **Region:** اختر الأقرب لموريتانيا، مثل **West EU (Ireland)** (`eu-west-1`) أو **West EU (Paris)**. اختر المنطقة نفسها للمشروعين.
+   - **Grant API access to new tables automatically:** اتركه **غير مفعّل** (موصى به). الـ migrations تمنح الصلاحيات صراحةً لكل جدول، فلا يُفتح جدول جديد للعموم بالخطأ.
 3. انتظر دقيقتين حتى يجهز المشروع.
 4. كرّر الخطوات نفسها لمشروع ثانٍ باسم `diloul-prod`، بكلمة مرور مختلفة.
 
@@ -74,8 +75,25 @@
 2. اختر الفرع `claude/spec-review-phase-0-h7cih3`، و**target: dev**.
 3. يمكنك أولًا تفعيل **dry_run** لترى ما سيُطبَّق دون تغيير شيء.
 4. اضغط **Run workflow** وانتظر العلامة الخضراء ✅.
-5. للتحقق: في Supabase افتح **Table Editor**، وستجد 7 جداول: `profiles`، و`linked_accounts`، و`area_ranks`، و`course_progress`، و`srs_cards`، و`puzzle_stats`، و`daily_activity`.
-6. طبّق على **prod** لاحقًا، عند دمج المرحلة 0 في `main`.
+5. للتحقق: في Supabase افتح **Table Editor**، وستجد 7 جداول: `profiles`، و`linked_accounts`، و`area_ranks`، و`course_progress`، و`srs_cards`، و`puzzle_stats`، و`daily_activity`. وعلى كل جدول شارة **RLS enabled**.
+6. **للتحقق من الصلاحيات** (اختياري): افتح **SQL Editor**، والصق هذا الاستعلام، ثم **Run**:
+   ```sql
+   select grantee, table_name, string_agg(privilege_type, ',') as privs
+   from information_schema.role_table_grants
+   where table_schema = 'public' and grantee in ('anon', 'authenticated', 'service_role')
+   group by 1, 2 order by 2, 1;
+   ```
+   النتيجة الصحيحة:
+   - `authenticated` له `SELECT,UPDATE` على `profiles`، و`SELECT,INSERT,UPDATE,DELETE` على بقية الجداول.
+   - `service_role` له الصلاحيات الأربع على كل الجداول.
+   - **`anon` لا يظهر أبدًا**، لأن الضيف لا يلمس قاعدة البيانات.
+7. طبّق على **prod** لاحقًا، عند دمج المرحلة 0 في `main`.
+
+> **لماذا الصلاحيات صريحة؟** مع إطفاء «Grant API access to new tables automatically» لا يمنح Supabase أي صلاحية تلقائيًا. لذلك:
+> - الملف `supabase/migrations/20261128000000_explicit_grants.sql` يمنح ما يلزم صراحةً: استعمال الـ schema، وجداول اللاعب لـ `authenticated`، وكل الجداول لـ `service_role` (سكربتات الإدارة فقط)، ولا شيء لـ `anon`.
+> - تبقى RLS مفعّلة على كل جدول: الصلاحية تحدد مَن يصل إلى الجدول أصلًا، وRLS تحدد أي صفوف يرى.
+> - اختبار CI يفشل إن وُجد جدول بلا RLS، أو إن استطاع `anon` قراءة شيء.
+> - إن كنت شغّلت الـ migrations قبل إضافة هذا الملف، فشغّل الـ workflow مرة أخرى، وسيطبّق الملف الجديد وحده.
 
 ## 6. روابط تسجيل الدخول في Supabase
 بدون هذه الخطوة يرفض Supabase إعادتك إلى الموقع بعد الضغط على رابط البريد.

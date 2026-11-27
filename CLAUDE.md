@@ -158,6 +158,11 @@
 - **قاعدة البيانات:** `supabase/migrations/20261127000000_init.sql` فيه 7 جداول مع RLS.
   - `course_progress` جدول واحد للأساسيات (`course='basics'`) والافتتاحات (`opening:{id}`) والنهايات، بدل الجدولين في مخطط المواصفات.
   - `profiles.role` لا يغيّره اللاعب (trigger)، و`is_admin()` للسياسات الإدارية.
+  - **الصلاحيات صريحة دائمًا (قرار Yede):** مشاريع Supabase أُنشئت وخيار «Grant API access to new tables automatically» مطفأ، فلا يُمنح شيء تلقائيًا.
+    - `20261128000000_explicit_grants.sql` يمنح: `usage` على `public`، وجداول اللاعب لـ `authenticated`، وكل الجداول لـ `service_role`، و`execute` على `is_admin()` لـ `authenticated` وحده. ولا شيء لـ `anon`.
+    - **قاعدة لكل migration جديدة:** أنشئ الجدول، ثم فعّل RLS، ثم أضف السياسات، ثم امنح الصلاحيات صراحةً لـ `authenticated` و`service_role` (و`anon` فقط للجداول العامة، مثل الألغاز ولغز اليوم في المرحلة 2).
+    - `supabase/tests/auth_stub.sql` يحاكي مشروعًا بلا منح تلقائي: لا صلاحيات على `public`، وفيه الأدوار `service_role` و`supabase_auth_admin`. والاختبار يتحقق أن **كل** جدول في `public` عليه RLS، وأن `anon` لا يقرأ شيئًا ولا ينفّذ `is_admin()`.
+    - تحققت أن الـ migration الأولى وحدها تفشل على مثل هذا المشروع («permission denied for schema public»)، وأنها مع الملف الجديد تنجح، وأن الملف الجديد آمن إن طُبّق مرتين.
   - **الاختبار:** `supabase/tests/auth_stub.sql` ثم الـ migration ثم `supabase/tests/rls_test.sql` على Postgres عادي. السكربت يفشل إن انكسر أي شرط أمان، وتحققت من ذلك بتعطيل RLS عمدًا.
 - **تطبيق الـ migrations:** GitHub Action يدوي `.github/workflows/db-migrate.yml`، يأخذ `dev` أو `prod` ويستعمل `supabase db push --remote=<url> --yes`.
   - الخيار `--db-url` قديم في CLI 3.4.
