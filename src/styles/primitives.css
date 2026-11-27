@@ -97,6 +97,7 @@
   /* ---------- surfaces ---------- */
   .card {
     background: var(--surface);
+    color: var(--fg);
     border: 1px solid var(--border);
     border-radius: var(--r-card);
     box-shadow: var(--sh-card);
@@ -131,6 +132,17 @@
     transition:
       transform var(--dur-fast) var(--motion-ease),
       box-shadow var(--dur-fast) var(--motion-ease);
+  }
+
+  .path-node.path-node-sm {
+    --node-depth: 4px;
+    width: 50px;
+    height: 46px;
+  }
+
+  .path-node.path-node-sm svg {
+    width: 22px;
+    height: 22px;
   }
 
   .path-node svg {
@@ -176,6 +188,32 @@
         0 0 0 12px color-mix(in srgb, var(--accent) 35%, transparent),
         0 0 34px 12px color-mix(in srgb, var(--accent) 15%, transparent);
     }
+  }
+
+  /* Small corner badge: ✓ for completed, lock for locked. The main icon always shows the node type. */
+  .path-node-badge {
+    position: absolute;
+    inset-inline-end: -4px;
+    bottom: -4px;
+    display: grid;
+    place-items: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: 3px solid var(--bg);
+    background: var(--surface);
+    color: var(--accent-text);
+  }
+
+  .path-node-badge svg {
+    width: 13px;
+    height: 13px;
+    stroke-width: 3.2;
+  }
+
+  .path-node[data-state="locked"] .path-node-badge {
+    background: var(--surface-3);
+    color: var(--fg-muted);
   }
 
   .path-bubble {

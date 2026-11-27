@@ -1,11 +1,12 @@
 import type { Metadata } from "next";
 import type { ReactNode } from "react";
-import { BookOpen, Check, Dumbbell, Flame, GraduationCap, HandFist, Lock, Puzzle, Share2, Star, Swords, Trophy, X } from "lucide-react";
+import { BookOpen, Check, Dumbbell, Flame, GraduationCap, HandFist, Lock, Play, Puzzle, Share2, Star, Swords, Trophy, X, type LucideIcon } from "lucide-react";
 import { StaticBoard } from "@/components/board/StaticBoard";
 import { Logo } from "@/components/brand/Logo";
 import { LogoMark } from "@/components/brand/LogoMark";
 import { Mascot } from "@/components/brand/Mascot";
 import { RankBadge } from "@/components/rank/RankBadge";
+import { San, SanLine } from "@/components/chess/San";
 import { RANK_KEYS } from "@/config/rank-keys";
 
 /*
@@ -21,6 +22,27 @@ export const metadata: Metadata = {
 
 /** Verified with chess.js: 1.d4 d5 2.Bf4 (London System). */
 const LONDON_FEN = "rnbqkbnr/ppp1pppp/8/3p4/3P1B2/8/PPP1PPPP/RN1QKBNR b KQkq - 1 2";
+
+// SPEC §4.4 node types. All nodes of one section share its color; the icon tells the type.
+type NodeType = "lesson" | "drill" | "spar" | "play" | "test" | "review";
+type NodeState = "done" | "current" | "open" | "locked";
+const NODE_TYPES: Record<NodeType, { I: LucideIcon; ar: string }> = {
+  lesson: { I: BookOpen, ar: "درس" },
+  drill: { I: Dumbbell, ar: "تمرين" },
+  spar: { I: HandFist, ar: "مواجهة" },
+  play: { I: Play, ar: "لعب" },
+  test: { I: Trophy, ar: "اختبار" },
+  review: { I: Star, ar: "مراجعة" },
+};
+const STATE_AR: Record<NodeState, string> = { done: "مكتملة", current: "الحالية", open: "متاحة", locked: "مقفلة" };
+const PATH_DEMO: { type: NodeType; state: NodeState }[] = [
+  { type: "lesson", state: "done" },
+  { type: "drill", state: "done" },
+  { type: "lesson", state: "current" },
+  { type: "spar", state: "locked" },
+  { type: "drill", state: "locked" },
+  { type: "test", state: "locked" },
+];
 
 const RANK_AR = ["البداية", "مبتدئ", "هاوٍ", "متدرّب", "متمكّن", "خبير", "أستاذ"];
 
@@ -101,42 +123,51 @@ function Panel({ theme, title }: { theme: "dark" | "light"; title: string }) {
               </span>
             </div>
             <div className="grid grid-cols-3 justify-items-center gap-x-2 gap-y-12 pt-8">
-              <div className="flex flex-col items-center gap-3">
-                <span className="path-node" data-state="done">
-                  <Check aria-hidden="true" />
-                </span>
-                <span className="text-xs text-fg-muted">مكتملة</span>
+              {PATH_DEMO.map((n, i) => {
+                const { I, ar } = NODE_TYPES[n.type];
+                return (
+                  <div key={i} className="flex flex-col items-center gap-3">
+                    <span className="path-node" data-state={n.state}>
+                      {n.state === "current" && <span className="path-bubble">ابدأ</span>}
+                      <I aria-hidden="true" />
+                      {n.state === "done" && (
+                        <span className="path-node-badge">
+                          <Check aria-hidden="true" />
+                        </span>
+                      )}
+                      {n.state === "locked" && (
+                        <span className="path-node-badge">
+                          <Lock aria-hidden="true" />
+                        </span>
+                      )}
+                    </span>
+                    <span className="text-xs text-fg-muted">
+                      {ar} · {STATE_AR[n.state]}
+                    </span>
+                  </div>
+                );
+              })}
+            </div>
+            <div className="flex flex-col gap-3 border-t border-border pt-4">
+              <p className="text-xs font-semibold text-fg-muted">أنواع العُقد (القسم 2): الأيقونة وحدها تميّز النوع</p>
+              <div className="grid grid-cols-6 justify-items-center gap-1" style={{ ["--node" as string]: "var(--section-2)" }}>
+                {(Object.keys(NODE_TYPES) as NodeType[]).map((t) => {
+                  const { I, ar } = NODE_TYPES[t];
+                  return (
+                    <div key={t} className="flex flex-col items-center gap-2">
+                      <span className="path-node path-node-sm" data-state="open" style={{ ["--node" as string]: "var(--section-2)" }}>
+                        <I aria-hidden="true" />
+                      </span>
+                      <span className="text-xs text-fg-muted">{ar}</span>
+                    </div>
+                  );
+                })}
               </div>
-              <div className="flex flex-col items-center gap-3">
-                <span className="path-node" data-state="current">
-                  <span className="path-bubble">ابدأ</span>
-                  <BookOpen aria-hidden="true" />
-                </span>
-                <span className="text-xs text-fg-muted">الحالية</span>
-              </div>
-              <div className="flex flex-col items-center gap-3">
-                <span className="path-node" data-state="locked">
-                  <Lock aria-hidden="true" />
-                </span>
-                <span className="text-xs text-fg-muted">مقفلة</span>
-              </div>
-              {[
-                { I: Dumbbell, ar: "تمرين", s: "--section-2" },
-                { I: HandFist, ar: "مواجهة", s: "--section-3" },
-                { I: Trophy, ar: "اختبار", s: "--section-4" },
-              ].map(({ I, ar, s }) => (
-                <div key={ar} className="flex flex-col items-center gap-3">
-                  <span className="path-node" data-state="open" style={{ ["--node" as string]: `var(${s})` }}>
-                    <I aria-hidden="true" />
-                  </span>
-                  <span className="text-xs text-fg-muted">{ar}</span>
-                </div>
-              ))}
             </div>
             <div className="flex items-center gap-3">
               <Mascot size={52} />
               <p className="relative rounded-md border border-border bg-surface-2 px-3.5 py-2.5 text-[15px] leading-relaxed">
-                نُخرج الفيل إلى <span className="san">♗f4</span> قبل <span className="san">e3</span>، حتى لا يُحبس خلف بيادقه.
+                نُخرج الفيل إلى <San san="Bf4" /> قبل <San san="e3" />، حتى لا يُحبس خلف بيادقه.
               </p>
             </div>
           </div>
@@ -258,7 +289,9 @@ export default function DesignSystemPage() {
           <p lang="fr" dir="ltr" className="text-lg">
             <span className="font-heading font-bold">Apprends les échecs, pas à pas.</span> Le français utilise Noto Sans.
           </p>
-          <p className="ltr text-start text-lg font-semibold tabular">0123456789 · 1. d4 d5 2. ♗f4</p>
+          <p className="ltr text-start text-lg font-semibold tabular">
+            0123456789 · <SanLine moves={["d4", "d5", "Bf4", "Nf6", "e3", "c5", "Nf3", "Nc6"]} />
+          </p>
         </div>
       </section>
 

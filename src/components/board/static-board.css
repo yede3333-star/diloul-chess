@@ -1,5 +1,6 @@
 /* Static board. Square colors come from --board-light / --board-dark set by the parent. */
 .sboard {
+  container-type: inline-size;
   position: relative;
   width: 100%;
   aspect-ratio: 1;
@@ -35,23 +36,24 @@
   background: radial-gradient(ellipse at center, rgba(231, 60, 60, 0.95) 0%, rgba(231, 60, 60, 0.55) 35%, rgba(231, 60, 60, 0) 75%);
 }
 
+/* Coordinates sit in the square corners, about 20% of a square tall, clear of the pieces. */
 .sboard .sb-coord {
   position: absolute;
-  z-index: 3;
-  font: 600 clamp(8px, 2.2vw, 11px) / 1 ui-sans-serif, system-ui, sans-serif;
+  z-index: 3; /* above the pieces, so a piece never hides a coordinate */
+  font: 700 max(7px, 2.3cqi) / 1 var(--ff-mono, ui-monospace), monospace;
   pointer-events: none;
 }
 
 .sboard .sb-rank {
-  left: 3px;
-  margin-top: 3px;
+  left: 0.35cqi;
+  margin-top: 0.3cqi;
 }
 
 .sboard .sb-file {
-  bottom: 3px;
+  bottom: 0.3cqi;
   width: 12.5%;
   text-align: right;
-  padding-right: 3px;
+  padding-right: 0.35cqi;
 }
 
 .sboard .on-light {

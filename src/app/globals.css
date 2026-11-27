@@ -94,22 +94,26 @@
   --ease-spring: var(--motion-spring);
 }
 
-@layer base {
-  html {
-    background: var(--bg);
-    color: var(--fg);
-    font-family: var(--ff-body);
-    font-size: var(--fs-base);
-    line-height: var(--lh-body);
-    -webkit-text-size-adjust: 100%;
-    -webkit-tap-highlight-color: transparent;
-  }
+/* Unlayered on purpose: page colors and fonts must win over any external reset
+   (e.g. the preview host's own stylesheet), which would otherwise turn text black. */
+html {
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--ff-body);
+  font-size: var(--fs-base);
+  line-height: var(--lh-body);
+  -webkit-text-size-adjust: 100%;
+  -webkit-tap-highlight-color: transparent;
+}
 
-  body {
-    min-height: 100dvh;
-    background: var(--bg);
-    color: var(--fg);
-  }
+body {
+  min-height: 100dvh;
+  background: var(--bg);
+  color: var(--fg);
+  font-family: var(--ff-body);
+}
+
+@layer base {
 
   h1,
   h2,
@@ -139,6 +143,20 @@
   .san {
     direction: ltr;
     unicode-bidi: isolate;
+  }
+
+  .san-piece {
+    display: inline-block;
+    width: 1.2em;
+    height: 1.2em;
+    margin-inline-end: -0.08em;
+    vertical-align: -0.24em;
+    background-size: contain;
+    background-repeat: no-repeat;
+  }
+
+  .san-num {
+    color: var(--fg-muted);
   }
 
   .tabular {
