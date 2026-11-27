@@ -1,0 +1,7 @@
+@import "tailwindcss";
+
+/* Design tokens land in src/styles/tokens.css once a direction is chosen (step 2). */
+body {
+  background: #0e1015;
+  color: #e6e8ee;
+}
