@@ -1,23 +1,17 @@
 "use client";
 
 import { Chess, type Square } from "chess.js";
-import { RotateCcw, Share2, SkipForward } from "lucide-react";
+import { RotateCcw, Share2 } from "lucide-react";
 import { useTranslations } from "next-intl";
-import { useMemo, useState, type ReactNode } from "react";
+import { useEffect, useMemo, useRef, useState, type ReactNode } from "react";
 import { Board, type BoardMove, type BoardShape, type SquareMark } from "@/components/board/Board";
 import { SanLine } from "@/components/chess/San";
 import { CoachBubble } from "@/components/coach/CoachBubble";
 import { FeedbackBanner } from "@/components/ui/FeedbackBanner";
+import { NextArrow } from "@/components/ui/icons";
+import { ToggleChip } from "@/components/ui/ToggleChip";
 
 const START = new Chess().fen();
-
-function Toggle({ label, on, onChange }: { label: string; on: boolean; onChange: (v: boolean) => void }) {
-  return (
-    <button type="button" role="switch" aria-checked={on} onClick={() => onChange(!on)} className={`chip min-h-9 px-3 ${on ? "!bg-accent-soft !text-accent-text" : ""}`}>
-      {label}
-    </button>
-  );
-}
 
 export function DemoCard({ title, hint, children }: { title: string; hint?: string; children: ReactNode }) {
   return (
@@ -40,6 +34,13 @@ export function FreePlayDemo() {
   const [quick, setQuick] = useState(false);
   const [sounds, setSounds] = useState(true);
   const [arrows, setArrows] = useState(true);
+  const historyRef = useRef<HTMLDivElement>(null);
+
+  // Keep the latest move visible by scrolling only the history box (never the page).
+  useEffect(() => {
+    const el = historyRef.current;
+    if (el) el.scrollTop = el.scrollHeight;
+  }, [history]);
 
   const fen = useMemo(() => {
     const g = new Chess();
@@ -79,14 +80,14 @@ export function FreePlayDemo() {
           <RotateCcw aria-hidden="true" />
           {t("reset")}
         </button>
-        <Toggle label={t("quick")} on={quick} onChange={setQuick} />
-        <Toggle label={t("sounds")} on={sounds} onChange={setSounds} />
-        <Toggle label={t("arrows")} on={arrows} onChange={setArrows} />
+        <ToggleChip label={t("quick")} on={quick} onChange={setQuick} />
+        <ToggleChip label={t("sounds")} on={sounds} onChange={setSounds} />
+        <ToggleChip label={t("arrows")} on={arrows} onChange={setArrows} />
       </div>
       {history.length > 0 && (
-        <p className="text-sm text-fg-muted">
+        <div ref={historyRef} className="max-h-24 min-w-0 overflow-y-auto rounded-sm bg-surface-2 px-3 py-2 text-sm" data-testid="move-history">
           <SanLine moves={history} />
-        </p>
+        </div>
       )}
     </DemoCard>
   );
@@ -129,8 +130,8 @@ export function TaskDemo() {
         {result === "good" && (
           <FeedbackBanner kind="success" title={t("good")} message={t("goodMessage")}>
             <button type="button" className="btn btn-primary" onClick={reset}>
-              <SkipForward aria-hidden="true" />
               {t("next")}
+              <NextArrow />
             </button>
             <button type="button" className="btn btn-secondary">
               <Share2 aria-hidden="true" />
@@ -195,6 +196,7 @@ export function SquaresDemo() {
   const t = useTranslations("devComponents.squares");
   const [marks, setMarks] = useState<Partial<Record<Square, SquareMark>>>({});
   const found = Object.values(marks).filter((m) => m === "marked-ok").length;
+  const mistakes = Object.values(marks).filter((m) => m === "marked-bad").length;
   return (
     <DemoCard title={t("title")} hint={t("hint")}>
       <Board
@@ -203,12 +205,15 @@ export function SquaresDemo() {
         marks={marks}
         sounds={false}
         onSquareTap={(sq) => {
-          if (sq === "d4" || marks[sq] === "marked-ok") return;
+          if (sq === "d4" || marks[sq]) return; // the knight's own square, or already answered
           setMarks((m) => ({ ...m, [sq]: KNIGHT_TARGETS.has(sq) ? "marked-ok" : "marked-bad" }));
         }}
       />
       <div className="flex items-center justify-between gap-3">
-        <p className="font-bold tabular">{t("found", { found, total: KNIGHT_TARGETS.size })}</p>
+        <div className="flex flex-col text-sm tabular">
+          <p className="font-bold text-success">✓ {t("found", { found, total: KNIGHT_TARGETS.size })}</p>
+          <p className={`font-bold ${mistakes ? "text-danger" : "text-fg-muted"}`}>✗ {t("mistakes", { count: mistakes })}</p>
+        </div>
         <button type="button" className="btn btn-secondary btn-sm" onClick={() => setMarks({})}>
           <RotateCcw aria-hidden="true" />
           {t("reset")}

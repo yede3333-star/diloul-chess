@@ -54,12 +54,31 @@
   background: radial-gradient(color-mix(in srgb, var(--info) 75%, transparent) 26%, transparent 28%);
 }
 
+/* Right/wrong taps: tinted square + a ✓ / ✗ disc, so the meaning never relies on color alone. */
 .dboard cg-board square.marked-ok {
-  background-color: color-mix(in srgb, var(--success) 45%, transparent);
+  background-color: color-mix(in srgb, var(--success) 35%, transparent);
 }
 
 .dboard cg-board square.marked-bad {
-  background-color: color-mix(in srgb, var(--danger) 45%, transparent);
+  background-color: color-mix(in srgb, var(--danger) 35%, transparent);
+}
+
+.dboard cg-board square.marked-ok::after,
+.dboard cg-board square.marked-bad::after {
+  content: "✓";
+  position: absolute;
+  inset: 26%;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--success);
+  color: var(--on-semantic);
+  font: 900 max(10px, 4.6cqi) / 1 system-ui, sans-serif;
+}
+
+.dboard cg-board square.marked-bad::after {
+  content: "✗";
+  background: var(--danger);
 }
 
 .dboard .cg-wrap piece {
@@ -77,16 +96,17 @@
   font: 700 max(7px, 2.3cqi) / 1 var(--ff-mono, ui-monospace), monospace;
 }
 
+/* Inset enough to stay clear of the rounded corners (a8 and h1) at any board size. */
 .dboard .cg-wrap coords.ranks {
   top: 0;
-  left: 0.35cqi;
+  left: max(4px, 1.1cqi);
   width: auto;
   height: 100%;
 }
 
 .dboard .cg-wrap coords.ranks coord {
   transform: none;
-  padding-top: 0.3cqi;
+  padding-top: max(3px, 0.9cqi);
 }
 
 .dboard .cg-wrap coords.files {
@@ -100,7 +120,7 @@
 
 .dboard .cg-wrap coords.files coord {
   flex: 1 1 0;
-  padding: 0 0.35cqi 0.3cqi 0;
+  padding: 0 max(4px, 1.1cqi) max(3px, 0.9cqi) 0;
   align-self: flex-end;
 }
 
@@ -147,48 +167,60 @@
   }
 }
 
-/* promotion picker */
+/* promotion picker: a column over the promotion square (queen on the square, then knight, rook, bishop) */
 .dboard .promo {
   position: absolute;
   inset: 0;
   z-index: 20;
-  display: grid;
-  place-items: center;
   background: var(--overlay);
   border-radius: var(--r-board);
 }
 
-.dboard .promo-list {
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  gap: 8px;
-  padding: 10px;
-  border-radius: var(--r-md);
-  background: var(--surface);
-  border: 1px solid var(--border);
-  box-shadow: var(--sh-float);
+.dboard .promo-col {
+  position: absolute;
+  width: 12.5%;
+  height: 50%;
+  display: flex;
+  flex-direction: column;
+}
+
+.dboard .promo-col.at-top {
+  top: 0;
+}
+
+.dboard .promo-col.at-bottom {
+  bottom: 0;
+  flex-direction: column-reverse;
 }
 
 .dboard .promo-btn {
+  position: relative;
   display: grid;
   place-items: center;
-  width: min(18cqi, 76px);
-  aspect-ratio: 1;
-  border-radius: var(--r-sm);
-  background: var(--board-light);
-  box-shadow: 0 var(--edge-depth) 0 var(--board-dark);
-  transition: transform var(--dur-fast) var(--motion-ease);
+  width: 100%;
+  height: 25%;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--board-light) 60%, color-mix(in srgb, var(--board-light) 70%, var(--board-dark)) 100%);
+  box-shadow: inset 0 -3px 0 color-mix(in srgb, var(--board-dark) 70%, #000), var(--sh-pop);
+  transition:
+    transform var(--dur-fast) var(--motion-ease),
+    border-radius var(--dur-fast) var(--motion-ease);
+}
+
+.dboard .promo-btn:hover,
+.dboard .promo-btn:focus-visible {
+  border-radius: 18%;
+  background: var(--accent);
 }
 
 .dboard .promo-btn:active {
-  transform: translateY(var(--edge-depth));
-  box-shadow: none;
+  transform: scale(0.94);
 }
 
 .dboard .promo-btn piece {
   position: static;
   display: block;
-  width: 88%;
-  height: 88%;
+  width: 86%;
+  height: 86%;
   background-size: cover;
 }

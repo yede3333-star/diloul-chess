@@ -44,16 +44,17 @@
   pointer-events: none;
 }
 
+/* Inset enough to stay clear of the rounded corners (a8 and h1) at any board size. */
 .sboard .sb-rank {
-  left: 0.35cqi;
-  margin-top: 0.3cqi;
+  left: max(4px, 1.1cqi);
+  margin-top: max(3px, 0.9cqi);
 }
 
 .sboard .sb-file {
-  bottom: 0.3cqi;
+  bottom: max(3px, 0.9cqi);
   width: 12.5%;
   text-align: right;
-  padding-right: 0.35cqi;
+  padding-right: max(4px, 1.1cqi);
 }
 
 .sboard .on-light {

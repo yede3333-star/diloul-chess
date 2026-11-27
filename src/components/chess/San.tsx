@@ -22,22 +22,32 @@ export function San({ san, figurine = true }: { san: string; figurine?: boolean 
   );
 }
 
-/** A short line of moves: "1. d4 d5 2. Bf4" → numbered moves with piece drawings. */
-export function SanLine({ moves, startPly = 0 }: { moves: string[]; startPly?: number }) {
+/**
+ * A list of moves: "1. d4 d5 2. Bf4" → numbered moves with piece drawings.
+ * Always wraps inside its container (flex-wrap, left-to-right), never widens the page.
+ */
+export function SanLine({ moves, startPly = 0, className = "" }: { moves: string[]; startPly?: number; className?: string }) {
+  // Group into numbered pairs: "1. d4 d5" is one unbreakable item; items wrap between them.
+  const items: { num: string; moves: string[] }[] = [];
+  moves.forEach((m, i) => {
+    const ply = startPly + i;
+    const isWhite = ply % 2 === 0;
+    if (isWhite || i === 0) items.push({ num: `${Math.floor(ply / 2) + 1}.${isWhite ? "" : "…"}`, moves: [m] });
+    else items[items.length - 1].moves.push(m);
+  });
   return (
-    <bdi className="san">
-      {moves.map((m, i) => {
-        const ply = startPly + i;
-        const isWhite = ply % 2 === 0;
-        return (
-          <span key={i} className="whitespace-nowrap">
-            {i > 0 && " "}
-            {isWhite && <span className="san-num">{Math.floor(ply / 2) + 1}. </span>}
-            {!isWhite && i === 0 && <span className="san-num">{Math.floor(ply / 2) + 1}… </span>}
-            <San san={m} />
-          </span>
-        );
-      })}
-    </bdi>
+    <span dir="ltr" className={`san inline-flex min-w-0 max-w-full flex-wrap gap-x-2.5 gap-y-1 ${className}`}>
+      {items.map((it, i) => (
+        <span key={i} className="whitespace-nowrap">
+          <span className="san-num">{it.num} </span>
+          {it.moves.map((m, j) => (
+            <span key={j}>
+              {j > 0 && " "}
+              <San san={m} />
+            </span>
+          ))}
+        </span>
+      ))}
+    </span>
   );
 }

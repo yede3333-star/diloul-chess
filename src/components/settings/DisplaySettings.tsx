@@ -90,15 +90,16 @@ export function DisplaySettings() {
               }}
               className="flex flex-col items-center gap-1.5 rounded-md p-1 text-xs font-semibold"
             >
-              <span data-board={b} className={`relative block w-full overflow-hidden rounded-sm ring-2 ${board === b ? "ring-accent" : "ring-transparent"}`}>
+              <span
+                data-board={b}
+                className={`block w-full overflow-hidden rounded-sm ring-offset-2 ring-offset-surface ${board === b ? "ring-[3px] ring-accent" : "ring-1 ring-border"}`}
+              >
                 <StaticBoard fen={START_FEN} coords={false} label={t(`settings.boards.${b}`)} />
-                {board === b && (
-                  <span className="absolute end-1 top-1 grid size-5 place-items-center rounded-full bg-accent text-on-accent">
-                    <Check className="size-3.5" strokeWidth={3} aria-hidden="true" />
-                  </span>
-                )}
               </span>
-              <span className={board === b ? "text-fg" : "text-fg-muted"}>{t(`settings.boards.${b}`)}</span>
+              <span className={`inline-flex items-center gap-1 ${board === b ? "text-fg" : "text-fg-muted"}`}>
+                {board === b && <Check className="size-3.5 shrink-0 text-accent-text" strokeWidth={3} aria-hidden="true" />}
+                {t(`settings.boards.${b}`)}
+              </span>
             </button>
           ))}
         </div>

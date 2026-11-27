@@ -1,5 +1,8 @@
+"use client";
+
 import { BookOpen, Check, Dumbbell, HandFist, Lock, Play, Star, Trophy, type LucideIcon } from "lucide-react";
 import { useTranslations } from "next-intl";
+import { useEffect, useRef, useState } from "react";
 import { Mascot } from "@/components/brand/Mascot";
 import { Link } from "@/i18n/navigation";
 
@@ -41,30 +44,95 @@ const WAVE = [0, -40, -62, -40, 0, 40, 62, 40];
 
 /**
  * The winding path of nodes (SPEC §4.4).
- * All nodes of a section share its color; the icon tells the type; a corner badge marks done/locked.
- * Each section card is sticky, so the card at the top changes as you scroll, with no JavaScript.
+ * - One pinned header (opaque, above the nodes) shows the section currently on screen;
+ *   its content follows the scroll. Sections are separated by plain, non-sticky dividers.
+ * - All nodes of a section share its color; the icon tells the type; a corner badge marks done/locked.
+ * - `stickyTop`: where the header pins (below the app's top bar by default).
+ * - The header background uses `--path-bg` (defaults to the page background) so nodes scrolling
+ *   under it are fully hidden; set it when the map sits on a card.
  */
-export function PathMap({ sections, className = "" }: { sections: PathSection[]; className?: string }) {
+export function PathMap({
+  sections,
+  stickyTop = "calc(3.5rem + env(safe-area-inset-top) + 8px)",
+  className = "",
+}: {
+  sections: PathSection[];
+  stickyTop?: string;
+  className?: string;
+}) {
   const t = useTranslations("components.path");
+  const headerRef = useRef<HTMLDivElement>(null);
+  const sectionRefs = useRef<(HTMLElement | null)[]>([]);
+  const [active, setActive] = useState(0);
+
+  // The active section is the last one whose top has passed a line a third of the way down
+  // the visible area under the pinned header (so the last section also activates at the page end).
+  useEffect(() => {
+    let frame = 0;
+    const update = () => {
+      frame = 0;
+      const headBottom = headerRef.current?.getBoundingClientRect().bottom ?? 0;
+      const line = headBottom + (window.innerHeight - headBottom) * 0.35;
+      let next = 0;
+      sectionRefs.current.forEach((el, i) => {
+        if (el && el.getBoundingClientRect().top <= line) next = i;
+      });
+      setActive(next);
+    };
+    const onScroll = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+    update();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    window.addEventListener("resize", onScroll, { passive: true });
+    return () => {
+      window.removeEventListener("scroll", onScroll);
+      window.removeEventListener("resize", onScroll);
+      if (frame) cancelAnimationFrame(frame);
+    };
+  }, [sections.length]);
+
+  const current = sections[Math.min(active, sections.length - 1)];
   let index = 0;
 
   return (
-    <div className={`flex flex-col gap-2 ${className}`}>
-      {sections.map((section) => (
-        <section key={section.id} aria-labelledby={`sec-${section.id}`} style={{ ["--sec" as string]: `var(--section-${section.color})` }}>
-          <header className="sticky top-[calc(3.5rem+env(safe-area-inset-top)+8px)] z-10">
-            <div className="section-card flex items-center justify-between gap-3 px-4 py-3.5 shadow-pop">
-              <div className="min-w-0">
-                {section.eyebrow && <p className="text-sm font-semibold text-accent-text">{section.eyebrow}</p>}
-                <h2 id={`sec-${section.id}`} className="text-lg font-extrabold">
-                  {section.title}
-                </h2>
-                <p className="text-[15px] font-medium">{section.subtitle}</p>
-              </div>
-            </div>
-          </header>
+    <div className={`flex flex-col ${className}`}>
+      {/* Pinned header: opaque strip + section card, above every node. */}
+      <div
+        ref={headerRef}
+        className="sticky z-20 -mt-2 pt-2 pb-2"
+        style={{ top: stickyTop, background: "var(--path-bg, var(--bg))", ["--sec" as string]: `var(--section-${current.color})` }}
+      >
+        <div className="section-card flex items-center justify-between gap-3 px-4 py-3.5 shadow-pop" aria-live="polite">
+          <div className="min-w-0">
+            {current.eyebrow && <p className="text-sm font-semibold text-accent-text">{current.eyebrow}</p>}
+            <p className="font-heading text-lg leading-snug font-extrabold">{current.title}</p>
+            <p className="text-[15px] font-medium">{current.subtitle}</p>
+          </div>
+        </div>
+      </div>
 
-          <ol className="flex flex-col items-center gap-[22px] pt-12 pb-10">
+      {sections.map((section, si) => (
+        <section
+          key={section.id}
+          ref={(el) => {
+            sectionRefs.current[si] = el;
+          }}
+          aria-label={`${section.title} · ${section.subtitle}`}
+          style={{ ["--sec" as string]: `var(--section-${section.color})` }}
+        >
+          {si > 0 && (
+            <div className="flex items-center gap-3 pt-4 text-sm font-semibold text-fg-muted" aria-hidden="true">
+              <span className="h-px flex-1 bg-border" />
+              <span className="flex min-w-0 items-center gap-2 text-center">
+                <span className="size-2.5 shrink-0 rounded-full" style={{ background: "var(--sec)" }} />
+                {section.title} · {section.subtitle}
+              </span>
+              <span className="h-px flex-1 bg-border" />
+            </div>
+          )}
+
+          <ol className={`relative z-0 flex flex-col items-center gap-[22px] pt-12 ${si === sections.length - 1 ? "pb-24" : "pb-8"}`}>
             {section.nodes.map((node) => {
               const offset = WAVE[index++ % WAVE.length];
               const Icon = ICONS[node.type];

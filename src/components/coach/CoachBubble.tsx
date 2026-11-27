@@ -35,7 +35,16 @@ export function CoachBubble({ text, animate = true, speed = 28, className = "" }
   return (
     <div className={`flex items-end gap-3 ${className}`}>
       <Mascot size={56} className="shrink-0" />
-      <div className="relative min-w-0 flex-1 rounded-md rounded-es-[4px] border border-border bg-surface-2 px-4 py-3 text-[15px] leading-relaxed shadow-pop">
+      <div className="relative min-w-0 flex-1 rounded-md border border-border bg-surface-2 px-4 py-3 text-[15px] leading-relaxed shadow-pop">
+        {/* Tail pointing at the mascot (inline-start side); mirrored in RTL. */}
+        <svg
+          viewBox="0 0 12 18"
+          aria-hidden="true"
+          className="absolute -start-[11px] bottom-3 h-[18px] w-3 rtl:-scale-x-100"
+        >
+          <path d="M12 1 L1 15 L12 11" fill="var(--surface-2)" stroke="var(--border)" strokeWidth="1" strokeLinejoin="round" />
+          <rect x="11" y="0" width="2" height="18" fill="var(--surface-2)" />
+        </svg>
         <p className="sr-only">{text}</p>
         {/* The full text reserves the space (invisible), the revealed part is drawn on top: no layout jump. */}
         <p aria-hidden="true" className="relative">

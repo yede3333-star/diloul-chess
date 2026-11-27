@@ -7,6 +7,7 @@ import { RankBadge } from "@/components/rank/RankBadge";
 import { RankTrack } from "@/components/rank/RankTrack";
 import { DisplaySettings } from "@/components/settings/DisplaySettings";
 import { FeedbackBanner } from "@/components/ui/FeedbackBanner";
+import { NextArrow } from "@/components/ui/icons";
 import { RANK_KEYS } from "@/config/rank-keys";
 import { CoachDemo, DemoCard, FreePlayDemo, PromotionDemo, SquaresDemo, TaskDemo } from "./Demos";
 
@@ -107,7 +108,10 @@ export default async function ComponentsPage() {
           <DemoCard title={t("feedback.title")}>
             <div className="overflow-hidden rounded-md">
               <FeedbackBanner kind="success" title={t("task.good")} message={t("task.goodMessage")}>
-                <span className="btn btn-primary">{t("task.next")}</span>
+                <span className="btn btn-primary">
+                  {t("task.next")}
+                  <NextArrow />
+                </span>
                 <span className="btn btn-secondary">
                   <Share2 aria-hidden="true" />
                 </span>
@@ -124,8 +128,8 @@ export default async function ComponentsPage() {
       </div>
 
       <DemoCard title={t("path.title")} hint={t("path.hint")}>
-        <div className="mx-auto w-full max-w-[420px]">
-          <PathMap sections={sections} />
+        <div className="mx-auto w-full max-w-[420px]" style={{ ["--path-bg" as string]: "var(--surface)" }}>
+          <PathMap sections={sections} stickyTop="calc(env(safe-area-inset-top) + 8px)" />
         </div>
       </DemoCard>
     </main>

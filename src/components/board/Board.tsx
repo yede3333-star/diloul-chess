@@ -73,11 +73,12 @@ const TONE_BRUSH: Record<NonNullable<BoardShape["tone"]>, string> = {
   hint: "yellow",
 };
 
-const PROMO_ROLES: { p: PromotionPiece; role: string }[] = [
+// Lichess order, starting on the promotion square: queen, knight, rook, bishop.
+const PROMO_ROLES: { p: PromotionPiece; role: "queen" | "knight" | "rook" | "bishop" }[] = [
   { p: "q", role: "queen" },
+  { p: "n", role: "knight" },
   { p: "r", role: "rook" },
   { p: "b", role: "bishop" },
-  { p: "n", role: "knight" },
 ];
 
 /** Brush colors come from the design tokens, read from the board element (follows theme and board theme). */
@@ -303,23 +304,32 @@ export function Board({
           aria-label={t("promoteTitle")}
           onClick={(e) => e.target === e.currentTarget && cancelPromotion()}
         >
-          <div className="promo-list">
-            {PROMO_ROLES.map(({ p, role }) => (
-              <button
-                key={p}
-                type="button"
-                className="promo-btn cg-wrap"
-                aria-label={t(`pieces.${role as "queen" | "rook" | "bishop" | "knight"}`)}
-                onClick={() => {
-                  const { from, to } = promo;
-                  setPromo(null);
-                  finishMove(from, to, p);
-                }}
-              >
-                <piece className={`${role} ${promo.color}`} />
-              </button>
-            ))}
-          </div>
+          {(() => {
+            // Column over the promotion square, growing away from the board edge.
+            const file = promo.to.charCodeAt(0) - 97;
+            const rank = Number(promo.to[1]) - 1;
+            const col = orientation === "white" ? file : 7 - file;
+            const atTop = (orientation === "white" ? 7 - rank : rank) === 0;
+            return (
+              <div className={`promo-col ${atTop ? "at-top" : "at-bottom"}`} style={{ left: `${col * 12.5}%` }}>
+                {PROMO_ROLES.map(({ p, role }) => (
+                  <button
+                    key={p}
+                    type="button"
+                    className="promo-btn cg-wrap"
+                    aria-label={t(`pieces.${role}`)}
+                    onClick={() => {
+                      const { from, to } = promo;
+                      setPromo(null);
+                      finishMove(from, to, p);
+                    }}
+                  >
+                    <piece className={`${role} ${promo.color}`} />
+                  </button>
+                ))}
+              </div>
+            );
+          })()}
           <button type="button" className="sr-only" onClick={cancelPromotion}>
             {t("cancel")}
           </button>

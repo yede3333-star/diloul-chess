@@ -97,6 +97,8 @@
 /* Unlayered on purpose: page colors and fonts must win over any external reset
    (e.g. the preview host's own stylesheet), which would otherwise turn text black. */
 html {
+  /* Safety net: nothing may ever widen the page sideways on a phone. */
+  overflow-x: clip;
   background: var(--bg);
   color: var(--fg);
   font-family: var(--ff-body);
@@ -107,6 +109,7 @@ html {
 }
 
 body {
+  overflow-x: clip;
   min-height: 100dvh;
   background: var(--bg);
   color: var(--fg);

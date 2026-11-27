@@ -165,7 +165,8 @@
       "title": "Touche les cases",
       "hint": "Touche toutes les cases attaquées par le cavalier en d4.",
       "found": "{found} trouvées sur {total}",
-      "reset": "Recommencer"
+      "reset": "Recommencer",
+      "mistakes": "{count, plural, =0 {Aucune erreur} one {# erreur} other {# erreurs}}"
     },
     "mini": {
       "title": "Mini-échiquiers"
