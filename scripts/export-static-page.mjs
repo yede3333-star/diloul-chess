@@ -33,8 +33,31 @@ let css = "";
 for (const href of local) {
   const res = await fetch(origin + href);
   if (!res.ok) throw new Error(`CSS ${href} → ${res.status}`);
-  css += (await res.text()) + "\n";
+  // Make url(...) references absolute (they are relative to the CSS file).
+  const text = (await res.text()).replace(/url\((?!data:|https?:)([^)]+)\)/g, (_, u) => `url(${new URL(u, origin + href).pathname})`);
+  css += text + "\n";
 }
+
+// Self-hosted fonts (next/font) and other local assets referenced from CSS become data: URIs.
+const assetUrls = [...new Set([...css.matchAll(/url\((\/_next\/[^)]+)\)/g)].map((m) => m[1]))];
+let inlinedBytes = 0;
+for (const u of assetUrls) {
+  const res = await fetch(origin + u);
+  if (!res.ok) throw new Error(`Asset ${u} → ${res.status}`);
+  const buf = Buffer.from(await res.arrayBuffer());
+  inlinedBytes += buf.length;
+  const type = u.endsWith(".woff2") ? "font/woff2" : res.headers.get("content-type") ?? "application/octet-stream";
+  css = css.replaceAll(`url(${u})`, `url(data:${type};base64,${buf.toString("base64")})`);
+}
+if (assetUrls.length) console.log(`Inlined ${assetUrls.length} assets (${(inlinedBytes / 1024).toFixed(0)} KB)`);
+
+// Classes and attributes on <html> (next/font variables, lang, dir) are lost in a fragment:
+// font-variable classes become :root, and lang/dir move to a wrapper.
+const htmlTag = html.match(/<html[^>]*>/)?.[0] ?? "";
+const htmlClasses = (htmlTag.match(/class="([^"]*)"/)?.[1] ?? "").split(/\s+/).filter(Boolean);
+for (const c of htmlClasses) css = css.replaceAll(`.${c}{`, ":root{").replaceAll(`.${c} {`, ":root {");
+const lang = htmlTag.match(/lang="([^"]*)"/)?.[1] ?? "ar";
+const dir = htmlTag.match(/dir="([^"]*)"/)?.[1] ?? "rtl";
 
 const page = `<title>${title}</title>
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -43,7 +66,9 @@ ${external.map((h) => `<link rel="stylesheet" href="${h}">`).join("\n")}
 :root{color-scheme:dark}
 ${css}
 </style>
+<div lang="${lang}" dir="${dir}">
 ${body}
+</div>
 `;
 
 await writeFile(out, page);

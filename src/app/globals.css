@@ -1,7 +1,147 @@
 @import "tailwindcss";
+@import "../styles/tokens.css";
+@import "../styles/primitives.css";
 
-/* Design tokens land in src/styles/tokens.css once a direction is chosen (step 2). */
-body {
-  background: #0e1015;
-  color: #e6e8ee;
+/*
+ * Tailwind 4 is configured in CSS (there is no tailwind.config file in v4).
+ * The default palette is removed: only design-system colors exist,
+ * so "bg-surface", "text-fg-muted", "bg-accent" work, but "bg-red-500" does not.
+ */
+@theme {
+  --color-*: initial;
+  --font-*: initial;
+  --radius-*: initial;
+  --shadow-*: initial;
+  --text-*: initial;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-surface-2: var(--surface-2);
+  --color-surface-3: var(--surface-3);
+  --color-border: var(--border);
+  --color-fg: var(--fg);
+  --color-fg-muted: var(--fg-muted);
+  --color-fg-subtle: var(--fg-subtle);
+  --color-accent: var(--accent);
+  --color-accent-edge: var(--accent-edge);
+  --color-accent-hover: var(--accent-hover);
+  --color-on-accent: var(--on-accent);
+  --color-accent-soft: var(--accent-soft);
+  --color-accent-text: var(--accent-text);
+  --color-success: var(--success);
+  --color-success-soft: var(--success-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+  --color-warning: var(--warning);
+  --color-warning-soft: var(--warning-soft);
+  --color-info: var(--info);
+  --color-info-soft: var(--info-soft);
+  --color-on-semantic: var(--on-semantic);
+  --color-nav: var(--nav-bg);
+  --color-overlay: var(--overlay);
+  --color-section-1: var(--section-1);
+  --color-section-2: var(--section-2);
+  --color-section-3: var(--section-3);
+  --color-section-4: var(--section-4);
+  --color-section-5: var(--section-5);
+  --color-section-6: var(--section-6);
+  --color-on-section: var(--on-section);
+  --color-rank-start: var(--rank-start);
+  --color-rank-novice: var(--rank-novice);
+  --color-rank-amateur: var(--rank-amateur);
+  --color-rank-trainee: var(--rank-trainee);
+  --color-rank-skilled: var(--rank-skilled);
+  --color-rank-expert: var(--rank-expert);
+  --color-rank-master: var(--rank-master);
+  --color-on-rank: var(--on-rank);
+  --color-move-book: var(--move-book);
+  --color-move-best: var(--move-best);
+  --color-move-good: var(--move-good);
+  --color-move-inaccuracy: var(--move-inaccuracy);
+  --color-move-mistake: var(--move-mistake);
+  --color-move-blunder: var(--move-blunder);
+  --color-on-move: var(--on-move);
+  --color-transparent: transparent;
+  --color-current: currentColor;
+
+  --font-heading: var(--ff-heading);
+  --font-body: var(--ff-body);
+  --font-mono: var(--ff-mono);
+
+  --text-xs: var(--fs-xs);
+  --text-sm: var(--fs-sm);
+  --text-base: var(--fs-base);
+  --text-lg: var(--fs-lg);
+  --text-xl: var(--fs-xl);
+  --text-2xl: var(--fs-2xl);
+  --text-3xl: var(--fs-3xl);
+  --text-display: var(--fs-display);
+
+  --radius-xs: var(--r-xs);
+  --radius-sm: var(--r-sm);
+  --radius-md: var(--r-md);
+  --radius-card: var(--r-card);
+  --radius-full: var(--r-pill);
+  --radius-board: var(--r-board);
+
+  --shadow-card: var(--sh-card);
+  --shadow-float: var(--sh-float);
+  --shadow-pop: var(--sh-pop);
+
+  --ease-out: var(--motion-ease);
+  --ease-spring: var(--motion-spring);
+}
+
+@layer base {
+  html {
+    background: var(--bg);
+    color: var(--fg);
+    font-family: var(--ff-body);
+    font-size: var(--fs-base);
+    line-height: var(--lh-body);
+    -webkit-text-size-adjust: 100%;
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  body {
+    min-height: 100dvh;
+    background: var(--bg);
+    color: var(--fg);
+  }
+
+  h1,
+  h2,
+  h3,
+  h4 {
+    font-family: var(--ff-heading);
+    line-height: var(--lh-tight);
+    text-wrap: balance;
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--focus-ring);
+    outline-offset: 2px;
+  }
+
+  ::selection {
+    background: var(--accent-soft);
+  }
+
+  /* Latin digits everywhere (SPEC §4.1) and aligned numbers */
+  html {
+    font-variant-numeric: lining-nums;
+  }
+
+  /* Algebraic notation and boards stay left-to-right (SPEC §4.2) */
+  .ltr,
+  .san {
+    direction: ltr;
+    unicode-bidi: isolate;
+  }
+
+  .tabular {
+    font-variant-numeric: tabular-nums;
+  }
 }
