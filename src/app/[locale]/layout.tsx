@@ -7,6 +7,7 @@ import { LOCALE_DIR, routing } from "@/i18n/routing";
 import { PREFS_INLINE_SCRIPT } from "@/lib/prefs/prefs";
 import { PrefsSync } from "@/lib/prefs/PrefsSync";
 import { StorageProvider } from "@/lib/storage/StorageProvider";
+import { ServiceWorker } from "@/components/shell/ServiceWorker";
 import { fontVariables } from "../fonts";
 import "../globals.css";
 
@@ -16,7 +17,12 @@ export function generateStaticParams() {
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("meta");
-  return { title: { default: t("title"), template: `%s · ${t("title")}` }, description: t("description") };
+  return {
+    title: { default: t("title"), template: `%s · ${t("title")}` },
+    description: t("description"),
+    icons: { apple: "/icons/apple-touch-icon.png" },
+    appleWebApp: { capable: true, title: t("title"), statusBarStyle: "black-translucent" },
+  };
 }
 
 export const viewport: Viewport = {
@@ -38,6 +44,7 @@ export default async function LocaleLayout({ children }: LayoutProps<"/[locale]"
       <body>
         <NextIntlClientProvider>
           <PrefsSync />
+          <ServiceWorker />
           <StorageProvider>{children}</StorageProvider>
         </NextIntlClientProvider>
       </body>

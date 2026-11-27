@@ -300,5 +300,10 @@
       "health": "Taille de la base, dernière exécution des tâches planifiées, erreurs d’import."
     },
     "soonPhase": "Arrive à la phase {phase}"
+  },
+  "errorPage": {
+    "title": "Une erreur inattendue s’est produite",
+    "body": "Ta progression n’est pas perdue. Réessaie, et si l’erreur revient, préviens-nous.",
+    "retry": "Réessayer"
   }
 }
