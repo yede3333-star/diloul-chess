@@ -25,6 +25,7 @@ export function CoachBubble({
   animate = true,
   speed = 28,
   mascotSize = 56,
+  compact = false,
   className = "",
 }: {
   text: string;
@@ -35,6 +36,8 @@ export function CoachBubble({
   animate?: boolean;
   speed?: number;
   mascotSize?: number;
+  /** Slightly smaller text, for long explanations in a fixed-height area. */
+  compact?: boolean;
   className?: string;
 }) {
   const look = TONE[tone];
@@ -65,7 +68,7 @@ export function CoachBubble({
   return (
     <div className={`flex items-end gap-3 ${className}`}>
       <Mascot size={mascotSize} className="shrink-0" />
-      <div className={`relative min-w-0 flex-1 rounded-md border px-4 py-3 text-[15px] leading-relaxed shadow-pop ${look.box}`}>
+      <div className={`relative min-w-0 flex-1 rounded-md border px-4 py-3 shadow-pop ${compact ? "text-[14px] leading-normal" : "text-[15px] leading-relaxed"} ${look.box}`}>
         {/* Tail pointing at the mascot (inline-start side); mirrored in RTL. */}
         <svg
           viewBox="0 0 12 18"

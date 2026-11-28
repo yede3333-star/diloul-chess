@@ -1,4 +1,53 @@
 {
+  "intro": [
+    {
+      "title": {
+        "ar": "فكرة لندن",
+        "fr": "L’idée du Londres"
+      },
+      "text": {
+        "ar": "تبني الشكل نفسه تقريبًا في كل مباراة: بيادق d4 وe3 وc3، والفيل في f4.",
+        "fr": "Tu construis presque la même position à chaque partie : pions d4, e3 et c3, et le fou en f4."
+      },
+      "moves": "d4 d5 Bf4 Nf6 e3 e6 Nf3 Be7 Bd3 O-O O-O c5 c3 Nc6 Nbd2 b6",
+      "shapes": [
+        "d4:best",
+        "e3:best",
+        "c3:best",
+        "f4:best"
+      ]
+    },
+    {
+      "title": {
+        "ar": "الخطة",
+        "fr": "Le plan"
+      },
+      "text": {
+        "ar": "بعد التطوير: الحصان يقفز إلى e5، والفيل يصوّب على h7.",
+        "fr": "Après le développement : le cavalier saute en e5 et le fou vise h7."
+      },
+      "moves": "d4 d5 Bf4 Nf6 e3 e6 Nf3 Be7 Bd3 O-O O-O c5 c3 Nc6 Nbd2 b6",
+      "shapes": [
+        "f3e5:best",
+        "d3h7:hint"
+      ]
+    },
+    {
+      "title": {
+        "ar": "انتبه!",
+        "fr": "Attention !"
+      },
+      "text": {
+        "ar": "أشهر خطأ: e3 قبل Bf4. هكذا يُحبس فيلك خلف بيادقك.",
+        "fr": "L’erreur classique : e3 avant Bf4. Ton fou reste enfermé derrière tes pions."
+      },
+      "moves": "d4 d5 e3",
+      "shapes": [
+        "c1:danger",
+        "e3:danger"
+      ]
+    }
+  ],
   "idea": {
     "ar": "في نظام لندن تبني بالأبيض الشكل نفسه تقريبًا مهما لعب الأسود: بيدق في d4، ثم الفيل إلى f4 قبل أن تغلق عليه بـ e3، ثم e3 وc3 وNf3 وBd3، ثم التبييت. النتيجة موقع صلب يصعب كسره، تستطيع بعده أن تهاجم بهدوء على جهة الملك.",
     "fr": "Dans le Système de Londres, tu construis presque la même position quoi que jouent les Noirs : un pion en d4, puis le fou en f4 avant de l’enfermer par e3, puis e3, c3, Cf3, Fd3 et le roque. Tu obtiens une position solide, difficile à casser, avant d’attaquer calmement à l’aile roi."

@@ -71,7 +71,10 @@ type OpeningNode = {
   eco?: string; // ECO code + English name from the explorer, for reference
   children: OpeningNode[];
 };
+/** Intro slide of the first lesson: a position (moves from the start), marks and one or two sentences. */
+type IntroSlide = { title: Bi; text: Bi; moves: string; shapes?: string[] };
 type Notes = {
+  intro?: IntroSlide[];
   idea?: Bi;
   plans?: Bi[];
   mistakes?: Bi[];
@@ -393,6 +396,7 @@ const out = {
   root: rootMoves,
   builtAt: new Date().toISOString(),
   source: { explorer: "lichess", speeds: "blitz,rapid,classical", depth: DEPTH, upTo: toTier },
+  intro: notes.intro,
   idea: notes.idea,
   plans: notes.plans,
   mistakes: notes.mistakes,

@@ -10,14 +10,19 @@ import { starsFor } from "./stars";
 /** End of a lesson (SPEC §6.4): stars from mistakes, a short summary and "Next". */
 export function LessonEnd({
   title,
-  newMoves,
+  kind,
+  count,
   mistakes,
+  nextLabel,
   onNext,
   onRetry,
 }: {
   title: string;
-  newMoves: number;
+  kind: "lesson" | "drill";
+  /** New moves (lesson) or positions played from memory (drill). */
+  count: number;
   mistakes: number;
+  nextLabel: string;
   onNext: () => void;
   onRetry: () => void;
 }) {
@@ -61,12 +66,12 @@ export function LessonEnd({
         </div>
 
         <div className="flex flex-col gap-1">
-          <h1 className="font-heading text-2xl font-extrabold">{t("endTitle")}</h1>
+          <h1 className="font-heading text-2xl font-extrabold">{t(kind === "drill" ? "endDrillTitle" : "endTitle")}</h1>
           <p className="font-semibold text-accent-text">{title}</p>
         </div>
 
         <div className="flex flex-wrap justify-center gap-2 text-sm">
-          <span className="chip tabular">{t("endMoves", { count: newMoves })}</span>
+          <span className="chip tabular">{t(kind === "drill" ? "endPositions" : "endMoves", { count })}</span>
           <span className="chip tabular">{t("endMistakes", { count: mistakes })}</span>
         </div>
 
@@ -75,7 +80,7 @@ export function LessonEnd({
 
       <footer className="flex shrink-0 flex-col gap-2 px-4 pt-3 pb-[max(16px,env(safe-area-inset-bottom))]">
         <button type="button" className="btn btn-primary btn-lg" onClick={onNext}>
-          {t("endNext")}
+          {nextLabel}
         </button>
         <button type="button" className="btn btn-ghost" onClick={onRetry}>
           {t("endRetry")}

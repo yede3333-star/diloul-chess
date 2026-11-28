@@ -5,7 +5,7 @@ import "./lesson.css";
 import { Chess, type Square } from "chess.js";
 import { BookOpen, Volume2, VolumeX, X } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
-import { useCallback, useEffect, useRef, useState, type PointerEvent } from "react";
+import { useCallback, useEffect, useRef, useState, type PointerEvent, type ReactNode } from "react";
 import { Board, type BoardMove, type BoardShape, type SquareMark } from "@/components/board/Board";
 import { CoachBubble, type CoachTone } from "@/components/coach/CoachBubble";
 import { BackArrow } from "@/components/ui/icons";
@@ -13,6 +13,7 @@ import { useRouter } from "@/i18n/navigation";
 import { playSound } from "@/lib/sound/sounds";
 import { useSoundOn } from "@/lib/sound/useSoundOn";
 import { LessonEnd } from "./LessonEnd";
+import { starsFor } from "./stars";
 import type { LessonScript, LessonStep } from "./types";
 
 type View = { fen: string; lastMove?: [Square, Square] };
@@ -22,91 +23,171 @@ type Badge = { square: Square; ok: boolean; key: number };
 /** Delay before the opponent answers a correct move, then before the next explanation. */
 const REPLY_DELAY = 850;
 const NEXT_DELAY = 600;
+/** Time between two replayed moves. */
+const REPLAY_STEP = 420;
 
-const viewOf = (s: LessonStep): View => ({ fen: s.fen, lastMove: s.lastMove });
+const viewOf = (s: LessonStep): View => ({ fen: s.fen, lastMove: s.kind === "replay" ? undefined : s.lastMove });
+
+function soundFor(game: Chess, captured: boolean) {
+  playSound(game.inCheck() ? "check" : captured ? "capture" : "move");
+}
 
 /**
  * The lesson player (SPEC §6.4): one screen, never scrolls.
- * Top: close, thin progress bar, sound. Middle: the board, as large as fits.
- * Bottom: the mascot's bubble (one or two sentences) and one big button.
+ * Top: close, thin progress bar, sound. Then the board, the mascot's bubble and one button,
+ * kept together near the thumb.
  */
-export function LessonPlayer({ script, exitHref = "/learn/openings" }: { script: LessonScript; exitHref?: string }) {
+export function LessonPlayer({
+  script,
+  exitHref = "/learn/openings",
+  nextHref,
+  nextLabel,
+  onComplete,
+}: {
+  script: LessonScript;
+  exitHref?: string;
+  /** Where "Next" leads on the end screen (default: exitHref). */
+  nextHref?: string;
+  nextLabel?: string;
+  onComplete?: (result: { stars: number; mistakes: number }) => void;
+}) {
   const t = useTranslations("lesson");
   const locale = useLocale() as "ar" | "fr";
   const router = useRouter();
   const steps = script.steps;
+  const learn = script.mode === "learn";
 
   const [i, setI] = useState(0);
   const [view, setView] = useState<View>(() => (script.startFen ? { fen: script.startFen } : viewOf(steps[0])));
-  const [busy, setBusy] = useState(false); // between a correct move and the next step
+  const [busy, setBusy] = useState(false); // moves playing by themselves
+  const [waitNext, setWaitNext] = useState(false); // a correct move's explanation is shown
   const [wrongHere, setWrongHere] = useState(0);
   const [mistakes, setMistakes] = useState(0);
   const [feedback, setFeedback] = useState<Feedback | null>(null);
   const [badge, setBadge] = useState<Badge | null>(null);
   const [sound, setSound] = useSoundOn();
-  const learn = script.mode === "learn";
   const [quit, setQuit] = useState(false);
   const [run, setRun] = useState(0);
 
+  // Timers of the current step only: entering another step cancels them.
   const timers = useRef<number[]>([]);
   const later = useCallback((fn: () => void, ms: number) => {
     timers.current.push(window.setTimeout(fn, ms));
   }, []);
+  const clearTimers = () => {
+    timers.current.forEach(clearTimeout);
+    timers.current = [];
+  };
   useEffect(() => () => timers.current.forEach(clearTimeout), []);
-
-  // First slide: the pieces slide from the start position into the opening's setup.
-  useEffect(() => {
-    if (!script.startFen) return;
-    const id = window.setTimeout(() => setView(viewOf(steps[0])), 450);
-    return () => clearTimeout(id);
-  }, [run, script.startFen, steps]);
 
   const done = i >= steps.length;
   const step = done ? undefined : steps[i];
 
-  const goTo = useCallback(
+  // `enter` calls itself (an automatic replay goes on to the next step) through this ref.
+  const enterRef = useRef<(n: number) => void>(() => {});
+  const enter = useCallback(
     (n: number) => {
+      timers.current.forEach(clearTimeout);
+      timers.current = [];
       setI(n);
       setBusy(false);
+      setWaitNext(false);
       setWrongHere(0);
       setFeedback(null);
       setBadge(null);
-      if (n < steps.length) setView(viewOf(steps[n]));
+      const s = steps[n];
+      if (!s) return;
+      setView(viewOf(s));
+      if (s.kind !== "replay") return;
+      // Replay: the moves play by themselves, one after the other.
+      setBusy(true);
+      const game = new Chess(s.fen);
+      s.moves.forEach((san, k) => {
+        later(
+          () => {
+            const m = game.move(san);
+            setView({ fen: game.fen(), lastMove: [m.from, m.to] });
+            soundFor(game, !!m.captured);
+          },
+          (k + 1) * REPLAY_STEP,
+        );
+      });
+      later(
+        () => {
+          setBusy(false);
+          if (s.auto) enterRef.current(n + 1);
+        },
+        (s.moves.length + 1) * REPLAY_STEP,
+      );
     },
-    [steps],
+    [steps, later],
   );
+  useEffect(() => {
+    enterRef.current = enter;
+  }, [enter]);
+
+  // Start: the first slide's pieces slide in from the start position; a replay starts playing.
+  // Only if the player is still on the first step (a fast tap on "Next" must not be undone).
+  const iRef = useRef(i);
+  useEffect(() => {
+    iRef.current = i;
+  }, [i]);
+  useEffect(() => {
+    const id = window.setTimeout(() => iRef.current === 0 && enter(0), script.startFen ? 450 : 30);
+    return () => clearTimeout(id);
+  }, [run, enter, script.startFen]);
+
+  // Report the result once, when the end screen appears.
+  const reported = useRef(false);
+  useEffect(() => {
+    if (!done || reported.current) return;
+    reported.current = true;
+    onComplete?.({ stars: starsFor(mistakes), mistakes });
+  }, [done, mistakes, onComplete]);
 
   const restart = () => {
-    timers.current.forEach(clearTimeout);
-    timers.current = [];
+    clearTimers();
+    reported.current = false;
     setMistakes(0);
+    setI(0);
     setView(script.startFen ? { fen: script.startFen } : viewOf(steps[0]));
-    goTo(0);
     setRun((r) => r + 1);
   };
 
+  /** After a correct move: the opponent replies by itself, then the next step. */
+  const continueAfter = (fenAfter: string, reply?: string) => {
+    setBusy(true);
+    setWaitNext(false);
+    if (!reply) {
+      later(() => enter(i + 1), NEXT_DELAY);
+      return;
+    }
+    later(() => {
+      const game = new Chess(fenAfter);
+      const r = game.move(reply);
+      setBadge(null);
+      setView({ fen: game.fen(), lastMove: [r.from, r.to] });
+      soundFor(game, !!r.captured);
+      later(() => enter(i + 1), NEXT_DELAY);
+    }, 250);
+  };
+
   const onMove = (move: BoardMove) => {
-    if (step?.kind !== "move" || busy) return false;
+    if (step?.kind !== "move" || busy || waitNext) return false;
     if (step.expect.includes(move.san)) {
       const praise = t(`praise${(1 + Math.floor(Math.random() * 3)) as 1 | 2 | 3}`);
-      setBusy(true);
       setView({ fen: move.fenAfter, lastMove: [move.from, move.to] });
       setBadge({ square: move.to, ok: true, key: Date.now() });
-      setFeedback({ tone: "success", title: praise });
       later(() => playSound("success"), 160);
-      const reply = step.reply;
-      if (!reply) {
-        later(() => goTo(i + 1), REPLY_DELAY);
+      if (step.after) {
+        // An important move: say why, and wait for the player to read it.
+        setFeedback({ tone: "success", title: praise, text: step.after[locale] });
+        setWaitNext(true);
         return;
       }
-      later(() => {
-        const game = new Chess(move.fenAfter);
-        const r = game.move(reply);
-        setBadge(null);
-        setView({ fen: game.fen(), lastMove: [r.from, r.to] });
-        playSound(game.inCheck() ? "check" : r.captured ? "capture" : "move");
-        later(() => goTo(i + 1), NEXT_DELAY);
-      }, REPLY_DELAY);
+      setFeedback({ tone: "success", title: praise });
+      setBusy(true);
+      later(() => continueAfter(move.fenAfter, step.reply), REPLY_DELAY - 250);
       return;
     }
     // Wrong: the board puts the piece back, shakes and buzzes; a ✗ marks the square tried.
@@ -116,11 +197,7 @@ export function LessonPlayer({ script, exitHref = "/learn/openings" }: { script:
     const key = Date.now();
     setBadge({ square: move.to, ok: false, key });
     later(() => setBadge((b) => (b?.key === key ? null : b)), 900);
-    setFeedback({
-      tone: "danger",
-      title: t("wrongTitle"),
-      text: learn || n >= 2 ? t("followArrow") : step.hint[locale],
-    });
+    setFeedback({ tone: "danger", title: t("wrongTitle"), text: learn || n >= 2 ? t("followArrow") : step.hint[locale] });
     return false;
   };
 
@@ -128,18 +205,14 @@ export function LessonPlayer({ script, exitHref = "/learn/openings" }: { script:
     if (step?.kind !== "move" || wrongHere >= 2) return;
     setWrongHere(2);
     setMistakes((m) => m + 1); // a hint counts like a mistake for the stars
-    setFeedback({
-      tone: "hint",
-      title: t("hintTitle"),
-      text: t("followArrow"),
-    });
+    setFeedback({ tone: "hint", title: t("hintTitle"), text: t("followArrow") });
   };
 
   // The move to play: shown at once when learning; from memory in practice (arrow after two mistakes or a hint).
   let shapes: BoardShape[] = [];
   let marks: Partial<Record<Square, SquareMark>> | undefined;
-  if (step && step.kind !== "move") shapes = step.shapes ?? [];
-  if (step?.kind === "move" && (learn || wrongHere >= 2) && !busy) {
+  if (step && (step.kind === "slide" || step.kind === "info")) shapes = step.shapes ?? [];
+  if (step?.kind === "move" && (learn || wrongHere >= 2) && !busy && !waitNext) {
     const m = new Chess(step.fen).move(step.expect[0]);
     shapes = [{ from: m.from, to: m.to, tone: "best" }];
     if (learn) marks = { [m.from]: "marked-soft", [m.to]: "marked-soft" };
@@ -155,45 +228,66 @@ export function LessonPlayer({ script, exitHref = "/learn/openings" }: { script:
     const dx = (e.clientX - swipe.current) * (locale === "ar" ? 1 : -1);
     swipe.current = null;
     if (Math.abs(dx) < 50) return;
-    if (dx > 0) goTo(i + 1);
-    else if (i > 0 && steps[i - 1].kind === "slide") goTo(i - 1);
+    if (dx > 0) enter(i + 1);
+    else if (i > 0 && steps[i - 1].kind === "slide") enter(i - 1);
   };
 
-  const progress = done ? 1 : (i + (busy ? 0.6 : 0)) / steps.length;
+  const progress = done ? 1 : (i + (busy || waitNext ? 0.6 : 0)) / steps.length;
   const canGoBack = step?.kind === "slide" && i > 0;
   const isLastSlide = step?.kind === "slide" && steps[i + 1]?.kind !== "slide";
 
   // Bubble content: feedback first, otherwise the step's own text.
-  const bubble = feedback
+  const bubble: { title?: string; text: string; tone: CoachTone } | null = feedback
     ? { title: feedback.title, text: feedback.text ?? "", tone: feedback.tone }
     : step?.kind === "slide"
-      ? {
-          title: step.title[locale],
-          text: step.text[locale],
-          tone: "default" as const,
-        }
-      : step?.kind === "info"
-        ? {
-            title: undefined,
-            text: step.text[locale],
-            tone: "default" as const,
-          }
-        : step?.kind === "move"
-          ? {
-              title: undefined,
-              text: step.prompt[locale],
-              tone: "default" as const,
-            }
+      ? { title: step.title[locale], text: step.text[locale], tone: "default" }
+      : step?.kind === "move"
+        ? { text: step.prompt[locale], tone: "default" }
+        : step
+          ? { text: step.text[locale], tone: "default" }
           : null;
 
+  // One footer slot, always the same height, so nothing moves between steps.
+  let footer: ReactNode;
+  if (step?.kind === "move" && waitNext) {
+    footer = (
+      <button type="button" className="btn btn-primary btn-lg flex-1" onClick={() => continueAfter(view.fen, step.reply)}>
+        {t("continue")}
+      </button>
+    );
+  } else if (step?.kind === "move" && learn) {
+    footer = <p className="flex min-h-14 flex-1 items-center justify-center text-center text-[15px] font-semibold text-fg-muted">{t("yourTurn")}</p>;
+  } else if (step?.kind === "move") {
+    footer = (
+      <button type="button" className="btn btn-secondary btn-lg flex-1" disabled={busy || wrongHere >= 2} onClick={showHint}>
+        {t("hint")}
+      </button>
+    );
+  } else if (step?.kind === "replay" && step.auto) {
+    footer = <p className="min-h-14 flex-1" aria-hidden="true" />;
+  } else {
+    footer = (
+      <button type="button" className="btn btn-primary btn-lg flex-1" disabled={busy} onClick={() => enter(i + 1)}>
+        {isLastSlide ? t("start") : t("next")}
+      </button>
+    );
+  }
+
+  const exit = () => router.push(exitHref);
+
   return (
-    <div className="lesson fixed inset-0 flex flex-col overflow-hidden bg-bg">
+    <div
+      className="lesson fixed inset-0 flex flex-col overflow-hidden bg-bg"
+      // For tests: whose turn it is ("move" = the board waits for the player).
+      data-step={i}
+      data-phase={done ? "end" : busy ? "busy" : waitNext ? "read" : step?.kind}
+    >
       <header className="flex h-14 shrink-0 items-center gap-1 px-1.5">
         <button
           type="button"
           className="grid size-11 shrink-0 place-items-center rounded-full text-fg-muted transition-colors hover:bg-surface-2 hover:text-fg"
           aria-label={t("close")}
-          onClick={() => (i > 0 && !done ? setQuit(true) : router.push(exitHref))}
+          onClick={() => (i > 0 && !done ? setQuit(true) : exit())}
         >
           <X className="size-6" strokeWidth={2.5} aria-hidden="true" />
         </button>
@@ -221,10 +315,12 @@ export function LessonPlayer({ script, exitHref = "/learn/openings" }: { script:
       {done ? (
         <LessonEnd
           title={script.title[locale]}
-          newMoves={steps.filter((s) => s.kind === "move").length}
+          kind={script.kind}
+          count={script.count}
           mistakes={mistakes}
+          nextLabel={nextLabel ?? t("continue")}
           onRetry={restart}
-          onNext={() => router.push(exitHref)}
+          onNext={() => router.push(nextHref ?? exitHref)}
         />
       ) : (
         <>
@@ -246,7 +342,7 @@ export function LessonPlayer({ script, exitHref = "/learn/openings" }: { script:
                     fen={view.fen}
                     lastMove={view.lastMove}
                     orientation={script.orientation}
-                    interactive={step?.kind === "move" && !busy ? script.orientation : false}
+                    interactive={step?.kind === "move" && !busy && !waitNext ? script.orientation : false}
                     onMove={onMove}
                     shapes={shapes}
                     marks={marks}
@@ -258,14 +354,15 @@ export function LessonPlayer({ script, exitHref = "/learn/openings" }: { script:
               </div>
             </div>
 
-            <div className="flex h-[116px] shrink-0 flex-col px-4 pt-3">
+            <div className="lesson-coach flex shrink-0 flex-col px-4 pt-3">
               {bubble && (
                 <CoachBubble
                   key={`${i}-${feedback?.title ?? ""}-${feedback?.text ?? ""}`}
                   title={bubble.title}
                   text={bubble.text}
                   tone={bubble.tone}
-                  mascotSize={48}
+                  mascotSize={44}
+                  compact={bubble.text.length + (bubble.title?.length ?? 0) > (locale === "ar" ? 120 : 150)}
                 />
               )}
             </div>
@@ -274,24 +371,11 @@ export function LessonPlayer({ script, exitHref = "/learn/openings" }: { script:
 
           <footer className="flex shrink-0 gap-3 px-4 pt-3 pb-[max(16px,env(safe-area-inset-bottom))]">
             {canGoBack && (
-              <button type="button" className="btn btn-secondary btn-lg !px-0 w-14 shrink-0" aria-label={t("back")} onClick={() => goTo(i - 1)}>
+              <button type="button" className="btn btn-secondary btn-lg w-14 shrink-0 !px-0" aria-label={t("back")} onClick={() => enter(i - 1)}>
                 <BackArrow />
               </button>
             )}
-            {step?.kind === "move" && learn ? (
-              // Same height as a button, so nothing moves between steps.
-              <p className="flex min-h-14 flex-1 items-center justify-center text-center text-[15px] font-semibold text-fg-muted">
-                {t("yourTurn")}
-              </p>
-            ) : step?.kind === "move" ? (
-              <button type="button" className="btn btn-secondary btn-lg flex-1" disabled={busy || wrongHere >= 2} onClick={showHint}>
-                {t("hint")}
-              </button>
-            ) : (
-              <button type="button" className="btn btn-primary btn-lg flex-1" onClick={() => goTo(i + 1)}>
-                {isLastSlide ? t("start") : t("next")}
-              </button>
-            )}
+            {footer}
           </footer>
         </>
       )}
@@ -311,7 +395,7 @@ export function LessonPlayer({ script, exitHref = "/learn/openings" }: { script:
             <button type="button" className="btn btn-primary btn-lg" onClick={() => setQuit(false)} autoFocus>
               {t("quitStay")}
             </button>
-            <button type="button" className="btn btn-ghost" onClick={() => router.push(exitHref)}>
+            <button type="button" className="btn btn-ghost" onClick={exit}>
               {t("quitLeave")}
             </button>
           </div>
@@ -328,11 +412,7 @@ function SquareBadge({ square, ok, orientation }: { square: Square; ok: boolean;
   const col = orientation === "white" ? file : 7 - file;
   const row = orientation === "white" ? 7 - rank : rank;
   return (
-    <span
-      aria-hidden="true"
-      className={`lesson-badge ${ok ? "bg-success" : "bg-danger"}`}
-      style={{ left: `${(col + 1) * 12.5}%`, top: `${row * 12.5}%` }}
-    >
+    <span aria-hidden="true" className={`lesson-badge ${ok ? "bg-success" : "bg-danger"}`} style={{ left: `${(col + 1) * 12.5}%`, top: `${row * 12.5}%` }}>
       {ok ? "✓" : "✗"}
     </span>
   );

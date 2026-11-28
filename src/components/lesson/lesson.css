@@ -20,6 +20,11 @@
   }
 }
 
+/* Fixed height, so the board never moves between steps; fits about four lines with a title. */
+.lesson-coach {
+  height: 150px;
+}
+
 .lesson-spare-bottom {
   flex: 1 1 0;
   max-height: 16px;

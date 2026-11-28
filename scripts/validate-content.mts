@@ -41,11 +41,15 @@ type OpeningFile = {
   id: string;
   color: "white" | "black";
   startFen?: string;
+  intro?: { title: Bi; text: Bi; moves: string; shapes?: string[] }[];
   idea?: Bi;
   plans?: Bi[];
   mistakes?: Bi[];
   children: OpeningNode[];
 };
+
+/** Longest text that fits the lesson bubble on a 360 px phone (characters). */
+const BUBBLE_MAX = { ar: 140, fr: 180 };
 
 const RANKS = new Set(["start", "novice", "amateur", "trainee", "skilled", "expert", "master"]);
 const root = new URL("..", import.meta.url).pathname;
@@ -85,6 +89,8 @@ function checkOpening(file: string) {
       if (!RANKS.has(node.tier)) errors.push(where(`${here}: unknown tier "${node.tier}"`));
       if (node.name !== undefined && !isBi(node.name)) errors.push(where(`${here}: name must have non-empty ar and fr`));
       if (node.note !== undefined && !isBi(node.note)) errors.push(where(`${here}: note must have non-empty ar and fr`));
+      else if (node.note && (node.note.ar.length > BUBBLE_MAX.ar || node.note.fr.length > BUBBLE_MAX.fr))
+        errors.push(where(`${here}: note too long for the lesson bubble (max ${BUBBLE_MAX.ar} ar / ${BUBBLE_MAX.fr} fr characters)`));
       if (node.side === "user" && node.ply > 0) {
         if (typeof node.loss !== "number") errors.push(where(`${here}: player move without engine "loss"`));
         else if (node.loss > 50 && !node.tags?.includes("gambit")) errors.push(where(`${here}: player move loses ${node.loss} cp (> 50) without the "gambit" tag`));
@@ -116,6 +122,28 @@ function checkOpening(file: string) {
   };
 
   if (data.idea !== undefined && !isBi(data.idea)) errors.push(`${file}: idea must have non-empty ar and fr`);
+
+  // Intro slides of the first lesson: 2–3, short enough for the lesson bubble, legal positions, valid marks.
+  if (data.intro !== undefined) {
+    if (!Array.isArray(data.intro) || data.intro.length < 2 || data.intro.length > 3) errors.push(`${file}: intro must have 2–3 slides`);
+    else
+      data.intro.forEach((slide, i) => {
+        const at = `${file}: intro[${i}]`;
+        if (!isBi(slide.title) || !isBi(slide.text)) errors.push(`${at}: title and text must be bilingual`);
+        else if (slide.text.ar.length > BUBBLE_MAX.ar || slide.text.fr.length > BUBBLE_MAX.fr) errors.push(`${at}: text too long for the lesson bubble`);
+        const game = new Chess();
+        for (const san of slide.moves.split(" ").filter(Boolean)) {
+          try {
+            game.move(san);
+          } catch {
+            errors.push(`${at}: illegal move "${san}" in "${slide.moves}"`);
+            break;
+          }
+        }
+        for (const sh of slide.shapes ?? [])
+          if (!/^[a-h][1-8]([a-h][1-8])?(:(best|alt|danger|hint))?$/.test(sh)) errors.push(`${at}: bad shape "${sh}" (e.g. "f3e5:best" or "d4")`);
+      });
+  }
   if (data.plans !== undefined && (!Array.isArray(data.plans) || data.plans.length < 3 || data.plans.length > 5 || !data.plans.every(isBi)))
     errors.push(`${file}: plans must be 3–5 bilingual items`);
   if (data.mistakes !== undefined && (!Array.isArray(data.mistakes) || !data.mistakes.every(isBi))) errors.push(`${file}: mistakes must be bilingual items`);

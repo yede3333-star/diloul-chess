@@ -29,6 +29,8 @@ export type OpeningTree = {
   root: string[];
   builtAt: string;
   source: { explorer: string; speeds: string; depth: number; upTo: RankKey };
+  /** Intro slides of the first lesson: a position (moves from the start), marks like "f3e5:best" or "d4". */
+  intro?: { title: Bi; text: Bi; moves: string; shapes?: string[] }[];
   idea?: Bi;
   plans?: Bi[];
   mistakes?: Bi[];

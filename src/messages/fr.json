@@ -355,6 +355,59 @@
     "endNext": "Suivant : entraînement",
     "endRetry": "Refaire la leçon",
     "stars": "{count, plural, one {# étoile sur 3} other {# étoiles sur 3}}",
-    "yourTurn": "À toi : joue le coup indiqué"
+    "yourTurn": "À toi : joue le coup indiqué",
+    "endPositions": "{count, plural, one {# position de mémoire} other {# positions de mémoire}}",
+    "endDrillTitle": "Bravo ! Entraînement terminé",
+    "continue": "Continuer",
+    "endBack": "Retour à l’ouverture"
+  },
+  "lessonGen": {
+    "replayLine": "Retour à cette position…",
+    "drillStart": "De mémoire : joue cette ligne depuis le début.",
+    "drillNext": "Une autre ligne, depuis le début.",
+    "firstMove": "Commence par {san}.",
+    "replyMain": "{opp, select, white {Les Blancs} other {Les Noirs}} jouent le plus souvent {reply}. Ta réponse : {san}.",
+    "replyOther": "Autre réponse : {reply}. Ici, tu joues {san}.",
+    "replyRare": "Réponse plus rare : {reply}. Ta réponse : {san}.",
+    "trap": "Attention ! {reply} est une erreur fréquente : punis-la avec {san}.",
+    "continue": "Continue ton plan : {san}.",
+    "transposition": "Tu connais cette position par une autre ligne : même plan.",
+    "drillFirst": "Quel est ton premier coup ?",
+    "drillMove": "{opp, select, white {Les Blancs} other {Les Noirs}} ont joué {reply}. Que joues-tu ?",
+    "hintPiece": "Bouge {piece, select, p {un pion} n {un cavalier} b {un fou} r {une tour} q {la dame} k {le roi} other {une pièce}}.",
+    "hintCastle": "Roque.",
+    "lessonTitle": "{name} · Leçon {n}",
+    "drillTitle": "{name} · Entraînement {n}"
+  },
+  "openingsHome": {
+    "white": "Avec les Blancs",
+    "vsE4": "Avec les Noirs contre e4",
+    "vsD4": "Avec les Noirs contre d4",
+    "mine": "Mes ouvertures",
+    "mineEmpty": "Choisis une ouverture dans la liste pour commencer.",
+    "soon": "Bientôt",
+    "progress": "{percent} % du cours",
+    "notStarted": "Pas encore commencé"
+  },
+  "opening": {
+    "back": "Ouvertures",
+    "asWhite": "Avec les Blancs",
+    "asBlack": "Avec les Noirs",
+    "tabs": {
+      "label": "Parties de l’ouverture",
+      "course": "Cours",
+      "spar": "Duel",
+      "lines": "Lignes"
+    },
+    "soonTab": "Bientôt : prochaine étape de cette phase.",
+    "idea": "L’idée de l’ouverture",
+    "plans": "Plans typiques",
+    "mistakes": "Erreurs fréquentes",
+    "sectionTitle": "{rank} · Section {n}",
+    "sectionMoves": "{count, plural, one {# nouveau coup} other {# nouveaux coups}}",
+    "ctaStart": "Commencer la première leçon",
+    "ctaContinue": "Continuer",
+    "finished": "Tu as terminé toutes les leçons disponibles de cette ouverture. Bravo !",
+    "notBuilt": "Le cours de cette ouverture est en préparation."
   }
 }

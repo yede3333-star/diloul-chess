@@ -1,7 +1,8 @@
 import type { Metadata } from "next";
-import { getTranslations } from "next-intl/server";
-import { PageIntro } from "@/components/shell/PageIntro";
-import { PrimaryAction } from "@/components/shell/PrimaryAction";
+import { getLocale, getTranslations } from "next-intl/server";
+import { OpeningsHome, type OpeningCard } from "@/components/openings/OpeningsHome";
+import { OPENINGS } from "@/config/openings";
+import { courseSummary, rootFen } from "@/lib/openings/server";
 
 export async function generateMetadata(): Promise<Metadata> {
   const t = await getTranslations("learn.openings");
@@ -9,11 +10,19 @@ export async function generateMetadata(): Promise<Metadata> {
 }
 
 export default async function Page() {
-  const t = await getTranslations();
-  return (
-    <>
-      <PageIntro title={t("learn.openings.title")} intro={t("learn.openings.intro")} coach={t("learn.openings.coach")} soon={t("common.soon")} />
-      <PrimaryAction label={t("learn.cta")} />
-    </>
+  const locale = (await getLocale()) as "ar" | "fr";
+  const cards: OpeningCard[] = await Promise.all(
+    OPENINGS.map(async (def) => {
+      const summary = await courseSummary(def.id);
+      return {
+        id: def.id,
+        name: def.name[locale],
+        side: def.side,
+        group: def.group,
+        fen: rootFen(def),
+        total: summary ? summary.sections.reduce((n, s) => n + s.nodes.length, 0) : 0,
+      };
+    }),
   );
+  return <OpeningsHome cards={cards} />;
 }

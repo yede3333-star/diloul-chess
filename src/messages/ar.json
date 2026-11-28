@@ -355,6 +355,59 @@
     "endNext": "التالي: تمرين",
     "endRetry": "أعد الدرس",
     "stars": "{count, plural, one {نجمة واحدة من 3} two {نجمتان من 3} other {# نجوم من 3}}",
-    "yourTurn": "دورك: العب النقلة المشار إليها"
+    "yourTurn": "دورك: العب النقلة المشار إليها",
+    "endPositions": "{count, plural, one {موقف واحد من الذاكرة} two {موقفان من الذاكرة} few {# مواقف من الذاكرة} many {# موقفًا من الذاكرة} other {# موقف من الذاكرة}}",
+    "endDrillTitle": "أحسنت! أنهيت التمرين",
+    "continue": "متابعة",
+    "endBack": "العودة إلى الافتتاح"
+  },
+  "lessonGen": {
+    "replayLine": "نعود إلى هذا الموقف…",
+    "drillStart": "من الذاكرة: العب هذا الخط من البداية.",
+    "drillNext": "خط آخر، من البداية.",
+    "firstMove": "ابدأ بـ {san}.",
+    "replyMain": "{opp, select, white {الأبيض} other {الأسود}} يلعب هنا غالبًا {reply}. ردّك: {san}.",
+    "replyOther": "ردّ آخر: {reply}. ردّك هنا: {san}.",
+    "replyRare": "ردّ أقل شيوعًا: {reply}. ردّك: {san}.",
+    "trap": "انتبه! {reply} خطأ شائع، وستعاقبه بـ {san}.",
+    "continue": "تابع خطتك: {san}.",
+    "transposition": "هذا موقف تعرفه من خط آخر، فخطتك فيه نفسها.",
+    "drillFirst": "ما أول نقلة لك؟",
+    "drillMove": "{opp, select, white {الأبيض} other {الأسود}} لعب {reply}. ماذا تلعب؟",
+    "hintPiece": "حرّك {piece, select, p {بيدقًا} n {حصانًا} b {فيلًا} r {رخًا} q {الوزير} k {الملك} other {قطعة}}.",
+    "hintCastle": "بيّت ملكك.",
+    "lessonTitle": "{name} · الدرس {n}",
+    "drillTitle": "{name} · التمرين {n}"
+  },
+  "openingsHome": {
+    "white": "بالأبيض",
+    "vsE4": "بالأسود ضد e4",
+    "vsD4": "بالأسود ضد d4",
+    "mine": "افتتاحاتي",
+    "mineEmpty": "اختر افتتاحًا من القائمة لتبدأ تعلّمه.",
+    "soon": "قريبًا",
+    "progress": "{percent}٪ من الدورة",
+    "notStarted": "لم تبدأ بعد"
+  },
+  "opening": {
+    "back": "الافتتاحات",
+    "asWhite": "بالأبيض",
+    "asBlack": "بالأسود",
+    "tabs": {
+      "label": "أقسام الافتتاح",
+      "course": "الدورة",
+      "spar": "المواجهة",
+      "lines": "الخطوط"
+    },
+    "soonTab": "قريبًا: تأتي في الخطوة القادمة من هذه المرحلة.",
+    "idea": "فكرة الافتتاح",
+    "plans": "خطط نموذجية",
+    "mistakes": "أخطاء شائعة",
+    "sectionTitle": "{rank} · القسم {n}",
+    "sectionMoves": "{count, plural, one {نقلة جديدة واحدة} two {نقلتان جديدتان} few {# نقلات جديدة} many {# نقلة جديدة} other {# نقلة جديدة}}",
+    "ctaStart": "ابدأ الدرس الأول",
+    "ctaContinue": "تابع",
+    "finished": "أنهيت كل دروس هذا الافتتاح المتاحة الآن. أحسنت!",
+    "notBuilt": "دورة هذا الافتتاح قيد التحضير."
   }
 }
