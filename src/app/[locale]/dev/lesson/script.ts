@@ -34,6 +34,7 @@ const moveStep = (i: number, prompt: Bi, hint: Bi): LessonStep => ({
 export const LONDON_START: LessonScript = {
   id: "london-start-1",
   title: { ar: "نظام لندن · البداية", fr: "Système de Londres · Les débuts" },
+  mode: "learn",
   orientation: "white",
   startFen: new Chess().fen(),
   steps: [

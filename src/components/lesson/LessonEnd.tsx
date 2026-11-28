@@ -14,23 +14,21 @@ export function LessonEnd({
   mistakes,
   onNext,
   onRetry,
-  sound,
 }: {
   title: string;
   newMoves: number;
   mistakes: number;
   onNext: () => void;
   onRetry: () => void;
-  sound: boolean;
 }) {
   const t = useTranslations("lesson");
   const stars = starsFor(mistakes);
 
+  // One soft chime once the stars have popped.
   useEffect(() => {
-    if (!sound) return;
-    const ids = [0, 1, 2].filter((k) => k < stars).map((k) => window.setTimeout(() => playSound("success"), 450 + k * 320));
-    return () => ids.forEach(clearTimeout);
-  }, [stars, sound]);
+    const id = window.setTimeout(() => playSound("promote"), 350 + stars * 320);
+    return () => clearTimeout(id);
+  }, [stars]);
 
   return (
     <>

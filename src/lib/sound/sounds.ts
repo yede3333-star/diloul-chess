@@ -1,12 +1,22 @@
 /**
- * Board and feedback sounds, synthesized with the Web Audio API.
- * Original sounds generated in code: no audio files, so nothing to license (SPEC §17.6).
- * The AudioContext is created lazily on the first sound, which always follows a user gesture.
+ * Board and feedback sounds: small WAV files in public/sounds/, original and CC0
+ * (made by scripts/gen-sounds.mjs, a physical model of wood; see public/sounds/README.md).
+ *
+ * Files are fetched once (preloadSounds) and decoded on the first sound, which always follows a user
+ * gesture, so the AudioContext is never created before the browser allows it.
+ * Muting is a device preference kept in localStorage and applies to every board.
  */
 
 export type SoundName = "move" | "capture" | "check" | "success" | "error" | "promote";
 
+const NAMES: SoundName[] = ["move", "capture", "check", "success", "error", "promote"];
+const SOUND_KEY = "diloul:sound";
+/** Overall level: the files peak around -5 dB, played a little lower still. */
+const VOLUME = 0.7;
+
 let ctx: AudioContext | null = null;
+const raw = new Map<SoundName, Promise<ArrayBuffer | null>>();
+const decoded = new Map<SoundName, Promise<AudioBuffer | null>>();
 
 function audio(): AudioContext | null {
   if (typeof window === "undefined") return null;
@@ -19,67 +29,75 @@ function audio(): AudioContext | null {
   return ctx;
 }
 
-/** One short tone with a fast attack and an exponential release. */
-function tone(c: AudioContext, freq: number, start: number, dur: number, gain: number, type: OscillatorType = "sine") {
-  const osc = c.createOscillator();
-  const g = c.createGain();
-  osc.type = type;
-  osc.frequency.setValueAtTime(freq, start);
-  g.gain.setValueAtTime(0.0001, start);
-  g.gain.exponentialRampToValueAtTime(gain, start + 0.008);
-  g.gain.exponentialRampToValueAtTime(0.0001, start + dur);
-  osc.connect(g).connect(c.destination);
-  osc.start(start);
-  osc.stop(start + dur + 0.02);
+function fetchRaw(name: SoundName) {
+  let p = raw.get(name);
+  if (!p) {
+    p = fetch(`/sounds/${name}.wav`)
+      .then((r) => (r.ok ? r.arrayBuffer() : null))
+      .catch(() => null);
+    raw.set(name, p);
+  }
+  return p;
 }
 
-/** A soft wooden knock: filtered noise burst. */
-function knock(c: AudioContext, start: number, gain: number, cutoff: number) {
-  const len = Math.floor(c.sampleRate * 0.06);
-  const buf = c.createBuffer(1, len, c.sampleRate);
-  const data = buf.getChannelData(0);
-  for (let i = 0; i < len; i++) data[i] = (Math.random() * 2 - 1) * Math.pow(1 - i / len, 3);
-  const src = c.createBufferSource();
-  src.buffer = buf;
-  const filter = c.createBiquadFilter();
-  filter.type = "lowpass";
-  filter.frequency.value = cutoff;
-  const g = c.createGain();
-  g.gain.value = gain;
-  src.connect(filter).connect(g).connect(c.destination);
-  src.start(start);
+/** Downloads the sound files in the background (call on mount of a board). Nothing is decoded yet. */
+export function preloadSounds() {
+  if (typeof window === "undefined" || !isSoundOn()) return;
+  NAMES.forEach(fetchRaw);
+}
+
+function buffer(c: AudioContext, name: SoundName) {
+  let p = decoded.get(name);
+  if (!p) {
+    p = fetchRaw(name).then((bytes) => (bytes ? c.decodeAudioData(bytes.slice(0)).catch(() => null) : null));
+    decoded.set(name, p);
+  }
+  return p;
+}
+
+/** Whether sounds are on for this device (default on). */
+export function isSoundOn(): boolean {
+  try {
+    return localStorage.getItem(SOUND_KEY) !== "off";
+  } catch {
+    return true;
+  }
+}
+
+const listeners = new Set<() => void>();
+
+export function setSoundOn(on: boolean) {
+  try {
+    if (on) localStorage.removeItem(SOUND_KEY);
+    else localStorage.setItem(SOUND_KEY, "off");
+  } catch {}
+  if (on) preloadSounds();
+  listeners.forEach((fn) => fn());
+}
+
+/** For useSyncExternalStore: re-render when sounds are switched on or off. */
+export function subscribeSound(fn: () => void) {
+  listeners.add(fn);
+  return () => {
+    listeners.delete(fn);
+  };
 }
 
 export function playSound(name: SoundName) {
+  if (!isSoundOn()) return;
   const c = audio();
   if (!c) return;
-  const t = c.currentTime + 0.005;
-  switch (name) {
-    case "move":
-      knock(c, t, 0.9, 1800);
-      break;
-    case "capture":
-      knock(c, t, 1, 1100);
-      knock(c, t + 0.045, 0.7, 2200);
-      break;
-    case "check":
-      knock(c, t, 0.8, 1800);
-      tone(c, 880, t + 0.02, 0.18, 0.08, "triangle");
-      break;
-    case "promote":
-      tone(c, 660, t, 0.12, 0.08, "triangle");
-      tone(c, 990, t + 0.09, 0.2, 0.08, "triangle");
-      break;
-    case "success":
-      tone(c, 523.25, t, 0.16, 0.09, "triangle");
-      tone(c, 659.25, t + 0.1, 0.16, 0.09, "triangle");
-      tone(c, 783.99, t + 0.2, 0.28, 0.09, "triangle");
-      break;
-    case "error":
-      tone(c, 220, t, 0.16, 0.09, "square");
-      tone(c, 185, t + 0.12, 0.22, 0.07, "square");
-      break;
-  }
+  const asked = performance.now();
+  void buffer(c, name).then((buf) => {
+    // The very first sound may wait for decoding; if that took too long, skip it rather than play late.
+    if (!buf || performance.now() - asked > 250) return;
+    const src = c.createBufferSource();
+    src.buffer = buf;
+    const g = c.createGain();
+    g.gain.value = VOLUME;
+    src.connect(g).connect(c.destination);
+    src.start();
+  });
 }
 
 /** Short vibration on supported phones (wrong move). */

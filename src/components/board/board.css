@@ -55,6 +55,11 @@
 }
 
 /* Right/wrong taps: tinted square + a ✓ / ✗ disc, so the meaning never relies on color alone. */
+/* The move to play in a lesson: both squares lightly tinted, under the arrow. */
+.dboard cg-board square.marked-soft {
+  background-color: color-mix(in srgb, var(--board-arrow) 30%, transparent);
+}
+
 .dboard cg-board square.marked-ok {
   background-color: color-mix(in srgb, var(--success) 35%, transparent);
 }

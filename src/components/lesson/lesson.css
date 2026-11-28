@@ -5,6 +5,26 @@
   flex: 0 1 min(100vw, 560px);
 }
 
+/* Spare height: most of it above the board, at most a little between the bubble and the button. */
+.lesson-spare-top {
+  flex: 3 1 0;
+  min-height: 0;
+  overflow: hidden;
+  container-type: size;
+}
+
+/* The lesson title sits in the spare height; on short screens there is none, so it hides. */
+@container (max-height: 43px) {
+  .lesson-topic {
+    display: none;
+  }
+}
+
+.lesson-spare-bottom {
+  flex: 1 1 0;
+  max-height: 16px;
+}
+
 /* Square board: min(available width, available height). */
 .lesson-board {
   width: min(100cqw, 100cqh);

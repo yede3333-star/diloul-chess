@@ -40,6 +40,12 @@ export type LessonStep =
 
 export type LessonScript = {
   id: string;
+  /**
+   * "learn": the player sees the line for the first time, so the move is shown at once (arrow and
+   * highlighted squares) and there is no hint button.
+   * "practice" (drill, review): played from memory; a hint button, and the arrow after two mistakes.
+   */
+  mode: "learn" | "practice";
   title: Bi;
   orientation: "white" | "black";
   /** Position shown before the first step, so the first slide's pieces slide into place. */

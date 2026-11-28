@@ -3,14 +3,15 @@
 import "./lesson.css";
 
 import { Chess, type Square } from "chess.js";
-import { Volume2, VolumeX, X } from "lucide-react";
+import { BookOpen, Volume2, VolumeX, X } from "lucide-react";
 import { useLocale, useTranslations } from "next-intl";
 import { useCallback, useEffect, useRef, useState, type PointerEvent } from "react";
-import { Board, type BoardMove, type BoardShape } from "@/components/board/Board";
+import { Board, type BoardMove, type BoardShape, type SquareMark } from "@/components/board/Board";
 import { CoachBubble, type CoachTone } from "@/components/coach/CoachBubble";
 import { BackArrow } from "@/components/ui/icons";
 import { useRouter } from "@/i18n/navigation";
 import { playSound } from "@/lib/sound/sounds";
+import { useSoundOn } from "@/lib/sound/useSoundOn";
 import { LessonEnd } from "./LessonEnd";
 import type { LessonScript, LessonStep } from "./types";
 
@@ -42,7 +43,8 @@ export function LessonPlayer({ script, exitHref = "/learn/openings" }: { script:
   const [mistakes, setMistakes] = useState(0);
   const [feedback, setFeedback] = useState<Feedback | null>(null);
   const [badge, setBadge] = useState<Badge | null>(null);
-  const [sound, setSound] = useState(true);
+  const [sound, setSound] = useSoundOn();
+  const learn = script.mode === "learn";
   const [quit, setQuit] = useState(false);
   const [run, setRun] = useState(0);
 
@@ -91,7 +93,7 @@ export function LessonPlayer({ script, exitHref = "/learn/openings" }: { script:
       setView({ fen: move.fenAfter, lastMove: [move.from, move.to] });
       setBadge({ square: move.to, ok: true, key: Date.now() });
       setFeedback({ tone: "success", title: praise });
-      if (sound) later(() => playSound("success"), 160);
+      later(() => playSound("success"), 160);
       const reply = step.reply;
       if (!reply) {
         later(() => goTo(i + 1), REPLY_DELAY);
@@ -102,7 +104,7 @@ export function LessonPlayer({ script, exitHref = "/learn/openings" }: { script:
         const r = game.move(reply);
         setBadge(null);
         setView({ fen: game.fen(), lastMove: [r.from, r.to] });
-        if (sound) playSound(game.inCheck() ? "check" : r.captured ? "capture" : "move");
+        playSound(game.inCheck() ? "check" : r.captured ? "capture" : "move");
         later(() => goTo(i + 1), NEXT_DELAY);
       }, REPLY_DELAY);
       return;
@@ -117,7 +119,7 @@ export function LessonPlayer({ script, exitHref = "/learn/openings" }: { script:
     setFeedback({
       tone: "danger",
       title: t("wrongTitle"),
-      text: n >= 2 ? t("followArrow") : step.hint[locale],
+      text: learn || n >= 2 ? t("followArrow") : step.hint[locale],
     });
     return false;
   };
@@ -133,12 +135,14 @@ export function LessonPlayer({ script, exitHref = "/learn/openings" }: { script:
     });
   };
 
-  // Solution arrow after two mistakes (or a hint).
+  // The move to play: shown at once when learning; from memory in practice (arrow after two mistakes or a hint).
   let shapes: BoardShape[] = [];
+  let marks: Partial<Record<Square, SquareMark>> | undefined;
   if (step && step.kind !== "move") shapes = step.shapes ?? [];
-  if (step?.kind === "move" && wrongHere >= 2 && !busy) {
+  if (step?.kind === "move" && (learn || wrongHere >= 2) && !busy) {
     const m = new Chess(step.fen).move(step.expect[0]);
     shapes = [{ from: m.from, to: m.to, tone: "best" }];
+    if (learn) marks = { [m.from]: "marked-soft", [m.to]: "marked-soft" };
   }
 
   // Slides can be flipped with a swipe (mirrored in RTL).
@@ -208,7 +212,7 @@ export function LessonPlayer({ script, exitHref = "/learn/openings" }: { script:
           className="grid size-11 shrink-0 place-items-center rounded-full text-fg-muted transition-colors hover:bg-surface-2 hover:text-fg"
           aria-label={sound ? t("soundOn") : t("soundOff")}
           aria-pressed={sound}
-          onClick={() => setSound((s) => !s)}
+          onClick={() => setSound(!sound)}
         >
           {sound ? <Volume2 className="size-6" aria-hidden="true" /> : <VolumeX className="size-6" aria-hidden="true" />}
         </button>
@@ -221,13 +225,20 @@ export function LessonPlayer({ script, exitHref = "/learn/openings" }: { script:
           mistakes={mistakes}
           onRetry={restart}
           onNext={() => router.push(exitHref)}
-          sound={sound}
         />
       ) : (
         <>
-          {/* Board right under the bar, bubble right under the board; spare height goes above the button.
-              On short screens the board shrinks instead (square: min(width, height)). */}
+          {/* Board, bubble and button stay together at the bottom, within thumb reach. Spare height on tall
+              screens goes above the board; on short screens the board shrinks (square: min(width, height)). */}
           <div className="flex min-h-0 flex-1 flex-col">
+            <div className="lesson-spare-top px-4">
+              <p className="lesson-topic flex items-center gap-2 pt-1 font-heading font-bold text-fg-muted">
+                <span className="grid size-8 shrink-0 place-items-center rounded-full bg-accent text-on-accent">
+                  <BookOpen className="size-4" aria-hidden="true" />
+                </span>
+                <span className="truncate">{script.title[locale]}</span>
+              </p>
+            </div>
             <div className="lesson-stage relative min-h-0" onPointerDown={onPointerDown} onPointerUp={onPointerUp}>
               <div className="absolute inset-0 grid place-items-center">
                 <div className="lesson-board relative">
@@ -238,6 +249,7 @@ export function LessonPlayer({ script, exitHref = "/learn/openings" }: { script:
                     interactive={step?.kind === "move" && !busy ? script.orientation : false}
                     onMove={onMove}
                     shapes={shapes}
+                    marks={marks}
                     sounds={sound}
                     animationMs={320}
                   />
@@ -246,7 +258,7 @@ export function LessonPlayer({ script, exitHref = "/learn/openings" }: { script:
               </div>
             </div>
 
-            <div className="flex h-[128px] shrink-0 flex-col px-4 pt-3">
+            <div className="flex h-[116px] shrink-0 flex-col px-4 pt-3">
               {bubble && (
                 <CoachBubble
                   key={`${i}-${feedback?.title ?? ""}-${feedback?.text ?? ""}`}
@@ -257,6 +269,7 @@ export function LessonPlayer({ script, exitHref = "/learn/openings" }: { script:
                 />
               )}
             </div>
+            <div className="lesson-spare-bottom" />
           </div>
 
           <footer className="flex shrink-0 gap-3 px-4 pt-3 pb-[max(16px,env(safe-area-inset-bottom))]">
@@ -265,7 +278,12 @@ export function LessonPlayer({ script, exitHref = "/learn/openings" }: { script:
                 <BackArrow />
               </button>
             )}
-            {step?.kind === "move" ? (
+            {step?.kind === "move" && learn ? (
+              // Same height as a button, so nothing moves between steps.
+              <p className="flex min-h-14 flex-1 items-center justify-center text-center text-[15px] font-semibold text-fg-muted">
+                {t("yourTurn")}
+              </p>
+            ) : step?.kind === "move" ? (
               <button type="button" className="btn btn-secondary btn-lg flex-1" disabled={busy || wrongHere >= 2} onClick={showHint}>
                 {t("hint")}
               </button>

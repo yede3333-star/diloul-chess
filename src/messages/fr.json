@@ -354,6 +354,7 @@
     "endReview": "On te reproposera ces coups en révision pour qu’ils restent en mémoire.",
     "endNext": "Suivant : entraînement",
     "endRetry": "Refaire la leçon",
-    "stars": "{count, plural, one {# étoile sur 3} other {# étoiles sur 3}}"
+    "stars": "{count, plural, one {# étoile sur 3} other {# étoiles sur 3}}",
+    "yourTurn": "À toi : joue le coup indiqué"
   }
 }

@@ -13,7 +13,7 @@ import type { Key } from "chessground/types";
 import { useTranslations } from "next-intl";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import { isPromotion, legalDests, turnColor, type Color } from "@/lib/chess/legal";
-import { buzz, playSound } from "@/lib/sound/sounds";
+import { buzz, playSound, preloadSounds } from "@/lib/sound/sounds";
 
 export type PromotionPiece = "q" | "r" | "b" | "n";
 
@@ -36,7 +36,7 @@ export type BoardShape = {
   tone?: "best" | "alt" | "danger" | "hint";
 };
 
-export type SquareMark = "marked" | "marked-ok" | "marked-bad";
+export type SquareMark = "marked" | "marked-ok" | "marked-bad" | "marked-soft";
 
 type Props = {
   /** The position shown. The board is controlled: after an accepted move, pass the new FEN. */
@@ -231,6 +231,7 @@ export function Board({
   // Create Chessground once.
   useEffect(() => {
     if (!cgRef.current) return;
+    if (latest.current.sounds) preloadSounds();
     const api = Chessground(cgRef.current, {
       ...buildConfig(),
       drawable: { enabled: true, visible: true, brushes: brushes(cgRef.current) },
