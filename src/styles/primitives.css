@@ -1,0 +1,290 @@
+/*
+ * Diloul visual primitives, built only from tokens.css.
+ * The "raised" language: primary buttons and path nodes have a solid bottom edge
+ * and sink into it when pressed, like a game button.
+ */
+
+@layer components {
+  /* ---------- buttons ---------- */
+  .btn {
+    --edge: var(--surface-edge);
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: var(--space-2);
+    min-height: var(--tap-min);
+    padding: 10px 22px;
+    border-radius: var(--r-pill);
+    font-family: var(--ff-body);
+    font-size: var(--fs-base);
+    font-weight: 700;
+    line-height: 1.2;
+    white-space: nowrap;
+    cursor: pointer;
+    user-select: none;
+    box-shadow: 0 var(--edge-depth) 0 var(--edge);
+    transition:
+      transform var(--dur-fast) var(--motion-ease),
+      box-shadow var(--dur-fast) var(--motion-ease),
+      background-color var(--dur-fast) var(--motion-ease);
+  }
+
+  .btn svg {
+    width: 20px;
+    height: 20px;
+    flex-shrink: 0;
+  }
+
+  .btn:active:not(:disabled) {
+    transform: translateY(var(--edge-depth));
+    box-shadow: 0 0 0 var(--edge);
+  }
+
+  .btn:disabled,
+  .btn[aria-disabled="true"] {
+    cursor: not-allowed;
+    opacity: 0.5;
+  }
+
+  .btn-primary {
+    --edge: var(--accent-edge);
+    background: var(--accent);
+    color: var(--on-accent);
+  }
+
+  .btn-primary:hover:not(:disabled) {
+    background: var(--accent-hover);
+  }
+
+  .btn-secondary {
+    background: var(--surface-2);
+    color: var(--fg);
+  }
+
+  .btn-secondary:hover:not(:disabled) {
+    background: var(--surface-3);
+  }
+
+  .btn-ghost {
+    background: transparent;
+    color: var(--accent-text);
+    box-shadow: none;
+  }
+
+  .btn-ghost:active:not(:disabled) {
+    transform: none;
+    background: var(--accent-soft);
+  }
+
+  .btn-lg {
+    min-height: 54px;
+    padding-inline: 28px;
+    font-size: var(--fs-lg);
+  }
+
+  .btn-sm {
+    min-height: 36px;
+    padding: 6px 14px;
+    font-size: var(--fs-sm);
+  }
+
+  .btn-icon {
+    width: var(--tap-min);
+    padding: 0;
+  }
+
+  /* ---------- surfaces ---------- */
+  .card {
+    background: var(--surface);
+    color: var(--fg);
+    border: 1px solid var(--border);
+    border-radius: var(--r-card);
+    box-shadow: var(--sh-card);
+  }
+
+  .chip {
+    display: inline-flex;
+    align-items: center;
+    gap: var(--space-1);
+    padding: 3px 10px;
+    border-radius: var(--r-pill);
+    background: var(--surface-2);
+    color: var(--fg-muted);
+    font-size: var(--fs-sm);
+    font-weight: 600;
+  }
+
+  /* ---------- path node (used by <PathMap>) ---------- */
+  .path-node {
+    /* --node is inherited from the section (set on a parent); section 1 if none */
+    --node-edge: color-mix(in srgb, var(--node, var(--section-1)) 55%, #000);
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: 70px;
+    height: 64px;
+    border-radius: 50%;
+    background: var(--node, var(--section-1));
+    color: var(--on-section);
+    box-shadow: 0 var(--node-depth) 0 var(--node-edge);
+    cursor: pointer;
+    transition:
+      transform var(--dur-fast) var(--motion-ease),
+      box-shadow var(--dur-fast) var(--motion-ease);
+  }
+
+  .path-node.path-node-sm {
+    --node-depth: 4px;
+    width: 50px;
+    height: 46px;
+  }
+
+  .path-node.path-node-sm svg {
+    width: 22px;
+    height: 22px;
+  }
+
+  .path-node svg {
+    width: 30px;
+    height: 30px;
+    stroke-width: 2.4;
+  }
+
+  .path-node:active {
+    transform: translateY(var(--node-depth));
+    box-shadow: 0 0 0 var(--node-edge);
+  }
+
+  .path-node[data-state="locked"] {
+    --node-edge: var(--surface-edge);
+    background: var(--surface-2);
+    color: var(--fg-muted);
+    cursor: default;
+  }
+
+  .path-node[data-state="locked"]:active {
+    transform: none;
+    box-shadow: 0 var(--node-depth) 0 var(--node-edge);
+  }
+
+  .path-node[data-state="current"] {
+    animation: path-node-glow 2.4s ease-in-out infinite;
+  }
+
+  @keyframes path-node-glow {
+    0%,
+    100% {
+      box-shadow:
+        0 var(--node-depth) 0 var(--node-edge),
+        0 0 0 6px var(--bg),
+        0 0 0 9px color-mix(in srgb, var(--accent) 65%, transparent),
+        0 0 26px 8px color-mix(in srgb, var(--accent) 25%, transparent);
+    }
+    50% {
+      box-shadow:
+        0 var(--node-depth) 0 var(--node-edge),
+        0 0 0 6px var(--bg),
+        0 0 0 12px color-mix(in srgb, var(--accent) 35%, transparent),
+        0 0 34px 12px color-mix(in srgb, var(--accent) 15%, transparent);
+    }
+  }
+
+  /* Small corner badge: ✓ for completed, lock for locked. The main icon always shows the node type. */
+  .path-node-badge {
+    position: absolute;
+    inset-inline-end: -4px;
+    bottom: -4px;
+    display: grid;
+    place-items: center;
+    width: 26px;
+    height: 26px;
+    border-radius: 50%;
+    border: 3px solid var(--bg);
+    background: var(--surface);
+    color: var(--accent-text);
+  }
+
+  .path-node-badge svg {
+    width: 13px;
+    height: 13px;
+    stroke-width: 3.2;
+  }
+
+  .path-node[data-state="locked"] .path-node-badge {
+    background: var(--surface-3);
+    color: var(--fg-muted);
+  }
+
+  .path-bubble {
+    position: absolute;
+    bottom: calc(100% + 16px);
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 5px 16px;
+    border-radius: var(--r-sm);
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--accent-text);
+    font-weight: 800;
+    font-size: var(--fs-sm);
+    white-space: nowrap;
+    box-shadow: var(--sh-pop);
+  }
+
+  .path-bubble::after {
+    content: "";
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    width: 10px;
+    height: 10px;
+    background: var(--surface);
+    border-right: 1px solid var(--border);
+    border-bottom: 1px solid var(--border);
+    transform: translate(-50%, -5px) rotate(45deg);
+  }
+
+  /* ---------- section card: night sky with a sand dune ---------- */
+  .section-card {
+    --sec: var(--section-1);
+    position: relative;
+    overflow: hidden;
+    border: 1px solid var(--border);
+    border-radius: calc(var(--r-card) - 4px);
+    color: var(--fg);
+    background-color: var(--surface-2);
+    background-image:
+      radial-gradient(circle at 14% 24%, color-mix(in srgb, var(--fg) 70%, transparent) 0 1px, transparent 1.6px),
+      radial-gradient(circle at 31% 12%, color-mix(in srgb, var(--fg) 55%, transparent) 0 1px, transparent 1.6px),
+      radial-gradient(circle at 47% 30%, color-mix(in srgb, var(--fg) 45%, transparent) 0 1px, transparent 1.6px),
+      radial-gradient(circle at 62% 10%, color-mix(in srgb, var(--fg) 60%, transparent) 0 1.2px, transparent 1.8px),
+      linear-gradient(165deg, color-mix(in srgb, var(--sec) 18%, var(--surface-2)), var(--surface));
+  }
+
+  .section-card::after {
+    content: "";
+    position: absolute;
+    inset: auto -12% -18% -12%;
+    height: 70%;
+    background:
+      radial-gradient(58% 64% at 28% 100%, color-mix(in srgb, var(--sec) 42%, transparent) 99%, transparent 100%),
+      radial-gradient(50% 52% at 86% 100%, color-mix(in srgb, var(--sec) 26%, transparent) 99%, transparent 100%);
+    pointer-events: none;
+  }
+
+  .section-card > * {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .path-node[data-state="current"] {
+    animation: none;
+    box-shadow:
+      0 var(--node-depth) 0 var(--node-edge),
+      0 0 0 6px var(--bg),
+      0 0 0 9px color-mix(in srgb, var(--accent) 65%, transparent);
+  }
+}

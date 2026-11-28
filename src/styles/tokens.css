@@ -1,0 +1,261 @@
+/*
+ * Diloul design system: tokens.
+ * Direction: "Nuit du désert" (indigo night, sand-gold accent, turquoise for info)
+ * + raised buttons and path nodes from "Terrain" (solid bottom edge, pressed on tap).
+ *
+ * Every color in the app comes from here. Components never use literal colors.
+ * Dark is the default (:root). Light is opt-in via data-theme="light" on <html>.
+ * The .theme-dark / .theme-light classes allow showing both side by side (dev pages).
+ */
+
+/* ---------- dark (default) ---------- */
+:root,
+.theme-dark {
+  color-scheme: dark;
+
+  /* surfaces & text */
+  --bg: #11152a;
+  --surface: #1a1f37;
+  --surface-2: #242a45;
+  --surface-3: #2e3556;
+  --border: #323a5a;
+  --fg: #eee7da;
+  --fg-muted: #aaa6b8;
+  --fg-subtle: #7f7d93; /* decorative only, never for text that must be read */
+
+  /* the single accent (primary actions) */
+  --accent: #e9b864;
+  --accent-edge: #a8722a; /* bottom edge of raised buttons */
+  --surface-edge: #12162a; /* bottom edge of raised secondary buttons and locked nodes */
+  --accent-hover: #f0c57a;
+  --on-accent: #21160a;
+  --accent-soft: rgb(233 184 100 / 0.13);
+  --accent-text: #e9b864; /* accent as text/icon color on surfaces */
+
+  /* semantic */
+  --success: #4fc9a4;
+  --success-soft: rgb(79 201 164 / 0.14);
+  --danger: #ef7468;
+  --danger-soft: rgb(239 116 104 / 0.14);
+  --warning: #f0c45c;
+  --warning-soft: rgb(240 196 92 / 0.14);
+  --info: #45bdb4;
+  --info-soft: rgb(69 189 180 / 0.14);
+  --on-semantic: #10131f; /* text/icons on filled success/danger/warning chips */
+
+  /* chrome */
+  --nav-bg: rgb(29 34 60 / 0.92);
+  --overlay: rgb(8 10 22 / 0.6);
+  --focus-ring: #8fd6cf;
+
+  /* path sections (cycle through them) */
+  --section-1: #e2a84e; /* sand gold */
+  --section-2: #3fb8af; /* turquoise */
+  --section-3: #d9735e; /* terracotta */
+  --section-4: #918ce9; /* lavender */
+  --section-5: #5ea4e8; /* sky */
+  --section-6: #d9799c; /* rose */
+  --on-section: #15130f;
+
+  /* edges & shadows */
+  --edge-depth: 4px;
+  --node-depth: 6px;
+  --sh-card: 0 1px 0 rgb(255 255 255 / 0.03) inset, 0 12px 30px -20px rgb(0 0 0 / 0.7);
+  --sh-float: 0 14px 34px -16px rgb(0 0 0 / 0.65);
+  --sh-pop: 0 8px 20px -8px rgb(0 0 0 / 0.55);
+}
+
+/* ---------- light ---------- */
+:root[data-theme="light"],
+.theme-light {
+  color-scheme: light;
+
+  --bg: #eef0f6;
+  --surface: #fafbfe;
+  --surface-2: #e3e6f0;
+  --surface-3: #d6dae8;
+  --border: #d3d8e6;
+  --fg: #1b1f33;
+  --fg-muted: #5d6279;
+  --fg-subtle: #9197ad;
+
+  --accent: #e3a548;
+  --accent-edge: #a9711f;
+  --surface-edge: #c3c8d8;
+  --accent-hover: #eab25a;
+  --on-accent: #21160a;
+  --accent-soft: rgb(200 131 46 / 0.12);
+  --accent-text: #8a5814;
+
+  --success: #16805f;
+  --success-soft: rgb(22 128 95 / 0.12);
+  --danger: #c0443a;
+  --danger-soft: rgb(192 68 58 / 0.1);
+  --warning: #946200;
+  --warning-soft: rgb(148 98 0 / 0.1);
+  --info: #127a73;
+  --info-soft: rgb(18 122 115 / 0.1);
+  --on-semantic: #ffffff;
+
+  --nav-bg: rgb(250 251 254 / 0.94);
+  --overlay: rgb(27 31 51 / 0.4);
+  --focus-ring: #127a73;
+
+  --section-1: #d39437;
+  --section-2: #2aa59c;
+  --section-3: #cf6650;
+  --section-4: #8681e0;
+  --section-5: #4f95dc;
+  --section-6: #cf6a8f;
+  --on-section: #15130f;
+
+  --sh-card: 0 1px 2px rgb(27 31 51 / 0.06), 0 10px 26px -20px rgb(27 31 51 / 0.35);
+  --sh-float: 0 12px 30px -16px rgb(27 31 51 / 0.35);
+  --sh-pop: 0 8px 20px -10px rgb(27 31 51 / 0.3);
+}
+
+/* ---------- colorblind mode (settings): red/green become orange/blue, icons carry the meaning too ---------- */
+:root[data-cvd="on"] {
+  --success: #4f9bef;
+  --success-soft: rgb(79 155 239 / 0.14);
+  --danger: #f09a3e;
+  --danger-soft: rgb(240 154 62 / 0.14);
+  --move-best: #4f9bef;
+  --move-good: #7fb6f2;
+  --move-blunder: #f09a3e;
+}
+
+:root[data-theme="light"][data-cvd="on"] {
+  --success: #1f64b8;
+  --danger: #b35a00;
+}
+
+/* ---------- theme-independent tokens ---------- */
+:root {
+  /* ranks (SPEC §5.1) */
+  --rank-start: #5b8def; /* blue */
+  --rank-novice: #46b27a; /* green */
+  --rank-amateur: #3cb7c4; /* sky */
+  --rank-trainee: #9b7be6; /* violet */
+  --rank-skilled: #e98f45; /* orange */
+  --rank-expert: #e0605a; /* red */
+  --rank-master: #e2b04f; /* gold */
+  --on-rank: #14162a;
+
+  /* move classification (SPEC §11.3) */
+  --move-book: #d1a26a;
+  --move-best: #3fbf8f;
+  --move-good: #8cc46a;
+  --move-inaccuracy: #f0c45c;
+  --move-mistake: #ec8c45;
+  --move-blunder: #e5524c;
+  --on-move: #16140f;
+
+  /* radii (SPEC §4.1: 16–24px cards, full buttons) */
+  --r-xs: 6px;
+  --r-sm: 10px;
+  --r-md: 16px;
+  --r-card: 24px;
+  --r-pill: 999px;
+  --r-board: 10px;
+
+  /* spacing (4px grid) */
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 20px;
+  --space-6: 24px;
+  --space-8: 32px;
+  --space-10: 40px;
+  --space-12: 48px;
+  --gutter: 16px;
+  --tap-min: 44px;
+
+  /* type scale (body ≥ 16px) */
+  --fs-xs: 12px;
+  --fs-sm: 14px;
+  --fs-base: 16px;
+  --fs-lg: 18px;
+  --fs-xl: 22px;
+  --fs-2xl: 28px;
+  --fs-3xl: 36px;
+  --fs-display: 44px;
+  --lh-body: 1.7;
+  --lh-tight: 1.25;
+
+  /* motion (SPEC §4.1: 150–300ms, off with prefers-reduced-motion) */
+  --dur-fast: 150ms;
+  --dur: 220ms;
+  --dur-slow: 300ms;
+  --motion-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+  --motion-spring: cubic-bezier(0.34, 1.4, 0.64, 1);
+}
+
+/* ---------- board themes (data-board on <html>; sand is the default) ---------- */
+:root,
+[data-board="sand"] {
+  --board-light: #f2ead9; /* pale, airy desert sand */
+  --board-dark: #d2b98f;
+  --board-last: rgb(233 184 100 / 0.55);
+  --board-selected: rgb(69 189 180 / 0.5);
+  --board-dest: rgb(27 31 51 / 0.28);
+  --board-arrow: #2f9e86;
+  --board-arrow-alt: #4a74c9;
+}
+
+[data-board="wood"] {
+  --board-light: #e6c69a; /* rich, dark walnut */
+  --board-dark: #9e6840;
+  --board-last: rgb(214 205 92 / 0.55);
+  --board-selected: rgb(20 85 30 / 0.45);
+  --board-dest: rgb(20 85 30 / 0.4);
+  --board-arrow: #3c9c5a;
+  --board-arrow-alt: #4a7fd0;
+}
+
+[data-board="night"] {
+  --board-light: #cdd2e3;
+  --board-dark: #5f6b96;
+  --board-last: rgb(69 189 180 / 0.5);
+  --board-selected: rgb(233 184 100 / 0.5);
+  --board-dest: rgb(17 21 42 / 0.35);
+  --board-arrow: #e2a84e;
+  --board-arrow-alt: #45bdb4;
+}
+
+[data-board="green"] {
+  --board-light: #e8ecd2;
+  --board-dark: #7b9a5c;
+  --board-last: rgb(245 222 90 / 0.55);
+  --board-selected: rgb(20 85 30 / 0.45);
+  --board-dest: rgb(20 60 20 / 0.35);
+  --board-arrow: #2f6fb3;
+  --board-arrow-alt: #c98a17;
+}
+
+/* ---------- fonts (next/font sets --font-kufi, --font-naskh-sans, --font-latin on <html>) ---------- */
+:root {
+  --ff-heading: var(--font-kufi), var(--font-latin), system-ui, sans-serif;
+  --ff-body: var(--font-naskh-sans), var(--font-latin), system-ui, sans-serif;
+  --ff-mono: ui-monospace, "SFMono-Regular", Menlo, monospace;
+}
+
+:root:lang(fr),
+[lang="fr"] {
+  --ff-heading: var(--font-latin), system-ui, sans-serif;
+  --ff-body: var(--font-latin), system-ui, sans-serif;
+}
+
+[lang="ar"] {
+  --ff-heading: var(--font-kufi), var(--font-latin), system-ui, sans-serif;
+  --ff-body: var(--font-naskh-sans), var(--font-latin), system-ui, sans-serif;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --dur-fast: 0ms;
+    --dur: 0ms;
+    --dur-slow: 0ms;
+  }
+}

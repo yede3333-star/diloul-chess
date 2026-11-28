@@ -1,0 +1,309 @@
+{
+  "meta": {
+    "title": "Diloul Chess",
+    "description": "Apprends les échecs gratuitement : bases, ouvertures, finales, problèmes et analyse de tes parties."
+  },
+  "brand": {
+    "name": "Diloul"
+  },
+  "nav": {
+    "main": "Navigation principale",
+    "home": "Diloul : retour à « Apprendre »",
+    "learn": "Apprendre",
+    "games": "Mes parties",
+    "puzzles": "Problèmes",
+    "profile": "Profil"
+  },
+  "streak": {
+    "label": "{count, plural, =0 {Ta série quotidienne n’a pas encore commencé} one {Série de # jour} other {Série de # jours}}"
+  },
+  "common": {
+    "soon": "Bientôt"
+  },
+  "learn": {
+    "tabs": {
+      "label": "Rubriques d’apprentissage",
+      "basics": "Bases",
+      "openings": "Ouvertures",
+      "endgames": "Finales"
+    },
+    "cta": "Commencer",
+    "basics": {
+      "title": "Bases",
+      "intro": "Du déplacement des pièces aux motifs tactiques, chapitre après chapitre.",
+      "coach": "On commence par les règles : le déplacement de chaque pièce, puis le mat, puis la tactique."
+    },
+    "openings": {
+      "title": "Ouvertures",
+      "intro": "Construis un répertoire avec les Blancs et les Noirs, et révise-le pour ne pas l’oublier.",
+      "coach": "Premières ouvertures : Système de Londres, Gambit dame, Partie italienne, Caro-Kann, Défense slave et Sicilienne Najdorf."
+    },
+    "endgames": {
+      "title": "Finales",
+      "intro": "Du mat avec la dame jusqu’à la position de Lucena, contre la meilleure défense.",
+      "coach": "En finale, connaître l’idée ne suffit pas : tu la joueras contre une défense parfaite."
+    }
+  },
+  "games": {
+    "title": "Mes parties",
+    "intro": "Importe tes parties depuis Chess.com et Lichess, puis analyse-les avec Stockfish.",
+    "coach": "Tu verras ici où tu gagnes, où tu perds, et quelles ouvertures travailler.",
+    "cta": "Synchroniser les parties"
+  },
+  "puzzles": {
+    "title": "Problèmes",
+    "intro": "Des problèmes tirés de la base ouverte de Lichess, à ta difficulté.",
+    "coach": "Chaque jour, un problème commun à tous les joueurs, et un rang propre aux problèmes.",
+    "cta": "Résoudre des problèmes"
+  },
+  "profile": {
+    "title": "Profil",
+    "guest": "Invité",
+    "guestNote": "Ta progression est enregistrée sur cet appareil uniquement.",
+    "account": "Compte",
+    "level": "Ton niveau de départ :",
+    "linked": "Comptes liés :",
+    "admin": "Tableau de bord"
+  },
+  "settings": {
+    "title": "Réglages",
+    "language": "Langue",
+    "theme": "Apparence",
+    "themeDark": "Sombre",
+    "themeLight": "Clair",
+    "board": "Thème de l’échiquier",
+    "boards": {
+      "sand": "Sable",
+      "wood": "Bois classique",
+      "night": "Nuit",
+      "green": "Vert doux"
+    }
+  },
+  "languageNames": {
+    "ar": "العربية",
+    "fr": "Français"
+  },
+  "notFound": {
+    "title": "Page introuvable",
+    "body": "Le lien a peut-être changé. Retourne à « Apprendre » pour continuer.",
+    "back": "Retour à « Apprendre »"
+  },
+  "ranks": {
+    "start": "Débutant",
+    "novice": "Novice",
+    "amateur": "Amateur",
+    "trainee": "Apprenti",
+    "skilled": "Confirmé",
+    "expert": "Expert",
+    "master": "Maître"
+  },
+  "components": {
+    "board": {
+      "label": "Échiquier",
+      "promoteTitle": "Choisis la pièce de promotion",
+      "cancel": "Annuler",
+      "pieces": {
+        "queen": "Dame",
+        "rook": "Tour",
+        "bishop": "Fou",
+        "knight": "Cavalier"
+      }
+    },
+    "path": {
+      "start": "Commencer",
+      "types": {
+        "lesson": "Leçon",
+        "drill": "Exercice",
+        "spar": "Affrontement",
+        "play": "Jouer",
+        "test": "Test",
+        "review": "Révision"
+      },
+      "states": {
+        "done": "terminée",
+        "current": "en cours",
+        "open": "disponible",
+        "locked": "verrouillée"
+      }
+    },
+    "rankTrack": {
+      "prev": "Rang précédent",
+      "next": "Rang suivant",
+      "current": "Ton rang",
+      "completed": "Terminé",
+      "locked": "Verrouillé",
+      "maxRank": "Rang le plus haut",
+      "goals": "Objectifs : {done}/{total}",
+      "progressLabel": "Progression vers le rang suivant"
+    }
+  },
+  "devComponents": {
+    "title": "Page des composants",
+    "intro": "Tous les composants de base avec le système « Nuit du désert ». Page interne de test.",
+    "board": {
+      "title": "L’échiquier interactif",
+      "hint": "Déplace les pièces en glissant ou en touchant. Coups légaux uniquement.",
+      "flip": "Retourner l’échiquier",
+      "reset": "Recommencer",
+      "quick": "Coups rapides",
+      "sounds": "Sons",
+      "arrows": "Flèches",
+      "lastMove": "Dernier coup : {san}"
+    },
+    "task": {
+      "title": "Un coup précis",
+      "hint": "Objectif : joue e4. Tout autre coup revient en place avec une secousse.",
+      "good": "Bravo !",
+      "goodMessage": "e4 occupe le centre et ouvre la route à la dame et au fou.",
+      "wrong": "Essaie encore",
+      "wrongMessage": "Cherche un coup de pion qui occupe le centre en avançant de deux cases.",
+      "next": "Suivant",
+      "retry": "Réessayer"
+    },
+    "promo": {
+      "title": "Promotion",
+      "hint": "Pousse le pion sur la dernière rangée et choisis la pièce.",
+      "reset": "Rétablir la position"
+    },
+    "squares": {
+      "title": "Touche les cases",
+      "hint": "Touche toutes les cases attaquées par le cavalier en d4.",
+      "found": "{found} trouvées sur {total}",
+      "reset": "Recommencer",
+      "mistakes": "{count, plural, =0 {Aucune erreur} one {# erreur} other {# erreurs}}"
+    },
+    "mini": {
+      "title": "Mini-échiquiers"
+    },
+    "path": {
+      "title": "Le parcours",
+      "hint": "Fais défiler : la carte de section en haut change à chaque section."
+    },
+    "rank": {
+      "title": "Barre de rang",
+      "badges": "Insignes de rang"
+    },
+    "feedback": {
+      "title": "Bandeaux de retour"
+    },
+    "coach": {
+      "title": "Bulle d’explication",
+      "text": "On sort le fou en f4 avant e3, pour qu’il ne reste pas enfermé derrière ses pions. C’est l’idée de base du Système de Londres.",
+      "replay": "Rejouer"
+    },
+    "sections": {
+      "london1": {
+        "eyebrow": "Système de Londres · avec les Blancs",
+        "title": "Amateur · Section 1",
+        "subtitle": "Apprendre les 50 positions clés"
+      },
+      "london2": {
+        "eyebrow": "Système de Londres · avec les Blancs",
+        "title": "Amateur · Section 2",
+        "subtitle": "Les variantes secondaires"
+      },
+      "london3": {
+        "eyebrow": "Système de Londres · avec les Blancs",
+        "title": "Apprenti · Section 1",
+        "subtitle": "Plans de milieu de partie"
+      }
+    },
+    "miniLabels": {
+      "london": "Système de Londres après 1. d4 d5 2. Ff4",
+      "caro": "Défense Caro-Kann après 1. e4 c6 2. d4 d5",
+      "mate": "Mat du couloir après Te8#"
+    }
+  },
+  "onboarding": {
+    "title": "Bienvenue sur Diloul",
+    "stepOf": "Étape {step} sur 3",
+    "language": {
+      "title": "Choisis ta langue",
+      "coach": "Salut ! Je t’accompagne pour apprendre les échecs. Dans quelle langue commençons-nous ?"
+    },
+    "level": {
+      "title": "Quel est ton niveau aux échecs ?",
+      "coach": "Choisis le plus proche. On t’ouvre ce qui te convient, et tu pourras toujours passer ce que tu connais.",
+      "none": "Je ne connais pas les règles",
+      "noneHint": "On commence ensemble par le déplacement des pièces.",
+      "rules": "Je connais les règles",
+      "rulesHint": "Je sais déplacer les pièces et je veux progresser.",
+      "r800": "Environ 800",
+      "r800Hint": "Je joue des parties, je perds parfois des pièces.",
+      "r1200": "Environ 1200",
+      "r1200Hint": "Je connais les tactiques de base.",
+      "r1600": "1600 et plus",
+      "r1600Hint": "Joueur confirmé, je veux des ouvertures et des finales plus poussées."
+    },
+    "link": {
+      "title": "Relie tes comptes (facultatif)",
+      "coach": "Si tu joues sur Chess.com ou Lichess, on analysera tes parties plus tard pour te proposer quoi travailler.",
+      "chesscom": "Nom d’utilisateur Chess.com",
+      "lichess": "Nom d’utilisateur Lichess",
+      "placeholder": "ex. : yede_22",
+      "invalid": "Lettres latines, chiffres, _ et - uniquement (2 à 30 caractères)."
+    },
+    "next": "Suivant",
+    "back": "Retour",
+    "skip": "Passer",
+    "finish": "Commencer à apprendre",
+    "saving": "Enregistrement…"
+  },
+  "auth": {
+    "title": "Connexion",
+    "intro": "Inscris-toi pour retrouver ta progression sur tous tes appareils et analyser tes parties. Ta progression actuelle sur cet appareil est transférée automatiquement.",
+    "email": "Adresse e-mail",
+    "emailPlaceholder": "toi@exemple.com",
+    "sendLink": "Recevoir le lien de connexion",
+    "sending": "Envoi…",
+    "sent": "Lien envoyé à {email}. Ouvre-le sur cet appareil, dans ce navigateur.",
+    "codeLabel": "Ou saisis le code à 6 chiffres reçu par e-mail",
+    "verify": "Valider le code",
+    "verifying": "Vérification…",
+    "google": "Continuer avec Google",
+    "invalidEmail": "Saisis une adresse e-mail valide.",
+    "error": "Envoi impossible : {message}",
+    "notConfigured": "La connexion n’est pas encore activée sur ce site. Tu peux tout utiliser en invité : ta progression est enregistrée sur cet appareil.",
+    "callbackTitle": "Connexion en cours…",
+    "callbackError": "Connexion impossible. Ouvre le lien dans le navigateur où tu l’as demandé, ou demande un nouveau lien.",
+    "tryAgain": "Demander un nouveau lien",
+    "signedInAs": "Connecté en tant que {email}",
+    "signOut": "Se déconnecter",
+    "signIn": "Se connecter",
+    "guestCta": "Inscris-toi pour sauvegarder ta progression et analyser tes parties"
+  },
+  "guestReminder": {
+    "text": "Ta progression est enregistrée sur cet appareil uniquement. Inscris-toi pour la sauvegarder.",
+    "action": "S’inscrire",
+    "dismiss": "Plus tard"
+  },
+  "storage": {
+    "error": "La dernière modification n’a pas pu être enregistrée sur le serveur. Nouvel essai à la prochaine modification."
+  },
+  "admin": {
+    "title": "Tableau de bord",
+    "signInFirst": "Connecte-toi avec le compte administrateur.",
+    "forbidden": "Cette page est réservée à l’administrateur.",
+    "loading": "Vérification…",
+    "sections": {
+      "overview": "Vue d’ensemble",
+      "reports": "Signalements",
+      "daily": "Problème du jour",
+      "users": "Utilisateurs",
+      "health": "État du système"
+    },
+    "sectionHints": {
+      "overview": "Utilisateurs et joueurs actifs, problèmes résolus, ouvertures les plus étudiées.",
+      "reports": "Signalements « Signaler une erreur » avec l’échiquier et leur statut.",
+      "daily": "Problèmes programmés pour les prochains jours, et remplacement manuel.",
+      "users": "Liste des utilisateurs et dernière activité, désactivation si nécessaire.",
+      "health": "Taille de la base, dernière exécution des tâches planifiées, erreurs d’import."
+    },
+    "soonPhase": "Arrive à la phase {phase}"
+  },
+  "errorPage": {
+    "title": "Une erreur inattendue s’est produite",
+    "body": "Ta progression n’est pas perdue. Réessaie, et si l’erreur revient, préviens-nous.",
+    "retry": "Réessayer"
+  }
+}

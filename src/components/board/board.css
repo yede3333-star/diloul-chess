@@ -1,0 +1,226 @@
+/*
+ * <Board> (Chessground) skin, driven by the board tokens (data-board on <html> or a wrapper).
+ * Coordinates use the same corner style as <StaticBoard>.
+ */
+.dboard {
+  position: relative;
+  width: 100%;
+  max-width: 100%;
+  aspect-ratio: 1;
+  direction: ltr;
+  unicode-bidi: isolate;
+  container-type: inline-size;
+  touch-action: none;
+}
+
+.dboard .cg-wrap {
+  width: 100%;
+  height: 100%;
+  border-radius: var(--r-board);
+  overflow: hidden;
+}
+
+.dboard cg-board {
+  /* a8 (top-left) is light */
+  background: repeating-conic-gradient(var(--board-dark) 0 25%, var(--board-light) 0 50%) 0 0 / 25% 25%;
+}
+
+.dboard cg-board square.last-move {
+  background-color: var(--board-last);
+}
+
+.dboard cg-board square.selected {
+  background-color: var(--board-selected);
+}
+
+.dboard cg-board square.move-dest {
+  background: radial-gradient(var(--board-dest) 21%, transparent 23%);
+}
+
+.dboard cg-board square.oc.move-dest {
+  background: radial-gradient(transparent 0 76%, var(--board-dest) 78%);
+}
+
+.dboard cg-board square.move-dest:hover {
+  background: var(--board-dest);
+}
+
+.dboard cg-board square.check {
+  background: radial-gradient(ellipse at center, rgb(231 60 60 / 0.95) 0%, rgb(231 60 60 / 0.55) 35%, transparent 75%);
+}
+
+/* squares marked by a lesson ("tap every square the knight attacks") */
+.dboard cg-board square.marked {
+  background: radial-gradient(color-mix(in srgb, var(--info) 75%, transparent) 26%, transparent 28%);
+}
+
+/* Right/wrong taps: tinted square + a ✓ / ✗ disc, so the meaning never relies on color alone. */
+.dboard cg-board square.marked-ok {
+  background-color: color-mix(in srgb, var(--success) 35%, transparent);
+}
+
+.dboard cg-board square.marked-bad {
+  background-color: color-mix(in srgb, var(--danger) 35%, transparent);
+}
+
+.dboard cg-board square.marked-ok::after,
+.dboard cg-board square.marked-bad::after {
+  content: "✓";
+  position: absolute;
+  inset: 26%;
+  display: grid;
+  place-items: center;
+  border-radius: 50%;
+  background: var(--success);
+  color: var(--on-semantic);
+  font: 900 max(10px, 4.6cqi) / 1 system-ui, sans-serif;
+}
+
+.dboard cg-board square.marked-bad::after {
+  content: "✗";
+  background: var(--danger);
+}
+
+.dboard .cg-wrap piece {
+  cursor: pointer;
+}
+
+.dboard .cg-wrap piece.dragging {
+  cursor: grabbing;
+}
+
+/* coordinates: small, in the square corners, above the pieces */
+.dboard .cg-wrap coords {
+  z-index: 3;
+  opacity: 1;
+  font: 700 max(7px, 2.3cqi) / 1 var(--ff-mono, ui-monospace), monospace;
+}
+
+/* Inset enough to stay clear of the rounded corners (a8 and h1) at any board size. */
+.dboard .cg-wrap coords.ranks {
+  top: 0;
+  left: max(4px, 1.1cqi);
+  width: auto;
+  height: 100%;
+}
+
+.dboard .cg-wrap coords.ranks coord {
+  transform: none;
+  padding-top: max(3px, 0.9cqi);
+}
+
+.dboard .cg-wrap coords.files {
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: auto;
+  text-transform: none;
+  text-align: right;
+}
+
+.dboard .cg-wrap coords.files coord {
+  flex: 1 1 0;
+  padding: 0 max(4px, 1.1cqi) max(3px, 0.9cqi) 0;
+  align-self: flex-end;
+}
+
+/* White at the bottom: a1 is dark, so odd coordinates sit on dark squares. Reversed for black. */
+.dboard .cg-wrap coords:not(.black) coord:nth-child(odd),
+.dboard .cg-wrap coords.black coord:nth-child(even) {
+  color: var(--board-light);
+}
+
+.dboard .cg-wrap coords:not(.black) coord:nth-child(even),
+.dboard .cg-wrap coords.black coord:nth-child(odd) {
+  color: var(--board-dark);
+}
+
+/* wrong move: shake */
+.dboard.is-wrong {
+  animation: board-shake var(--dur-slow) var(--motion-ease);
+}
+
+@keyframes board-shake {
+  0%,
+  100% {
+    transform: translateX(0);
+  }
+  20% {
+    transform: translateX(-6px);
+  }
+  40% {
+    transform: translateX(6px);
+  }
+  60% {
+    transform: translateX(-4px);
+  }
+  80% {
+    transform: translateX(3px);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .dboard.is-wrong {
+    animation: none;
+    outline: 3px solid var(--danger);
+    outline-offset: 2px;
+  }
+}
+
+/* promotion picker: a column over the promotion square (queen on the square, then knight, rook, bishop) */
+.dboard .promo {
+  position: absolute;
+  inset: 0;
+  z-index: 20;
+  background: var(--overlay);
+  border-radius: var(--r-board);
+}
+
+.dboard .promo-col {
+  position: absolute;
+  width: 12.5%;
+  height: 50%;
+  display: flex;
+  flex-direction: column;
+}
+
+.dboard .promo-col.at-top {
+  top: 0;
+}
+
+.dboard .promo-col.at-bottom {
+  bottom: 0;
+  flex-direction: column-reverse;
+}
+
+.dboard .promo-btn {
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: 100%;
+  height: 25%;
+  border-radius: 50%;
+  background: radial-gradient(circle, var(--board-light) 60%, color-mix(in srgb, var(--board-light) 70%, var(--board-dark)) 100%);
+  box-shadow: inset 0 -3px 0 color-mix(in srgb, var(--board-dark) 70%, #000), var(--sh-pop);
+  transition:
+    transform var(--dur-fast) var(--motion-ease),
+    border-radius var(--dur-fast) var(--motion-ease);
+}
+
+.dboard .promo-btn:hover,
+.dboard .promo-btn:focus-visible {
+  border-radius: 18%;
+  background: var(--accent);
+}
+
+.dboard .promo-btn:active {
+  transform: scale(0.94);
+}
+
+.dboard .promo-btn piece {
+  position: static;
+  display: block;
+  width: 86%;
+  height: 86%;
+  background-size: cover;
+}
