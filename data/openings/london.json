@@ -1,0 +1,878 @@
+{
+ "id": "london",
+ "color": "white",
+ "root": [
+  "d4"
+ ],
+ "builtAt": "2026-11-28T08:53:12.723Z",
+ "source": {
+  "explorer": "lichess",
+  "speeds": "blitz,rapid,classical",
+  "depth": 20,
+  "upTo": "amateur"
+ },
+ "idea": {
+  "ar": "في نظام لندن تبني بالأبيض الشكل نفسه تقريبًا مهما لعب الأسود: بيدق في d4، ثم الفيل إلى f4 قبل أن تغلق عليه بـ e3، ثم e3 وc3 وNf3 وBd3، ثم التبييت. النتيجة موقع صلب يصعب كسره، تستطيع بعده أن تهاجم بهدوء على جهة الملك.",
+  "fr": "Dans le Système de Londres, tu construis presque la même position quoi que jouent les Noirs : un pion en d4, puis le fou en f4 avant de l’enfermer par e3, puis e3, c3, Cf3, Fd3 et le roque. Tu obtiens une position solide, difficile à casser, avant d’attaquer calmement à l’aile roi."
+ },
+ "plans": [
+  {
+   "ar": "اقفز بالحصان إلى e5، حيث يحميه بيدق d4: من هناك يضغط على f7 ويضايق قطع الأسود.",
+   "fr": "Saute avec le cavalier en e5, où le pion d4 le protège : de là, il vise f7 et gêne les pièces noires."
+  },
+  {
+   "ar": "ضع الفيل في d3 والوزير في c2: معًا يصوّبان على المربع h7 بعد أن يبيّت الأسود في جهة الملك.",
+   "fr": "Place le fou en d3 et la dame en c2 : ensemble, ils visent la case h7 quand les Noirs ont roqué côté roi."
+  },
+  {
+   "ar": "إن هدّد الأسود فيلك بالحصان (...Nh5)، فلا تتركه يُؤخذ مجانًا: احفظ له مكانًا آمنًا في g3، أو في h2 بعد دفع h3.",
+   "fr": "Si les Noirs menacent ton fou avec le cavalier (…Ch5), ne le laisse pas se faire prendre : garde-lui une case sûre en g3, ou en h2 après avoir poussé h3."
+  },
+  {
+   "ar": "بيدق c3 يحمي بيدق d4 ويجعل مركزك ثابتًا، ويفتح لوزيرك الطريق إلى b3 حين تحتاجه.",
+   "fr": "Le pion c3 protège le pion d4 et rend ton centre stable ; il ouvre aussi la route b3 à ta dame quand tu en as besoin."
+  }
+ ],
+ "mistakes": [
+  {
+   "ar": "لعب e3 قبل Bf4: بهذا تحبس فيلك خلف بيادقك، ويصبح نظام لندن بلا روح.",
+   "fr": "Jouer e3 avant Ff4 : tu enfermes ton fou derrière tes pions, et le Londres perd son intérêt."
+  },
+  {
+   "ar": "نسيان بيدق b2 حين يخرج وزير الأسود إلى b6: قبل كل نقلة تأكد أن b2 محمي، مثلًا بالوزير في c1 أو b3.",
+   "fr": "Oublier le pion b2 quand la dame noire va en b6 : avant chaque coup, vérifie que b2 est protégé, par exemple par la dame en c1 ou b3."
+  },
+  {
+   "ar": "الهجوم قبل إكمال التطوير: أخرج قطعك وبيّت أولًا، فلندن نظام صبور.",
+   "fr": "Attaquer avant d’avoir fini son développement : sors tes pièces et roque d’abord, le Londres est un système patient."
+  }
+ ],
+ "children": [
+  {
+   "fen": "rnbqkbnr/pppppppp/8/8/3P4/8/PPP1PPPP/RNBQKBNR b KQkq - 0 1",
+   "san": "d4",
+   "uci": "d2d4",
+   "ply": 1,
+   "side": "user",
+   "tier": "start",
+   "children": [
+    {
+     "fen": "rnbqkbnr/ppp1pppp/8/3p4/3P4/8/PPP1PPPP/RNBQKBNR w KQkq - 0 2",
+     "san": "d5",
+     "uci": "d7d5",
+     "ply": 2,
+     "side": "opponent",
+     "tier": "start",
+     "children": [
+      {
+       "fen": "rnbqkbnr/ppp1pppp/8/3p4/3P1B2/8/PPP1PPPP/RN1QKBNR b KQkq - 1 2",
+       "san": "Bf4",
+       "uci": "c1f4",
+       "ply": 3,
+       "side": "user",
+       "tier": "start",
+       "children": [
+        {
+         "fen": "r1bqkbnr/ppp1pppp/2n5/3p4/3P1B2/8/PPP1PPPP/RN1QKBNR w KQkq - 2 3",
+         "san": "Nc6",
+         "uci": "b8c6",
+         "ply": 4,
+         "side": "opponent",
+         "tier": "start",
+         "children": [
+          {
+           "fen": "r1bqkbnr/ppp1pppp/2n5/3p4/3P1B2/4P3/PPP2PPP/RN1QKBNR b KQkq - 0 3",
+           "san": "e3",
+           "uci": "e2e3",
+           "ply": 5,
+           "side": "user",
+           "tier": "start",
+           "children": [
+            {
+             "fen": "r1bqkb1r/ppp1pppp/2n2n2/3p4/3P1B2/4P3/PPP2PPP/RN1QKBNR w KQkq - 1 4",
+             "san": "Nf6",
+             "uci": "g8f6",
+             "ply": 6,
+             "side": "opponent",
+             "tier": "start",
+             "children": [
+              {
+               "fen": "r1bqkb1r/ppp1pppp/2n2n2/3p4/3P1B2/4PN2/PPP2PPP/RN1QKB1R b KQkq - 2 4",
+               "san": "Nf3",
+               "uci": "g1f3",
+               "ply": 7,
+               "side": "user",
+               "tier": "start",
+               "children": [
+                {
+                 "fen": "r2qkb1r/ppp1pppp/2n2n2/3p4/3P1Bb1/4PN2/PPP2PPP/RN1QKB1R w KQkq - 3 5",
+                 "san": "Bg4",
+                 "uci": "c8g4",
+                 "ply": 8,
+                 "side": "opponent",
+                 "tier": "start",
+                 "children": [
+                  {
+                   "fen": "r2qkb1r/ppp1pppp/2n2n2/3p4/3P1Bb1/2P1PN2/PP3PPP/RN1QKB1R b KQkq - 0 5",
+                   "san": "c3",
+                   "uci": "c2c3",
+                   "ply": 9,
+                   "side": "user",
+                   "tier": "start",
+                   "children": [
+                    {
+                     "fen": "r2qkb1r/ppp2ppp/2n1pn2/3p4/3P1Bb1/2P1PN2/PP3PPP/RN1QKB1R w KQkq - 0 6",
+                     "san": "e6",
+                     "uci": "e7e6",
+                     "ply": 10,
+                     "side": "opponent",
+                     "tier": "start",
+                     "children": [
+                      {
+                       "fen": "r2qkb1r/ppp2ppp/2n1pn2/3p4/3P1Bb1/2P1PN2/PP1N1PPP/R2QKB1R b KQkq - 1 6",
+                       "san": "Nbd2",
+                       "uci": "b1d2",
+                       "ply": 11,
+                       "side": "user",
+                       "tier": "start",
+                       "children": [
+                        {
+                         "fen": "r2qk2r/ppp2ppp/2nbpn2/3p4/3P1Bb1/2P1PN2/PP1N1PPP/R2QKB1R w KQkq - 2 7",
+                         "san": "Bd6",
+                         "uci": "f8d6",
+                         "ply": 12,
+                         "side": "opponent",
+                         "tier": "start",
+                         "children": [
+                          {
+                           "fen": "r2qk2r/ppp2ppp/2nbpn2/3p4/3P1Bb1/2PBPN2/PP1N1PPP/R2QK2R b KQkq - 3 7",
+                           "san": "Bd3",
+                           "uci": "f1d3",
+                           "ply": 13,
+                           "side": "user",
+                           "tier": "novice",
+                           "children": [],
+                           "eval": 9,
+                           "loss": 14
+                          }
+                         ],
+                         "freq": 0.706,
+                         "games": 153670,
+                         "eval": 14
+                        }
+                       ],
+                       "eval": 16,
+                       "loss": 2
+                      }
+                     ],
+                     "freq": 0.567,
+                     "games": 193311,
+                     "eval": 14
+                    }
+                   ],
+                   "eval": 17,
+                   "loss": 15
+                  }
+                 ],
+                 "freq": 0.272,
+                 "games": 1754240,
+                 "eval": 30
+                }
+               ],
+               "eval": 32,
+               "loss": 0
+              }
+             ],
+             "freq": 0.364,
+             "games": 4029569,
+             "eval": 29
+            },
+            {
+             "fen": "r2qkbnr/ppp1pppp/2n5/3p1b2/3P1B2/4P3/PPP2PPP/RN1QKBNR w KQkq - 1 4",
+             "san": "Bf5",
+             "uci": "c8f5",
+             "ply": 6,
+             "side": "opponent",
+             "tier": "novice",
+             "children": [
+              {
+               "fen": "r2qkbnr/ppp1pppp/2n5/3p1b2/3P1B2/4PN2/PPP2PPP/RN1QKB1R b KQkq - 2 4",
+               "san": "Nf3",
+               "uci": "g1f3",
+               "ply": 7,
+               "side": "user",
+               "tier": "novice",
+               "children": [],
+               "eval": 19,
+               "loss": 26
+              }
+             ],
+             "freq": 0.281,
+             "games": 3109851,
+             "eval": 46
+            },
+            {
+             "fen": "r1bqkbnr/ppp2ppp/2n1p3/3p4/3P1B2/4P3/PPP2PPP/RN1QKBNR w KQkq - 0 4",
+             "san": "e6",
+             "uci": "e7e6",
+             "ply": 6,
+             "side": "opponent",
+             "tier": "amateur",
+             "children": [
+              {
+               "fen": "r1bqkbnr/ppp2ppp/2n1p3/3p4/3P1B2/4PN2/PPP2PPP/RN1QKB1R b KQkq - 1 4",
+               "san": "Nf3",
+               "uci": "g1f3",
+               "ply": 7,
+               "side": "user",
+               "tier": "amateur",
+               "children": [],
+               "eval": 38,
+               "loss": 2
+              }
+             ],
+             "freq": 0.109,
+             "games": 1251912,
+             "eval": 40
+            }
+           ],
+           "eval": 39,
+           "loss": 0
+          }
+         ],
+         "freq": 0.33,
+         "games": 19163245,
+         "eval": 47
+        },
+        {
+         "fen": "rnbqkb1r/ppp1pppp/5n2/3p4/3P1B2/8/PPP1PPPP/RN1QKBNR w KQkq - 2 3",
+         "san": "Nf6",
+         "uci": "g8f6",
+         "ply": 4,
+         "side": "opponent",
+         "tier": "novice",
+         "children": [
+          {
+           "fen": "rnbqkb1r/ppp1pppp/5n2/3p4/3P1B2/4P3/PPP2PPP/RN1QKBNR b KQkq - 0 3",
+           "san": "e3",
+           "uci": "e2e3",
+           "ply": 5,
+           "side": "user",
+           "tier": "novice",
+           "children": [
+            {
+             "fen": "rnbqkb1r/ppp2ppp/4pn2/3p4/3P1B2/4P3/PPP2PPP/RN1QKBNR w KQkq - 0 4",
+             "san": "e6",
+             "uci": "e7e6",
+             "ply": 6,
+             "side": "opponent",
+             "tier": "amateur",
+             "children": [
+              {
+               "fen": "rnbqkb1r/ppp2ppp/4pn2/3p4/3P1B2/4PN2/PPP2PPP/RN1QKB1R b KQkq - 1 4",
+               "san": "Nf3",
+               "uci": "g1f3",
+               "ply": 7,
+               "side": "user",
+               "tier": "amateur",
+               "children": [],
+               "eval": 8,
+               "loss": 1
+              }
+             ],
+             "freq": 0.281,
+             "games": 3561450,
+             "eval": 8
+            },
+            {
+             "fen": "r1bqkb1r/ppp1pppp/2n2n2/3p4/3P1B2/4P3/PPP2PPP/RN1QKBNR w KQkq - 1 4",
+             "san": "Nc6",
+             "uci": "b8c6",
+             "ply": 6,
+             "side": "opponent",
+             "tier": "amateur",
+             "children": [],
+             "freq": 0.217,
+             "games": 2755562,
+             "tags": [
+              "transposition"
+             ]
+            },
+            {
+             "fen": "rn1qkb1r/ppp1pppp/5n2/3p1b2/3P1B2/4P3/PPP2PPP/RN1QKBNR w KQkq - 1 4",
+             "san": "Bf5",
+             "uci": "c8f5",
+             "ply": 6,
+             "side": "opponent",
+             "tier": "amateur",
+             "children": [
+              {
+               "fen": "rn1qkb1r/ppp1pppp/5n2/3p1b2/3P1B2/4PN2/PPP2PPP/RN1QKB1R b KQkq - 2 4",
+               "san": "Nf3",
+               "uci": "g1f3",
+               "ply": 7,
+               "side": "user",
+               "tier": "amateur",
+               "children": [
+                {
+                 "fen": "rn1qkb1r/ppp2ppp/4pn2/3p1b2/3P1B2/4PN2/PPP2PPP/RN1QKB1R w KQkq - 0 5",
+                 "san": "e6",
+                 "uci": "e7e6",
+                 "ply": 8,
+                 "side": "opponent",
+                 "tier": "amateur",
+                 "children": [
+                  {
+                   "fen": "rn1qkb1r/ppp2ppp/4pn2/3p1b2/3P1B2/2P1PN2/PP3PPP/RN1QKB1R b KQkq - 0 5",
+                   "san": "c3",
+                   "uci": "c2c3",
+                   "ply": 9,
+                   "side": "user",
+                   "tier": "amateur",
+                   "children": [],
+                   "eval": -8,
+                   "loss": 27
+                  }
+                 ],
+                 "freq": 0.643,
+                 "games": 2114340,
+                 "eval": 17
+                }
+               ],
+               "eval": 12,
+               "loss": 4
+              }
+             ],
+             "freq": 0.198,
+             "games": 2508250,
+             "eval": 24
+            }
+           ],
+           "eval": 11,
+           "loss": 0
+          }
+         ],
+         "freq": 0.216,
+         "games": 12560887,
+         "eval": 8
+        },
+        {
+         "fen": "rnbqkbnr/ppp2ppp/4p3/3p4/3P1B2/8/PPP1PPPP/RN1QKBNR w KQkq - 0 3",
+         "san": "e6",
+         "uci": "e7e6",
+         "ply": 4,
+         "side": "opponent",
+         "tier": "novice",
+         "children": [
+          {
+           "fen": "rnbqkbnr/ppp2ppp/4p3/3p4/3P1B2/4P3/PPP2PPP/RN1QKBNR b KQkq - 0 3",
+           "san": "e3",
+           "uci": "e2e3",
+           "ply": 5,
+           "side": "user",
+           "tier": "novice",
+           "children": [
+            {
+             "fen": "rnbqk1nr/ppp2ppp/3bp3/3p4/3P1B2/4P3/PPP2PPP/RN1QKBNR w KQkq - 1 4",
+             "san": "Bd6",
+             "uci": "f8d6",
+             "ply": 6,
+             "side": "opponent",
+             "tier": "amateur",
+             "children": [
+              {
+               "fen": "rnbqk1nr/ppp2ppp/3bp3/3p4/3P1B2/4PN2/PPP2PPP/RN1QKB1R b KQkq - 2 4",
+               "san": "Nf3",
+               "uci": "g1f3",
+               "ply": 7,
+               "side": "user",
+               "tier": "amateur",
+               "children": [
+                {
+                 "fen": "rnbqk1nr/ppp2ppp/4p3/3p4/3P1b2/4PN2/PPP2PPP/RN1QKB1R w KQkq - 0 5",
+                 "san": "Bxf4",
+                 "uci": "d6f4",
+                 "ply": 8,
+                 "side": "opponent",
+                 "tier": "amateur",
+                 "children": [
+                  {
+                   "fen": "rnbqk1nr/ppp2ppp/4p3/3p4/3P1P2/5N2/PPP2PPP/RN1QKB1R b KQkq - 0 5",
+                   "san": "exf4",
+                   "uci": "e3f4",
+                   "ply": 9,
+                   "side": "user",
+                   "tier": "amateur",
+                   "children": [],
+                   "eval": 19,
+                   "loss": 0
+                  }
+                 ],
+                 "freq": 0.764,
+                 "games": 483990,
+                 "eval": 26
+                }
+               ],
+               "eval": 14,
+               "loss": 2
+              }
+             ],
+             "freq": 0.281,
+             "games": 2820491,
+             "eval": 23
+            },
+            {
+             "fen": "rnbqkb1r/ppp2ppp/4pn2/3p4/3P1B2/4P3/PPP2PPP/RN1QKBNR w KQkq - 1 4",
+             "san": "Nf6",
+             "uci": "g8f6",
+             "ply": 6,
+             "side": "opponent",
+             "tier": "amateur",
+             "children": [],
+             "freq": 0.242,
+             "games": 2434893,
+             "tags": [
+              "transposition"
+             ]
+            },
+            {
+             "fen": "rnbqkbnr/pp3ppp/4p3/2pp4/3P1B2/4P3/PPP2PPP/RN1QKBNR w KQkq - 0 4",
+             "san": "c5",
+             "uci": "c7c5",
+             "ply": 6,
+             "side": "opponent",
+             "tier": "amateur",
+             "children": [
+              {
+               "fen": "rnbqkbnr/pp3ppp/4p3/2pp4/3P1B2/4PN2/PPP2PPP/RN1QKB1R b KQkq - 1 4",
+               "san": "Nf3",
+               "uci": "g1f3",
+               "ply": 7,
+               "side": "user",
+               "tier": "amateur",
+               "children": [],
+               "eval": 14,
+               "loss": 0
+              }
+             ],
+             "freq": 0.213,
+             "games": 2136811,
+             "eval": 10
+            }
+           ],
+           "eval": 10,
+           "loss": 4
+          }
+         ],
+         "freq": 0.164,
+         "games": 9545121,
+         "eval": 18
+        },
+        {
+         "fen": "rn1qkbnr/ppp1pppp/8/3p1b2/3P1B2/8/PPP1PPPP/RN1QKBNR w KQkq - 2 3",
+         "san": "Bf5",
+         "uci": "c8f5",
+         "ply": 4,
+         "side": "opponent",
+         "tier": "amateur",
+         "children": [
+          {
+           "fen": "rn1qkbnr/ppp1pppp/8/3p1b2/3P1B2/4P3/PPP2PPP/RN1QKBNR b KQkq - 0 3",
+           "san": "e3",
+           "uci": "e2e3",
+           "ply": 5,
+           "side": "user",
+           "tier": "amateur",
+           "children": [
+            {
+             "fen": "rn1qkbnr/ppp2ppp/4p3/3p1b2/3P1B2/4P3/PPP2PPP/RN1QKBNR w KQkq - 0 4",
+             "san": "e6",
+             "uci": "e7e6",
+             "ply": 6,
+             "side": "opponent",
+             "tier": "amateur",
+             "children": [
+              {
+               "fen": "rn1qkbnr/ppp2ppp/4p3/3p1b2/3P1B2/4PN2/PPP2PPP/RN1QKB1R b KQkq - 1 4",
+               "san": "Nf3",
+               "uci": "g1f3",
+               "ply": 7,
+               "side": "user",
+               "tier": "amateur",
+               "children": [],
+               "eval": 6,
+               "loss": 3
+              }
+             ],
+             "freq": 0.505,
+             "games": 3076175,
+             "eval": 16
+            }
+           ],
+           "eval": 11,
+           "loss": 5
+          }
+         ],
+         "freq": 0.149,
+         "games": 10418864,
+         "eval": 22
+        }
+       ],
+       "eval": 11,
+       "loss": 16
+      }
+     ],
+     "freq": 0.528,
+     "games": 265658145,
+     "eco": "D00 Queen's Pawn Game",
+     "eval": 20
+    },
+    {
+     "fen": "rnbqkb1r/pppppppp/5n2/8/3P4/8/PPP1PPPP/RNBQKBNR w KQkq - 1 2",
+     "san": "Nf6",
+     "uci": "g8f6",
+     "ply": 2,
+     "side": "opponent",
+     "tier": "novice",
+     "children": [
+      {
+       "fen": "rnbqkb1r/pppppppp/5n2/8/3P1B2/8/PPP1PPPP/RN1QKBNR b KQkq - 2 2",
+       "san": "Bf4",
+       "uci": "c1f4",
+       "ply": 3,
+       "side": "user",
+       "tier": "novice",
+       "children": [
+        {
+         "fen": "rnbqkb1r/pppppp1p/5np1/8/3P1B2/8/PPP1PPPP/RN1QKBNR w KQkq - 0 3",
+         "san": "g6",
+         "uci": "g7g6",
+         "ply": 4,
+         "side": "opponent",
+         "tier": "amateur",
+         "children": [
+          {
+           "fen": "rnbqkb1r/pppppp1p/5np1/8/3P1B2/4P3/PPP2PPP/RN1QKBNR b KQkq - 0 3",
+           "san": "e3",
+           "uci": "e2e3",
+           "ply": 5,
+           "side": "user",
+           "tier": "amateur",
+           "children": [
+            {
+             "fen": "rnbqk2r/ppppppbp/5np1/8/3P1B2/4P3/PPP2PPP/RN1QKBNR w KQkq - 1 4",
+             "san": "Bg7",
+             "uci": "f8g7",
+             "ply": 6,
+             "side": "opponent",
+             "tier": "amateur",
+             "children": [
+              {
+               "fen": "rnbqk2r/ppppppbp/5np1/8/3P1B2/4PN2/PPP2PPP/RN1QKB1R b KQkq - 2 4",
+               "san": "Nf3",
+               "uci": "g1f3",
+               "ply": 7,
+               "side": "user",
+               "tier": "amateur",
+               "children": [
+                {
+                 "fen": "rnbq1rk1/ppppppbp/5np1/8/3P1B2/4PN2/PPP2PPP/RN1QKB1R w KQ - 3 5",
+                 "san": "O-O",
+                 "uci": "e8g8",
+                 "ply": 8,
+                 "side": "opponent",
+                 "tier": "amateur",
+                 "children": [
+                  {
+                   "fen": "rnbq1rk1/ppppppbp/5np1/8/3P1B2/2P1PN2/PP3PPP/RN1QKB1R b KQ - 0 5",
+                   "san": "c3",
+                   "uci": "c2c3",
+                   "ply": 9,
+                   "side": "user",
+                   "tier": "amateur",
+                   "children": [],
+                   "eval": 9,
+                   "loss": 7
+                  }
+                 ],
+                 "freq": 0.535,
+                 "games": 1561472,
+                 "eval": 11
+                }
+               ],
+               "eval": 6,
+               "loss": 4
+              }
+             ],
+             "freq": 0.879,
+             "games": 2438267,
+             "eval": 11
+            }
+           ],
+           "eval": 11,
+           "loss": 0
+          }
+         ],
+         "freq": 0.27,
+         "games": 5297913,
+         "eval": 2
+        },
+        {
+         "fen": "rnbqkb1r/ppp1pppp/5n2/3p4/3P1B2/8/PPP1PPPP/RN1QKBNR w KQkq - 0 3",
+         "san": "d5",
+         "uci": "d7d5",
+         "ply": 4,
+         "side": "opponent",
+         "tier": "amateur",
+         "children": [],
+         "freq": 0.231,
+         "games": 4528436,
+         "tags": [
+          "transposition"
+         ]
+        },
+        {
+         "fen": "rnbqkb1r/pppp1ppp/4pn2/8/3P1B2/8/PPP1PPPP/RN1QKBNR w KQkq - 0 3",
+         "san": "e6",
+         "uci": "e7e6",
+         "ply": 4,
+         "side": "opponent",
+         "tier": "amateur",
+         "children": [
+          {
+           "fen": "rnbqkb1r/pppp1ppp/4pn2/8/3P1B2/4P3/PPP2PPP/RN1QKBNR b KQkq - 0 3",
+           "san": "e3",
+           "uci": "e2e3",
+           "ply": 5,
+           "side": "user",
+           "tier": "amateur",
+           "children": [
+            {
+             "fen": "rnbqkb1r/ppp2ppp/4pn2/3p4/3P1B2/4P3/PPP2PPP/RN1QKBNR w KQkq - 0 4",
+             "san": "d5",
+             "uci": "d7d5",
+             "ply": 6,
+             "side": "opponent",
+             "tier": "amateur",
+             "children": [],
+             "freq": 0.473,
+             "games": 1494885,
+             "tags": [
+              "transposition"
+             ]
+            }
+           ],
+           "eval": 19,
+           "loss": 0
+          }
+         ],
+         "freq": 0.218,
+         "games": 4275984,
+         "eval": 11
+        },
+        {
+         "fen": "rnbqkb1r/ppp1pppp/3p1n2/8/3P1B2/8/PPP1PPPP/RN1QKBNR w KQkq - 0 3",
+         "san": "d6",
+         "uci": "d7d6",
+         "ply": 4,
+         "side": "opponent",
+         "tier": "amateur",
+         "children": [
+          {
+           "fen": "rnbqkb1r/ppp1pppp/3p1n2/8/3P1B2/5N2/PPP1PPPP/RN1QKB1R b KQkq - 1 3",
+           "san": "Nf3",
+           "uci": "g1f3",
+           "ply": 5,
+           "side": "user",
+           "tier": "amateur",
+           "children": [],
+           "eval": 30,
+           "loss": 11
+          }
+         ],
+         "freq": 0.146,
+         "games": 2859457,
+         "eval": 33
+        }
+       ],
+       "eval": 8,
+       "loss": 21
+      }
+     ],
+     "freq": 0.123,
+     "games": 62014370,
+     "eco": "A45 Indian Defense",
+     "eval": 29
+    },
+    {
+     "fen": "rnbqkbnr/pppp1ppp/4p3/8/3P4/8/PPP1PPPP/RNBQKBNR w KQkq - 0 2",
+     "san": "e6",
+     "uci": "e7e6",
+     "ply": 2,
+     "side": "opponent",
+     "tier": "novice",
+     "children": [
+      {
+       "fen": "rnbqkbnr/pppp1ppp/4p3/8/3P1B2/8/PPP1PPPP/RN1QKBNR b KQkq - 1 2",
+       "san": "Bf4",
+       "uci": "c1f4",
+       "ply": 3,
+       "side": "user",
+       "tier": "novice",
+       "children": [
+        {
+         "fen": "rnbqkbnr/ppp2ppp/4p3/3p4/3P1B2/8/PPP1PPPP/RN1QKBNR w KQkq - 0 3",
+         "san": "d5",
+         "uci": "d7d5",
+         "ply": 4,
+         "side": "opponent",
+         "tier": "amateur",
+         "children": [],
+         "freq": 0.413,
+         "games": 5174630,
+         "tags": [
+          "transposition"
+         ]
+        }
+       ],
+       "eval": 12,
+       "loss": 30
+      }
+     ],
+     "freq": 0.096,
+     "games": 48270535,
+     "eco": "A40 Horwitz Defense",
+     "eval": 44
+    },
+    {
+     "fen": "rnbqkbnr/pppp1ppp/8/4p3/3P4/8/PPP1PPPP/RNBQKBNR w KQkq - 0 2",
+     "san": "e5",
+     "uci": "e7e5",
+     "ply": 2,
+     "side": "opponent",
+     "tier": "amateur",
+     "children": [
+      {
+       "fen": "rnbqkbnr/pppp1ppp/8/4P3/8/8/PPP1PPPP/RNBQKBNR b KQkq - 0 2",
+       "san": "dxe5",
+       "uci": "d4e5",
+       "ply": 3,
+       "side": "user",
+       "tier": "amateur",
+       "children": [
+        {
+         "fen": "r1bqkbnr/pppp1ppp/2n5/4P3/8/8/PPP1PPPP/RNBQKBNR w KQkq - 1 3",
+         "san": "Nc6",
+         "uci": "b8c6",
+         "ply": 4,
+         "side": "opponent",
+         "tier": "amateur",
+         "children": [
+          {
+           "fen": "r1bqkbnr/pppp1ppp/2n5/4P3/8/5N2/PPP1PPPP/RNBQKB1R b KQkq - 2 3",
+           "san": "Nf3",
+           "uci": "g1f3",
+           "ply": 5,
+           "side": "user",
+           "tier": "amateur",
+           "children": [
+            {
+             "fen": "r1b1kbnr/ppppqppp/2n5/4P3/8/5N2/PPP1PPPP/RNBQKB1R w KQkq - 3 4",
+             "san": "Qe7",
+             "uci": "d8e7",
+             "ply": 6,
+             "side": "opponent",
+             "tier": "amateur",
+             "children": [
+              {
+               "fen": "r1b1kbnr/ppppqppp/2n5/4P3/5B2/5N2/PPP1PPPP/RN1QKB1R b KQkq - 4 4",
+               "san": "Bf4",
+               "uci": "c1f4",
+               "ply": 7,
+               "side": "user",
+               "tier": "amateur",
+               "children": [
+                {
+                 "fen": "r1b1kbnr/pppp1ppp/2n5/4P3/1q3B2/5N2/PPP1PPPP/RN1QKB1R w KQkq - 5 5",
+                 "san": "Qb4+",
+                 "uci": "e7b4",
+                 "ply": 8,
+                 "side": "opponent",
+                 "tier": "amateur",
+                 "children": [
+                  {
+                   "fen": "r1b1kbnr/pppp1ppp/2n5/4P3/1q6/5N2/PPPBPPPP/RN1QKB1R b KQkq - 6 5",
+                   "san": "Bd2",
+                   "uci": "f4d2",
+                   "ply": 9,
+                   "side": "user",
+                   "tier": "amateur",
+                   "children": [
+                    {
+                     "fen": "r1b1kbnr/pppp1ppp/2n5/4P3/8/5N2/PqPBPPPP/RN1QKB1R w KQkq - 0 6",
+                     "san": "Qxb2",
+                     "uci": "b4b2",
+                     "ply": 10,
+                     "side": "opponent",
+                     "tier": "amateur",
+                     "children": [
+                      {
+                       "fen": "r1b1kbnr/pppp1ppp/2n5/4P3/8/2N2N2/PqPBPPPP/R2QKB1R b KQkq - 1 6",
+                       "san": "Nc3",
+                       "uci": "b1c3",
+                       "ply": 11,
+                       "side": "user",
+                       "tier": "amateur",
+                       "children": [],
+                       "eval": 256,
+                       "loss": 0
+                      }
+                     ],
+                     "freq": 0.99,
+                     "games": 1884614,
+                     "eval": 251
+                    }
+                   ],
+                   "eval": 191,
+                   "loss": 0
+                  }
+                 ],
+                 "freq": 0.932,
+                 "games": 2903372,
+                 "eval": 210
+                }
+               ],
+               "eval": 160,
+               "loss": 8
+              }
+             ],
+             "freq": 0.691,
+             "games": 6005365,
+             "eco": "A40 Englund Gambit: Main Line",
+             "eval": 165
+            }
+           ],
+           "eval": 157,
+           "loss": 0
+          }
+         ],
+         "freq": 0.462,
+         "games": 12261200,
+         "eval": 148
+        }
+       ],
+       "eval": 149,
+       "loss": 0
+      }
+     ],
+     "freq": 0.064,
+     "games": 43388405,
+     "eco": "A40 Englund Gambit",
+     "eval": 143
+    }
+   ],
+   "eval": 22,
+   "loss": 0
+  }
+ ]
+}

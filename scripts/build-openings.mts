@@ -40,12 +40,14 @@ type TierRule = {
 
 const RULES: Record<Tier, TierRule> = {
   start: { maxUserMoves: 5, coverage: 0, onlyFirstReply: true, ratings: [1000, 1200, 1400], minGames: 200, minReach: 0 },
-  novice: { maxUserMoves: 7, coverage: 0.7, ratings: [1000, 1200, 1400], minGames: 300, minReach: 0.04 },
-  amateur: { maxUserMoves: 10, coverage: 0.8, ratings: [1200, 1400, 1600], minGames: 300, minReach: 0.015 },
-  trainee: { maxUserMoves: 13, coverage: 0.88, ratings: [1400, 1600, 1800], minGames: 300, minReach: 0.008 },
-  skilled: { maxUserMoves: 16, coverage: 0.93, ratings: [1600, 1800, 2000], minGames: 200, minReach: 0.004 },
-  expert: { maxUserMoves: 19, coverage: 0.96, ratings: [1800, 2000, 2200, 2500], minGames: 100, minReach: 0.002 },
-  master: { maxUserMoves: 21, coverage: 0.98, ratings: [2000, 2200, 2500], minGames: 50, minReach: 0.001 },
+  // minReach multiplies along a line (0.5 × 0.3 × 0.3 …), so it must stay small or lines stop
+  // after 2–3 moves; minGames and coverage do most of the pruning.
+  novice: { maxUserMoves: 7, coverage: 0.7, ratings: [1000, 1200, 1400], minGames: 300, minReach: 0.01 },
+  amateur: { maxUserMoves: 10, coverage: 0.8, ratings: [1200, 1400, 1600], minGames: 300, minReach: 0.003 },
+  trainee: { maxUserMoves: 13, coverage: 0.88, ratings: [1400, 1600, 1800], minGames: 300, minReach: 0.0015 },
+  skilled: { maxUserMoves: 16, coverage: 0.93, ratings: [1600, 1800, 2000], minGames: 200, minReach: 0.0008 },
+  expert: { maxUserMoves: 19, coverage: 0.96, ratings: [1800, 2000, 2200, 2500], minGames: 100, minReach: 0.0004 },
+  master: { maxUserMoves: 21, coverage: 0.98, ratings: [2000, 2200, 2500], minGames: 50, minReach: 0.0002 },
 };
 const MAX_LOSS_CP = 30; // a player move may lose at most 0.3 pawn vs the engine's best
 const TRAP_SWING_CP = 150; // an opponent reply losing ≥ 1.5 pawns is a trap to punish

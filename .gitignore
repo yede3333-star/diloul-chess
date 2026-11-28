@@ -170,3 +170,6 @@ next-env.d.ts
 /test-results/
 /playwright-report/
 /.cache/
+
+# Generated from data/openings by scripts/split-openings.mts
+/public/data/openings/

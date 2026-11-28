@@ -14,6 +14,11 @@ const nextConfig: NextConfig = {
           { key: "Content-Type", value: "application/javascript; charset=utf-8" },
         ],
       },
+      {
+        // Opening trees change only when rebuilt; a day of caching, then revalidate (SPEC §17.1).
+        source: "/data/openings/:path*",
+        headers: [{ key: "Cache-Control", value: "public, max-age=86400, stale-while-revalidate=604800" }],
+      },
     ];
   },
   turbopack: {
