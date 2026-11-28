@@ -35,5 +35,102 @@
       "fr": "Attaquer avant d’avoir fini son développement : sors tes pièces et roque d’abord, le Londres est un système patient."
     }
   ],
-  "moves": {}
+  "moves": {
+    "d4 d5 Bf4": {
+      "note": {
+        "ar": "هذه نقلة لندن الأساسية: الفيل يخرج إلى f4 قبل أن تدفع e3، حتى لا يبقى محبوسًا خلف بيادقك.",
+        "fr": "Le coup clé du Londres : le fou sort en f4 avant que tu joues e3, pour ne pas rester enfermé derrière tes pions."
+      }
+    },
+    "d4 d5 Bf4 Nc6 e3": {
+      "note": {
+        "ar": "e3 تحمي بيدق d4 مرة ثانية، وتفتح الطريق لفيلك الآخر نحو d3.",
+        "fr": "e3 protège une deuxième fois le pion d4 et ouvre la route de ton autre fou vers d3."
+      }
+    },
+    "d4 d5 Bf4 Nc6 e3 Nf6 Nf3 Bg4 c3": {
+      "note": {
+        "ar": "c3 تجعل مركزك ثابتًا. ولاحظ: فيل الأسود ترك c8، فبيدق b7 لم يعد محميًا، ووزيرك يستطيع لاحقًا الذهاب إلى b3 ليهاجمه.",
+        "fr": "c3 stabilise ton centre. Remarque : le fou noir a quitté c8, donc le pion b7 n’est plus protégé ; ta dame pourra aller en b3 pour l’attaquer."
+      }
+    },
+    "d4 d5 Bf4 Nc6 e3 Nf6 Nf3 Bg4 c3 e6 Nbd2": {
+      "note": {
+        "ar": "الحصان إلى d2 لا إلى c3، لأن بيدق c3 يقف هناك. ومن d2 يستطيع أن يدعم دفعة e4 لاحقًا.",
+        "fr": "Le cavalier va en d2 et non en c3, car le pion c3 occupe cette case. De d2, il pourra soutenir la poussée e4 plus tard."
+      }
+    },
+    "d4 d5 Bf4 Nc6 e3 Nf6 Nf3 Bg4 c3 e6 Nbd2 Bd6 Bd3": {
+      "note": {
+        "ar": "الأسود يعرض تبادل الفيلة. لا تخف: أكمل تطويرك، وإن أخذ فيلك فسترد ببيدق e3.",
+        "fr": "Les Noirs proposent l’échange des fous. Pas d’inquiétude : continue ton développement ; s’ils prennent ton fou, tu reprendras avec le pion e3."
+      }
+    },
+    "d4 d5 Bf4 Nc6 e3 Nf6 Nf3 Bg4 c3 e6 Nbd2 Bd6 Bd3 Bxf4 exf4": {
+      "note": {
+        "ar": "بعد الأخذ ببيدق e3، يصبح لك بيدق في f4 يسيطر على المربع e5، وعمود e المفتوح أمام رخك.",
+        "fr": "Après la reprise avec le pion e3, ton pion f4 contrôle la case e5, et la colonne e s’ouvre pour ta tour."
+      }
+    },
+    "d4 d5 Bf4 Nc6 e3 Bf5 Nf3 Nb4 Bd3": {
+      "note": {
+        "ar": "انتبه: حصان الأسود في b4 وفيله في f5 يهاجمان المربع c2 معًا. Bd3 تقطع طريق الفيل إلى c2 وتعرض تبادله.",
+        "fr": "Attention : le cavalier noir en b4 et son fou en f5 attaquent tous deux la case c2. Fd3 coupe la route du fou vers c2 et propose l’échange."
+      }
+    },
+    "d4 d5 Bf4 Nc6 e3 Nf6 Nf3 Bf5 Bb5": {
+      "note": {
+        "ar": "فكرة مفيدة: الفيل في b5 يضغط على الحصان c6. وإن طردك الأسود بـ ...a6، فخذ الحصان.",
+        "fr": "Une idée utile : le fou en b5 met la pression sur le cavalier c6. Si les Noirs le chassent par …a6, prends le cavalier."
+      }
+    },
+    "d4 d5 Bf4 Nc6 e3 Nf6 Nf3 Bf5 Bb5 a6 Bxc6+": {
+      "note": {
+        "ar": "بعد هذا الأخذ يصبح للأسود بيدقان في عمود c (c6 وc7). هذان البيدقان «المضاعفان» يحمي أحدهما الآخر بصعوبة، وهما هدف سهل لاحقًا.",
+        "fr": "Après cette prise, les Noirs ont deux pions sur la colonne c (c6 et c7). Ces pions « doublés » se protègent mal et deviendront une cible."
+      }
+    },
+    "d4 Nf6 Bf4": {
+      "note": {
+        "ar": "ضد ...Nf6 أيضًا: الفيل إلى f4 أولًا. هذه قوة لندن: الخطة نفسها ضد أغلب الدفاعات.",
+        "fr": "Contre …Cf6 aussi : le fou en f4 d’abord. C’est la force du Londres : le même plan contre presque toutes les défenses."
+      }
+    },
+    "d4 Nf6 Bf4 g6 e3 Bg7 Nf3 O-O c3 d6 Nbd2 Nbd7 h3": {
+      "note": {
+        "ar": "h3 تحفظ لفيلك مربعًا آمنًا في h2، إن هاجمه الأسود بالحصان (...Nh5) أو بالبيدق (...e5).",
+        "fr": "h3 garde une case sûre en h2 pour ton fou, si les Noirs l’attaquent avec le cavalier (…Ch5) ou avec le pion (…e5)."
+      }
+    },
+    "d4 d5 Bf4 e6 e3 c5 Nf3 cxd4 exd4": {
+      "note": {
+        "ar": "خذ ببيدق e3: يبقى لك بيدق في المركز (d4)، ويفتح الطريق أمام فيلك في f1.",
+        "fr": "Reprends avec le pion e3 : tu gardes un pion au centre (d4), et la diagonale de ton fou f1 s’ouvre."
+      }
+    },
+    "d4 e5 dxe5": {
+      "note": {
+        "ar": "الأسود يضحّي ببيدق (يسمّى غامبيت إنغلوند). خذه بثقة: النقلات التالية تريك كيف تتجنّب مصائده.",
+        "fr": "Les Noirs sacrifient un pion (le gambit Englund). Prends-le sans crainte : la suite te montre comment éviter ses pièges."
+      }
+    },
+    "d4 e5 dxe5 Nc6 Nf3 Qe7 Bf4 Qb4+ Bd2 Qxb2 Nc3": {
+      "note": {
+        "ar": "احذر المصيدة الشهيرة: لو لعبت Bc3 هنا، يرد الأسود بـ ...Bb4، وإن أخذت الفيل بالوزير (Qd2 ثم Qxc3) جاء مات ...Qc1. أما Nc3 فيحمي كل شيء.",
+        "fr": "Attention au piège célèbre : si tu joues Fc3 ici, les Noirs répondent …Fb4, et si tu prends le fou avec la dame (Dd2 puis Dxc3), …Dc1 est mat. Cc3, lui, protège tout."
+      }
+    },
+    "d4 e5 dxe5 Nc6 Nf3 Qe7 Bf4 Qb4+ Bd2 Qxb2 Nc3 Nb4 Nd4": {
+      "note": {
+        "ar": "الحصان في d4 يحمي المربع c2 الذي يهاجمه حصان الأسود، ويبقى وزيرك في أمان.",
+        "fr": "Le cavalier en d4 protège la case c2 attaquée par le cavalier noir, et ta dame reste à l’abri."
+      }
+    },
+    "d4 e5 dxe5 Nc6 Nf3 Qe7 Bf4 Qb4+ Bd2 Qxb2 Nc3 Nb4 Nd4 c5": {
+      "note": {
+        "ar": "خطأ من الأسود! بعد Rb1 ثم قفزة الحصان إلى b5، يطارد رخك وحصانك الوزير الأسود، ويحصل الأبيض على تفوّق كبير.",
+        "fr": "Une erreur des Noirs ! Après Tb1 puis le saut du cavalier en b5, ta tour et ton cavalier pourchassent la dame noire, et les Blancs obtiennent un gros avantage."
+      }
+    }
+  }
 }

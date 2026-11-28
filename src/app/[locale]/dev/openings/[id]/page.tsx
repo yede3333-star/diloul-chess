@@ -14,6 +14,8 @@ export function generateStaticParams() {
 }
 
 async function loadTree(id: string): Promise<OpeningTree | null> {
+  // Cached (build-time) file read, as Cache Components requires for prerendering.
+  "use cache";
   try {
     return JSON.parse(await readFile(join(process.cwd(), "data/openings", `${id}.json`), "utf8"));
   } catch {
