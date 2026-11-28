@@ -1,0 +1,60 @@
+# Applies supabase/migrations to a Supabase project (SPEC §19.1: schema changes only via migrations).
+# Run it from the GitHub app: Actions → "Database migrations" → Run workflow → choose dev or prod.
+#
+# Secrets (Settings → Secrets and variables → Actions):
+#   SUPABASE_DB_URL_DEV / SUPABASE_DB_URL_PROD
+#     The Session pooler connection string (port 5432, host *.pooler.supabase.com) from
+#     Supabase → Project → Connect. The direct connection is IPv6-only and fails on GitHub runners.
+name: Database migrations
+
+on:
+  workflow_dispatch:
+    inputs:
+      target:
+        description: "Which project"
+        type: choice
+        options: [dev, prod]
+        default: dev
+      dry_run:
+        description: "Only show what would run"
+        type: boolean
+        default: false
+
+concurrency:
+  group: db-migrate-${{ inputs.target }}
+  cancel-in-progress: false
+
+jobs:
+  migrate:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: supabase/setup-cli@v1
+        with:
+          version: 3.4.0
+
+      - name: Pick the database URL
+        id: db
+        env:
+          DEV: ${{ secrets.SUPABASE_DB_URL_DEV }}
+          PROD: ${{ secrets.SUPABASE_DB_URL_PROD }}
+        run: |
+          if [ "${{ inputs.target }}" = "prod" ]; then url="$PROD"; else url="$DEV"; fi
+          if [ -z "$url" ]; then
+            echo "::error::Missing secret SUPABASE_DB_URL_${{ inputs.target == 'prod' && 'PROD' || 'DEV' }}. See SETUP.md."
+            exit 1
+          fi
+          echo "::add-mask::$url"
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+
+      - name: Apply migrations
+        env:
+          DB_URL: ${{ steps.db.outputs.url }}
+        run: |
+          if [ "${{ inputs.dry_run }}" = "true" ]; then
+            supabase db push --remote="$DB_URL" --dry-run
+          else
+            # Running the workflow is the confirmation; CI has no terminal to answer the prompt.
+            supabase db push --remote="$DB_URL" --yes
+          fi
