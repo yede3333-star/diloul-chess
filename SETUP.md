@@ -6,12 +6,12 @@
 | # | الخطوة | الحالة |
 |---|---|---|
 | 1 | ربط Vercel | ✅ منتهية |
-| 2 | إنشاء مشروعَي Supabase | 🟡 `diloul-dev` ✅ (eu-west-1)، و`diloul-prod` ⬜ |
-| 3 | مفاتيح Supabase في Vercel | ⬜ |
+| 2 | إنشاء مشروعَي Supabase | 🟡 `diloul-dev` ✅ (eu-west-1)، و`diloul-prod` ⬜ (قبل الدمج في `main`) |
+| 3 | مفاتيح Supabase في Vercel | 🟡 Preview (dev) ✅، وProduction (prod) ⬜ |
 | 4 | رابط قاعدة البيانات في GitHub Secrets | 🟡 `DEV` ✅، و`PROD` ⬜ |
 | 5 | تطبيق الـ migrations | 🟡 dev ✅ (7 جداول)، وprod ⬜ |
-| 6 | روابط تسجيل الدخول في Supabase | ⏳ جارية (dev) |
-| 7 | جعل حسابك مسؤولًا (admin) | ⏳ جارية |
+| 6 | روابط تسجيل الدخول في Supabase | 🟡 dev ✅، وprod ⬜ |
+| 7 | جعل حسابك مسؤولًا (admin) | 🟡 dev ✅ (`/admin` تعمل)، وprod ⬜ |
 | 8 | حماية فرع `main` | ⬜ **الآن**، فأول Pull Request (#1) دُمج |
 | 9 | 🖥️ تسجيل الدخول بـ Google | مؤجّلة |
 | 10 | البريد (Resend) وSentry | مؤجّلة إلى آخر المرحلة 0 |

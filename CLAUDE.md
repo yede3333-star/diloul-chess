@@ -12,12 +12,17 @@
   - الخطوة 4 منتهية: المكوّنات وصفحة `/[locale]/dev/components`. راجعها Yede على Android وأصلحنا ملاحظاته العشر، ثم وافق.
   - الخطوة 5 منتهية في الكود: التخزين الموحّد، ووضع الضيف، وSupabase (migrations وRLS)، وتسجيل الدخول، وشاشة التصنيف الأولي، وهيكل `/admin`. ننتظر أن ينفّذ Yede خطوات `SETUP.md` من 2 إلى 7، لنجرّب الحسابات الحقيقية.
   - الخطوة 6 منتهية: CI (ثلاث وظائف)، وPWA (manifest وأيقونات وservice worker)، وصفحات الخطأ، ومكان Sentry غير المفعّل، و`SETUP.md` كاملًا.
-  - **إعداد Yede حتى الآن:**
-    - `diloul-dev` في `eu-west-1`، مع إطفاء المنح التلقائي.
-    - السر `SUPABASE_DB_URL_DEV` مضاف، والـ migrations مطبّقة على dev (7 جداول).
+  - **إعداد Yede (dev مكتمل):**
+    - `diloul-dev` في `eu-west-1`، مع إطفاء المنح التلقائي، والـ migrations مطبّقة.
+    - مفاتيح dev في Vercel (Preview)، وروابط الدخول مضبوطة.
+    - الدخول بالرابط السحري نجح، وحساب Yede مسؤول، و`/admin` تعمل.
     - PR #1 دُمج: أضاف ملف workflow الـ migrations وحده إلى `main`، لأن GitHub يشترط وجوده في الفرع الافتراضي لظهور زر التشغيل.
-  - **باقٍ لإغلاق المرحلة 0:** يُنهي Yede إعداد Supabase (خطوات `SETUP.md` من 2 إلى 7)، ثم نختبر معًا تسجيل الدخول ونقل تقدّم الضيف. **لا ندمج في `main` قبل موافقته.**
-  - صفحة `/dev/design` تبقى مرجعًا للاتجاهات الثلاثة، وتُحذف في آخر المرحلة 0.
+  - **اختبار نقل تقدّم الضيف إلى الحساب** أجّله Yede إلى المرحلة 1، حين يوجد محتوى. منطق الدمج نفسه مغطّى باختبارات Vitest.
+  - صفحة `/dev/design` حُذفت (أدّت غرضها). وتبقى `/dev/system` و`/[locale]/dev/components` مرجعين.
+  - **قبل دمج المرحلة 0 في `main`:**
+    1. يجهّز Yede مشروع `diloul-prod` (خطوات `SETUP.md` من 2 إلى 7 لـ prod)، لأن `main` يُنشر على الرابط الرئيسي بمفاتيح Production.
+    2. يفعّل حماية `main`.
+    3. نفتح Pull Request للمرحلة 0 **عندما يطلبه Yede**، ولا ندمج دون موافقته.
 - خطة المرحلة 0 الموافَق عليها، بالترتيب:
   1. صفحة اتجاهات التصميم.
   2. تثبيت نظام التصميم.
@@ -215,9 +220,7 @@
 | Tailwind CSS 4 عبر `@tailwindcss/turbopack` | من قالب `create-next-app@16.4.6`. |
 | `chessground@9.2.1` و`chess.js@1.4.0` و`lucide-react@1.82.0` | آخر الإصدارات وقت التثبيت. |
 | `<StaticBoard>` في `src/components/board`: رقعة ثابتة من FEN بلا JavaScript، بقطع cburnett من Chessground | للبطاقات والنماذج. سيصبح أساس `<MiniBoard>`. |
-| صفحة `/dev/design` بلا JavaScript في المتصفح: تبديل الاتجاه والوضع واللغة بـ CSS فقط (radio و`:has`) | حتى تُصدَّر كملف HTML واحد (`scripts/export-static-page.mjs`) ويُشارك رابط معاينة قبل ربط Vercel. |
-| صفحة `/dev/design` تحمّل الخطوط من Google Fonts برابط `<link>` | صفحة داخلية تقارن 7 خطوط. أما الموقع فسيستعمل `next/font` بعد اختيار الخط. |
-| نصوص `/dev/design` في `directions.ts`، لا في ملفات الترجمة | صفحة داخلية مؤقتة تُحذف بعد الاختيار. كل نصوص الموقع تمر عبر `next-intl` بدءًا من الخطوة 3. |
+| صفحة `/dev/design` (الاتجاهات الثلاثة) كانت بلا JavaScript، وحُذفت في آخر المرحلة 0 | أدّت غرضها: اختار Yede «ليل الصحراء». تبقى في تاريخ git (commit ed4d51b) لمن أرادها. |
 | كل موقف شطرنجي معروض يُتحقق منه بـ chess.js قبل استعماله | القسم 15.1 من المواصفات. |
 | `vercel.json` فيه `"regions": ["dub1"]` (دبلن) | طلب Yede: قاعدة Supabase في `eu-west-1` (أيرلندا)، فتعمل دوال الخادم بجانبها. |
 | `vercel.json` فيه `"framework": "nextjs"` | سُجّل المشروع في Vercel على أنه «Other» لأن `main` كان فارغًا عند الربط، فكانت كل الصفحات 404. هذا الملف يفرض إعداد Next.js من داخل المستودع. |
@@ -231,4 +234,5 @@
 
 ## أوامر مفيدة
 - `npm run dev` / `npm run build` / `npm run lint`
-- تصدير صفحة ثابتة: `npx next start -p 3123` ثم `node scripts/export-static-page.mjs http://localhost:3123/dev/design out.html "العنوان"`
+- تصدير صفحة ثابتة: `npx next start -p 3123` ثم `node scripts/export-static-page.mjs http://localhost:3123/dev/system out.html "العنوان"`
+- الاختبارات: `npm test` (الوحدات)، و`npm run build && npm run test:e2e` (Playwright)، و`npm run validate-content`.

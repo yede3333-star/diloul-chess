@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 /**
- * Exports a rendered page (one that needs no JavaScript, like /dev/design) as a single
+ * Exports a rendered page (one that needs no JavaScript, like /dev/system) as a single
  * self-contained HTML fragment: the page's own CSS is inlined and Next's scripts are dropped.
  * Used to share a quick preview link before Vercel is connected.
  *
