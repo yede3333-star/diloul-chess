@@ -10,6 +10,14 @@ const require = createRequire(import.meta.url);
 
 export function createEngine({ flavor = "full", threads = Math.max(1, availableParallelism() - 1), hashMb = 256 } = {}) {
   let listener = () => {};
+  // Emscripten treats process.argv as the engine's own command line: a script argument such as
+  // "london" would be read as a UCI command and stop the engine. Hide them while it starts.
+  const savedArgv = process.argv;
+  process.argv = savedArgv.slice(0, 2);
+  // It also replaces the global fetch with null and installs a file-based XMLHttpRequest;
+  // keep the real ones for the rest of the script (the explorer client needs fetch).
+  const savedFetch = globalThis.fetch;
+  const savedXhr = globalThis.XMLHttpRequest;
   const engine = require("stockfish")(flavor, (line) => listener(String(line)));
   const send = (cmd) => engine.processCommand(cmd);
 
@@ -29,6 +37,10 @@ export function createEngine({ flavor = "full", threads = Math.max(1, availableP
     const ready = waitFor((l) => l === "readyok");
     send("isready");
     await ready;
+    process.argv = savedArgv;
+    globalThis.fetch = savedFetch;
+    if (savedXhr === undefined) delete globalThis.XMLHttpRequest;
+    else globalThis.XMLHttpRequest = savedXhr;
   }
 
   /** @returns {Promise<{ uci: string, cp: number, mate: number|null, depth: number, pv: string[] }[]>} */

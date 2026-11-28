@@ -1,0 +1,39 @@
+{
+  "idea": {
+    "ar": "في نظام لندن تبني بالأبيض الشكل نفسه تقريبًا مهما لعب الأسود: بيدق في d4، ثم الفيل إلى f4 قبل أن تغلق عليه بـ e3، ثم e3 وc3 وNf3 وBd3، ثم التبييت. النتيجة موقع صلب يصعب كسره، تستطيع بعده أن تهاجم بهدوء على جهة الملك.",
+    "fr": "Dans le Système de Londres, tu construis presque la même position quoi que jouent les Noirs : un pion en d4, puis le fou en f4 avant de l’enfermer par e3, puis e3, c3, Cf3, Fd3 et le roque. Tu obtiens une position solide, difficile à casser, avant d’attaquer calmement à l’aile roi."
+  },
+  "plans": [
+    {
+      "ar": "اقفز بالحصان إلى e5، حيث يحميه بيدق d4: من هناك يضغط على f7 ويضايق قطع الأسود.",
+      "fr": "Saute avec le cavalier en e5, où le pion d4 le protège : de là, il vise f7 et gêne les pièces noires."
+    },
+    {
+      "ar": "ضع الفيل في d3 والوزير في c2: معًا يصوّبان على المربع h7 بعد أن يبيّت الأسود في جهة الملك.",
+      "fr": "Place le fou en d3 et la dame en c2 : ensemble, ils visent la case h7 quand les Noirs ont roqué côté roi."
+    },
+    {
+      "ar": "إن هدّد الأسود فيلك بالحصان (...Nh5)، فلا تتركه يُؤخذ مجانًا: احفظ له مكانًا آمنًا في g3، أو في h2 بعد دفع h3.",
+      "fr": "Si les Noirs menacent ton fou avec le cavalier (…Ch5), ne le laisse pas se faire prendre : garde-lui une case sûre en g3, ou en h2 après avoir poussé h3."
+    },
+    {
+      "ar": "بيدق c3 يحمي بيدق d4 ويجعل مركزك ثابتًا، ويفتح لوزيرك الطريق إلى b3 حين تحتاجه.",
+      "fr": "Le pion c3 protège le pion d4 et rend ton centre stable ; il ouvre aussi la route b3 à ta dame quand tu en as besoin."
+    }
+  ],
+  "mistakes": [
+    {
+      "ar": "لعب e3 قبل Bf4: بهذا تحبس فيلك خلف بيادقك، ويصبح نظام لندن بلا روح.",
+      "fr": "Jouer e3 avant Ff4 : tu enfermes ton fou derrière tes pions, et le Londres perd son intérêt."
+    },
+    {
+      "ar": "نسيان بيدق b2 حين يخرج وزير الأسود إلى b6: قبل كل نقلة تأكد أن b2 محمي، مثلًا بالوزير في c1 أو b3.",
+      "fr": "Oublier le pion b2 quand la dame noire va en b6 : avant chaque coup, vérifie que b2 est protégé, par exemple par la dame en c1 ou b3."
+    },
+    {
+      "ar": "الهجوم قبل إكمال التطوير: أخرج قطعك وبيّت أولًا، فلندن نظام صبور.",
+      "fr": "Attaquer avant d’avoir fini son développement : sors tes pièces et roque d’abord, le Londres est un système patient."
+    }
+  ],
+  "moves": {}
+}

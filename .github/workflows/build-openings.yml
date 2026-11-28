@@ -1,0 +1,78 @@
+# Rebuilds opening trees (SPEC §7.4) and opens a Pull Request with the result.
+# Run from the GitHub app: Actions → "Build openings" → Run workflow.
+#
+# Needs:
+#   - secret LICHESS_TOKEN (lichess.org → Preferences → API access tokens, no scopes)
+#   - Settings → Actions → General → "Allow GitHub Actions to create and approve pull requests"
+name: Build openings
+
+on:
+  workflow_dispatch:
+    inputs:
+      openings:
+        description: "Opening ids, space-separated (see src/config/openings.ts)"
+        default: "london queens-gambit italian caro-kann slav sicilian-najdorf"
+        required: true
+      to:
+        description: "Build up to this rank"
+        type: choice
+        options: [start, novice, amateur, trainee, skilled, expert, master]
+        default: amateur
+
+permissions:
+  contents: write
+  pull-requests: write
+
+concurrency:
+  group: build-openings
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    timeout-minutes: 300
+    steps:
+      - uses: actions/checkout@v5
+      - uses: actions/setup-node@v5
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+
+      # Explorer answers and engine evaluations are cached between runs (SPEC §7.4: rebuild
+      # without new requests).
+      - uses: actions/cache@v4
+        with:
+          path: .cache
+          key: openings-cache-${{ github.run_id }}
+          restore-keys: openings-cache-
+
+      - name: Build trees
+        env:
+          LICHESS_TOKEN: ${{ secrets.LICHESS_TOKEN }}
+        run: |
+          if [ -z "$LICHESS_TOKEN" ]; then echo "::error::Missing secret LICHESS_TOKEN (see SETUP.md)"; exit 1; fi
+          for id in ${{ inputs.openings }}; do
+            echo "::group::$id"
+            node scripts/build-openings.mts "$id" --to=${{ inputs.to }}
+            echo "::endgroup::"
+          done
+
+      - name: Validate
+        run: npm run validate-content
+
+      - name: Open a Pull Request
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          if git diff --quiet -- data/openings; then echo "No changes."; exit 0; fi
+          branch="openings/rebuild-${{ github.run_id }}"
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git switch -c "$branch"
+          git add data/openings
+          git commit -m "Rebuild openings: ${{ inputs.openings }} (up to ${{ inputs.to }})"
+          git push -u origin "$branch"
+          gh pr create --base "${{ github.ref_name }}" --head "$branch" \
+            --title "Rebuild openings (${{ inputs.to }})" \
+            --body "Automatic rebuild by the \"Build openings\" workflow: ${{ inputs.openings }}, up to rank ${{ inputs.to }}. Content validation passed."

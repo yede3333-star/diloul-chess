@@ -305,5 +305,28 @@
     "title": "Une erreur inattendue s’est produite",
     "body": "Ta progression n’est pas perdue. Réessaie, et si l’erreur revient, préviens-nous.",
     "retry": "Réessayer"
+  },
+  "devOpenings": {
+    "eyebrow": "Revue de l’arbre d’ouverture (étape 1.1)",
+    "asWhite": "Avec les Blancs",
+    "asBlack": "Avec les Noirs",
+    "positions": "{count} coups à toi",
+    "traps": "{count} pièges",
+    "notes": "{count} explications",
+    "maxLoss": "Perte max. de tes coups : {value} pion",
+    "idea": "L’idée de l’ouverture",
+    "plans": "Plans typiques",
+    "mistakes": "Erreurs fréquentes",
+    "back": "Retour",
+    "start": "Début",
+    "upTo": "Jusqu’au rang",
+    "next": "Coups suivants",
+    "end": "Fin de la ligne pour ce rang.",
+    "yourMove": "Ton coup",
+    "reply": "Réponse adverse",
+    "loss": "−{value}",
+    "trap": "Piège",
+    "transposition": "Transposition",
+    "games": "{count, number} parties"
   }
 }

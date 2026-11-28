@@ -17,7 +17,7 @@
 | 10 | البريد (Resend) وSentry | مؤجّلة إلى آخر المرحلة 0 |
 | 11 | CI على GitHub Actions | ✅ تعمل تلقائيًا |
 | 12 | تثبيت التطبيق على الهاتف (PWA) | ✅ جرّبه |
-| 13 | رمز Lichess | ⬜ (قبل المرحلة 1) |
+| 13 | رمز Lichess | 🟡 في جلسة Claude ✅، وفي GitHub Secrets ⬜ |
 | 14 | نطاق خاص (اختياري) | ⬜ |
 
 ---
@@ -182,6 +182,8 @@
 1. على lichess.org افتح **Preferences**، ثم **API access tokens**، ثم **+**.
 2. اكتب وصفًا مثل `diloul build-openings`، **ولا تختر أي صلاحية**، فالقراءة العامة تكفي. ثم **Create**.
 3. انسخ الرمز (يظهر مرة واحدة)، وضعه في GitHub Secrets باسم `LICHESS_TOKEN`، بالطريقة نفسها في الخطوة 4.
+4. حتى تستطيع مهمة **Build openings** فتح Pull Request بالنتائج: افتح **Settings**، ثم **Actions**، ثم **General**، ثم **Workflow permissions**، وفعّل **Allow GitHub Actions to create and approve pull requests**، ثم **Save**.
+5. للتشغيل: افتح **Actions**، ثم **Build openings**، ثم **Run workflow**. اختر الافتتاحات والرتبة، وعند الانتهاء يفتح Pull Request بالأشجار الجديدة.
 
 ## 14. نطاق خاص (اختياري)
 - مثل `diloul.com` أو `diloul.app` (حوالي 10–15 دولارًا في السنة)، وهي التكلفة الوحيدة المحتملة في المشروع.

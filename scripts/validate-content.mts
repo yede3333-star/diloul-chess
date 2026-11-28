@@ -10,8 +10,9 @@
  *  - `ply` consistent, `side` alternating between "user" and "opponent"
  *  - `freq` in 0–1, `tier` a known rank key, bilingual `name`/`note` when present
  *  - transpositions: the same position reached twice must ask the same user move
- * Engine checks (no user move losing > 0.5 pawn unless tagged "gambit") arrive with the
- * Stockfish build script in phase 1.
+ *  - engine rule (SPEC §7.4): no player move loses more than 0.5 pawn (`loss`, computed by the
+ *    build script with Stockfish) unless tagged "gambit"; every player move must carry `loss`
+ *  - opening-level explanation (idea, 3–5 plans, mistakes) bilingual when present
  *
  * Exit code 1 on any error, so CI fails.
  */
@@ -21,6 +22,7 @@ import { Chess } from "chess.js";
 
 type Bi = { ar: string; fr: string };
 type OpeningNode = {
+  loss?: number;
   fen: string;
   san: string;
   uci: string;
@@ -35,7 +37,15 @@ type OpeningNode = {
   tags?: string[];
   children: OpeningNode[];
 };
-type OpeningFile = { id: string; color: "white" | "black"; startFen?: string; children: OpeningNode[] };
+type OpeningFile = {
+  id: string;
+  color: "white" | "black";
+  startFen?: string;
+  idea?: Bi;
+  plans?: Bi[];
+  mistakes?: Bi[];
+  children: OpeningNode[];
+};
 
 const RANKS = new Set(["start", "novice", "amateur", "trainee", "skilled", "expert", "master"]);
 const root = new URL("..", import.meta.url).pathname;
@@ -75,6 +85,10 @@ function checkOpening(file: string) {
       if (!RANKS.has(node.tier)) errors.push(where(`${here}: unknown tier "${node.tier}"`));
       if (node.name !== undefined && !isBi(node.name)) errors.push(where(`${here}: name must have non-empty ar and fr`));
       if (node.note !== undefined && !isBi(node.note)) errors.push(where(`${here}: note must have non-empty ar and fr`));
+      if (node.side === "user" && node.ply > 0) {
+        if (typeof node.loss !== "number") errors.push(where(`${here}: player move without engine "loss"`));
+        else if (node.loss > 50 && !node.tags?.includes("gambit")) errors.push(where(`${here}: player move loses ${node.loss} cp (> 50) without the "gambit" tag`));
+      }
       const game = new Chess(parentFen);
       const mover = game.turn();
       let move;
@@ -100,6 +114,11 @@ function checkOpening(file: string) {
       else walk(game.fen(), node.children, here, node.ply);
     }
   };
+
+  if (data.idea !== undefined && !isBi(data.idea)) errors.push(`${file}: idea must have non-empty ar and fr`);
+  if (data.plans !== undefined && (!Array.isArray(data.plans) || data.plans.length < 3 || data.plans.length > 5 || !data.plans.every(isBi)))
+    errors.push(`${file}: plans must be 3–5 bilingual items`);
+  if (data.mistakes !== undefined && (!Array.isArray(data.mistakes) || !data.mistakes.every(isBi))) errors.push(`${file}: mistakes must be bilingual items`);
 
   walk(data.startFen ?? new Chess().fen(), data.children, "", 0);
 }
