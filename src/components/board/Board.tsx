@@ -60,6 +60,8 @@ type Props = {
   coordinates?: boolean;
   /** "Quick moves" setting: no piece animation. */
   quickMoves?: boolean;
+  /** Piece slide duration in ms (lessons use a slower, smoother slide). */
+  animationMs?: number;
   sounds?: boolean;
   /** Accessible name, e.g. the position or the task. */
   label?: string;
@@ -116,6 +118,7 @@ export function Board({
   marks,
   coordinates = true,
   quickMoves = false,
+  animationMs = 200,
   sounds = true,
   label,
   className = "",
@@ -148,7 +151,7 @@ export function Board({
       check: chess.inCheck() ? turnColor(chess) : false,
       lastMove: lastMove as Key[] | undefined,
       coordinates,
-      animation: { enabled: !quickMoves, duration: 200 },
+      animation: { enabled: !quickMoves, duration: animationMs },
       highlight: { lastMove: true, check: true, custom },
       movable: {
         free: false,
@@ -160,7 +163,7 @@ export function Board({
       draggable: { enabled: !!movableColor, showGhost: true },
       selectable: { enabled: true },
     };
-  }, [fen, orientation, chess, lastMove, coordinates, quickMoves, movableColor, marks]);
+  }, [fen, orientation, chess, lastMove, coordinates, quickMoves, animationMs, movableColor, marks]);
 
   // Latest full config, so a rejected move can restore the position *and* the legal moves
   // (Chessground clears its legal-move list after every move).

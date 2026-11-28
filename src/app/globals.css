@@ -36,6 +36,9 @@
   --color-danger-soft: var(--danger-soft);
   --color-warning: var(--warning);
   --color-warning-soft: var(--warning-soft);
+  --color-success-tint: var(--success-tint);
+  --color-danger-tint: var(--danger-tint);
+  --color-warning-tint: var(--warning-tint);
   --color-info: var(--info);
   --color-info-soft: var(--info-soft);
   --color-on-semantic: var(--on-semantic);

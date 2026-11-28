@@ -328,5 +328,32 @@
     "trap": "Piège",
     "transposition": "Transposition",
     "games": "{count, number} parties"
+  },
+  "lesson": {
+    "close": "Fermer la leçon",
+    "progress": "Progression de la leçon",
+    "soundOn": "Couper le son",
+    "soundOff": "Activer le son",
+    "next": "Suivant",
+    "start": "Commencer",
+    "back": "Précédent",
+    "hint": "Indice",
+    "praise1": "Bravo !",
+    "praise2": "Excellent !",
+    "praise3": "Exact !",
+    "wrongTitle": "Pas ce coup-là",
+    "followArrow": "Suis la flèche verte sur l’échiquier.",
+    "hintTitle": "Indice",
+    "quitTitle": "Quitter la leçon ?",
+    "quitText": "Ta progression dans cette leçon sera perdue.",
+    "quitStay": "Continuer la leçon",
+    "quitLeave": "Quitter",
+    "endTitle": "Bravo ! Leçon terminée",
+    "endMoves": "{count, plural, one {# nouveau coup} other {# nouveaux coups}}",
+    "endMistakes": "{count, plural, =0 {Aucune erreur} one {# erreur} other {# erreurs}}",
+    "endReview": "On te reproposera ces coups en révision pour qu’ils restent en mémoire.",
+    "endNext": "Suivant : entraînement",
+    "endRetry": "Refaire la leçon",
+    "stars": "{count, plural, one {# étoile sur 3} other {# étoiles sur 3}}"
   }
 }

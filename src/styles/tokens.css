@@ -259,3 +259,13 @@
     --dur-slow: 0ms;
   }
 }
+
+/* Opaque feedback tints (lesson coach bubble): the semantic color mixed into the bubble surface.
+   Declared where the theme variables are, so they follow theme and colorblind mode. */
+:root,
+.theme-dark,
+.theme-light {
+  --success-tint: color-mix(in srgb, var(--success) 16%, var(--surface-2));
+  --danger-tint: color-mix(in srgb, var(--danger) 16%, var(--surface-2));
+  --warning-tint: color-mix(in srgb, var(--warning) 16%, var(--surface-2));
+}

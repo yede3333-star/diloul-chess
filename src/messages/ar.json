@@ -328,5 +328,32 @@
     "trap": "مصيدة",
     "transposition": "تبادل نقلات",
     "games": "{count, number} مباراة"
+  },
+  "lesson": {
+    "close": "إغلاق الدرس",
+    "progress": "تقدّم الدرس",
+    "soundOn": "إطفاء الصوت",
+    "soundOff": "تشغيل الصوت",
+    "next": "التالي",
+    "start": "ابدأ",
+    "back": "السابق",
+    "hint": "تلميح",
+    "praise1": "أحسنت!",
+    "praise2": "ممتاز!",
+    "praise3": "صحيح!",
+    "wrongTitle": "ليست هذه النقلة",
+    "followArrow": "اتبع السهم الأخضر على الرقعة.",
+    "hintTitle": "تلميح",
+    "quitTitle": "تخرج من الدرس؟",
+    "quitText": "سيضيع تقدّمك في هذا الدرس.",
+    "quitStay": "أكمل الدرس",
+    "quitLeave": "اخرج",
+    "endTitle": "أحسنت! أنهيت الدرس",
+    "endMoves": "{count, plural, one {نقلة جديدة واحدة} two {نقلتان جديدتان} few {# نقلات جديدة} many {# نقلة جديدة} other {# نقلة جديدة}}",
+    "endMistakes": "{count, plural, =0 {بلا أخطاء} one {خطأ واحد} two {خطآن} few {# أخطاء} many {# خطأً} other {# خطأ}}",
+    "endReview": "سنعيد عليك هذه النقلات في المراجعة حتى تثبت في ذاكرتك.",
+    "endNext": "التالي: تمرين",
+    "endRetry": "أعد الدرس",
+    "stars": "{count, plural, one {نجمة واحدة من 3} two {نجمتان من 3} other {# نجوم من 3}}"
   }
 }
