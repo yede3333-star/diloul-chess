@@ -6,13 +6,13 @@
 | # | الخطوة | الحالة |
 |---|---|---|
 | 1 | ربط Vercel | ✅ منتهية |
-| 2 | إنشاء مشروعَي Supabase | ⬜ |
+| 2 | إنشاء مشروعَي Supabase | 🟡 `diloul-dev` ✅ (eu-west-1)، و`diloul-prod` ⬜ |
 | 3 | مفاتيح Supabase في Vercel | ⬜ |
-| 4 | رابط قاعدة البيانات في GitHub Secrets | ⬜ |
-| 5 | تطبيق الـ migrations | ⬜ |
-| 6 | روابط تسجيل الدخول في Supabase | ⬜ |
-| 7 | جعل حسابك مسؤولًا (admin) | ⬜ |
-| 8 | حماية فرع `main` | ⬜ (عند أول Pull Request) |
+| 4 | رابط قاعدة البيانات في GitHub Secrets | 🟡 `DEV` ✅، و`PROD` ⬜ |
+| 5 | تطبيق الـ migrations | 🟡 dev ✅ (7 جداول)، وprod ⬜ |
+| 6 | روابط تسجيل الدخول في Supabase | ⏳ جارية (dev) |
+| 7 | جعل حسابك مسؤولًا (admin) | ⏳ جارية |
+| 8 | حماية فرع `main` | ⬜ **الآن**، فأول Pull Request (#1) دُمج |
 | 9 | 🖥️ تسجيل الدخول بـ Google | مؤجّلة |
 | 10 | البريد (Resend) وSentry | مؤجّلة إلى آخر المرحلة 0 |
 | 11 | CI على GitHub Actions | ✅ تعمل تلقائيًا |
@@ -23,7 +23,7 @@
 ---
 
 ## 1. Vercel ✅
-- المشروع `diloul-chess` مربوط بالمستودع، و`vercel.json` يفرض إعداد Next.js.
+- المشروع `diloul-chess` مربوط بالمستودع. و`vercel.json` يفرض إعداد Next.js، ويحدد المنطقة `dub1` (دبلن)، وهي بجانب قاعدة Supabase في `eu-west-1` (أيرلندا).
 - كل فرع يحصل على رابط معاينة. والرابط الرئيسي `diloul-chess.vercel.app` يُبنى من `main`.
 
 ## 2. إنشاء مشروعَي Supabase
@@ -71,8 +71,8 @@
 > 💡 صفحة الإعدادات في تطبيق GitHub على الهاتف محدودة. إن لم تجد **Secrets**، فافتح github.com في متصفح الهاتف.
 
 ## 5. تطبيق الـ migrations (إنشاء الجداول)
-1. في GitHub افتح المستودع، ثم **Actions**، ثم **Database migrations**، ثم **Run workflow**.
-2. اختر الفرع `claude/spec-review-phase-0-h7cih3`، و**target: dev**.
+1. في GitHub افتح المستودع، ثم **Actions**، ثم **Database migrations**، ثم **Run workflow**. (الملف موجود في `main` منذ دمج PR #1، وهذا شرط GitHub لظهور الزر.)
+2. في **Use workflow from** اختر الفرع الذي فيه الـ migrations، وهو حاليًا `claude/spec-review-phase-0-h7cih3`، ثم بعد دمج المرحلة 0: `main`. واختر **target: dev**.
 3. يمكنك أولًا تفعيل **dry_run** لترى ما سيُطبَّق دون تغيير شيء.
 4. اضغط **Run workflow** وانتظر العلامة الخضراء ✅.
 5. للتحقق: في Supabase افتح **Table Editor**، وستجد 7 جداول: `profiles`، و`linked_accounts`، و`area_ranks`، و`course_progress`، و`srs_cards`، و`puzzle_stats`، و`daily_activity`. وعلى كل جدول شارة **RLS enabled**.
